@@ -1,0 +1,15 @@
+[
+  {
+    "id": "2.1",
+    "status": "in-progress",
+    "metadata": {
+      "priority": "high",
+      "estimated_hours": 4
+    }
+  },
+  {
+    "id": "2.2",
+    "readiness": "ready",
+    "tags": ["feature", "nlp"]
+  }
+]

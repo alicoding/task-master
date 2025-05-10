@@ -1,0 +1,97 @@
+{
+  "tasks": [
+    {
+      "title": "Setup initial project structure",
+      "status": "done",
+      "readiness": "ready",
+      "tags": ["setup", "milestone"],
+      "metadata": {
+        "priority": "high",
+        "estimatedHours": 4
+      },
+      "force": true
+    },
+    {
+      "title": "Create database schema",
+      "status": "done",
+      "readiness": "ready",
+      "tags": ["database", "core"],
+      "metadata": {
+        "priority": "high",
+        "estimatedHours": 2
+      },
+      "force": true
+    },
+    {
+      "title": "Implement task repository pattern",
+      "status": "done",
+      "readiness": "ready",
+      "tags": ["core", "repository"],
+      "after": "2",
+      "metadata": {
+        "priority": "high",
+        "estimatedHours": 8
+      },
+      "force": true
+    },
+    {
+      "title": "Add CLI command structure",
+      "status": "in-progress",
+      "readiness": "ready",
+      "tags": ["cli", "core"],
+      "after": "1",
+      "metadata": {
+        "priority": "high",
+        "estimatedHours": 6
+      },
+      "force": true
+    },
+    {
+      "title": "Implement task CRUD operations",
+      "childOf": "3",
+      "status": "in-progress",
+      "readiness": "ready",
+      "tags": ["core", "feature"],
+      "metadata": {
+        "priority": "high",
+        "estimatedHours": 5
+      },
+      "force": true
+    },
+    {
+      "title": "Add advanced search capabilities",
+      "childOf": "3",
+      "status": "todo",
+      "readiness": "ready",
+      "tags": ["core", "feature"],
+      "metadata": {
+        "priority": "medium",
+        "estimatedHours": 4
+      },
+      "force": true
+    },
+    {
+      "title": "Implement task dependency handling",
+      "childOf": "3",
+      "status": "todo",
+      "readiness": "ready",
+      "tags": ["core", "feature"],
+      "metadata": {
+        "priority": "high",
+        "estimatedHours": 6
+      },
+      "force": true
+    },
+    {
+      "title": "Create documentation and examples",
+      "status": "todo",
+      "readiness": "blocked",
+      "tags": ["docs"],
+      "metadata": {
+        "priority": "low",
+        "estimatedHours": 3,
+        "blockedBy": "Implementation not complete"
+      }
+    }
+  ]
+}
