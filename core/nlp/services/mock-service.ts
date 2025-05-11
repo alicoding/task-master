@@ -11,7 +11,7 @@ import {
   ExtractedSearchFilters 
 } from '../types.ts';
 import { tokenize, normalizeText } from '../utils/tokenization.ts';
-import { jaccardSimilarity } from '../utils/distance.ts';
+import { calculateJaccardSimilarity } from '../utils/distance.ts';
 
 /**
  * Mock NLP Service for Task Master
@@ -69,7 +69,7 @@ export class MockNlpService extends BaseNlpService {
     const tokens1 = tokenize(text1);
     const tokens2 = tokenize(text2);
     
-    return jaccardSimilarity(tokens1, tokens2);
+    return calculateJaccardSimilarity(tokens1, tokens2);
   }
   
   /**

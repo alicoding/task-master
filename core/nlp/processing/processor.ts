@@ -5,7 +5,7 @@
 import { NlpManager } from '../types.ts';
 import { ProcessedQuery, ExtractedSearchFilters } from '../types.ts';
 import { ENTITY_TERMS_TO_REMOVE } from './entities.ts';
-import { jaccardSimilarity } from '../utils/distance.ts';
+import { calculateJaccardSimilarity } from '../utils/distance.ts';
 
 /**
  * Interface for tokenizer
@@ -135,7 +135,7 @@ export async function calculateSimilarity(
     .map(token => stemmer?.stem ? stemmer.stem(token) : token.toLowerCase());
   
   // Calculate Jaccard similarity on stems
-  const jaccardScore = jaccardSimilarity(stems1, stems2);
+  const jaccardScore = calculateJaccardSimilarity(stems1, stems2);
   
   // Process both texts with NLP manager to get cosine similarity
   const result1 = await nlpManager.process('en', norm1);
