@@ -1,4 +1,4 @@
-import { DuplicateGroup, ColorizeFunction } from './utils.js';
+import { DuplicateGroup, ColorizeFunction } from './utils.ts';
 
 /**
  * Display duplicate groups

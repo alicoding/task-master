@@ -3,8 +3,8 @@
  * Provides a consistent interface for command execution across different interfaces
  */
 
-import { TaskRepository } from '../repo.js';
-import { TaskGraph } from '../graph.js';
+import { TaskRepository } from '../repo.ts';
+import { TaskGraph } from '../graph.ts';
 
 /**
  * Output mode for commands

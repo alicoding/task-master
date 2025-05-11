@@ -10,8 +10,8 @@ import {
   TaskOperations, 
   MockAiConfig,
   OpenAiConfig 
-} from '../core/ai/index.js';
-import { Task } from '../core/types.js';
+} from '../core/ai/index.ts';
+import { Task } from '../core/types.ts';
 
 /**
  * Example tasks for demonstration

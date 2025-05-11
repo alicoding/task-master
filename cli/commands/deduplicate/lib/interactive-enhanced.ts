@@ -3,10 +3,10 @@
  */
 
 import readline from 'readline';
-import { TaskRepository } from '../../../../core/repo.js';
-import { DuplicateGroup, ColorizeFunction } from './utils.js';
-import { handleMerge } from './merger.js';
-import { displayTaskComparison, displayTaskDetail, displayDetailedGroupView, displayInteractiveHelp } from './formatter-enhanced.js';
+import { TaskRepository } from '../../../../core/repo.ts';
+import { DuplicateGroup, ColorizeFunction } from './utils.ts';
+import { handleMerge } from './merger.ts';
+import { displayTaskComparison, displayTaskDetail, displayDetailedGroupView, displayInteractiveHelp } from './formatter-enhanced.ts';
 
 /**
  * Run enhanced interactive mode
@@ -159,7 +159,7 @@ export async function runAutoMergeSuggestions(
   colorize: ColorizeFunction
 ) {
   // Import merger function
-  const { suggestMerge } = await import('./merger-enhanced.js');
+  const { suggestMerge } = await import('./merger-enhanced.ts');
   
   console.log(colorize(`\n🔍 Auto-merge suggestions for ${highSimilarityGroups.length} groups`, 'blue', 'bold'));
   console.log(colorize(`   Processing groups with 80%+ similarity...`, 'gray'));

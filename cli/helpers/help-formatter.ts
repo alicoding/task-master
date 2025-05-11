@@ -198,7 +198,7 @@ class HelpFormatter {
         }
         
         // Add choices if available
-        if ((option as any).choices) {
+        if ((option as any).choices && Array.isArray((option as any).choices)) {
           flagLine += chalk.blue(` [${(option as any).choices.join('|')}]`);
         }
         

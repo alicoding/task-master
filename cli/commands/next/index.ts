@@ -1,7 +1,7 @@
 import { Command } from 'commander';
-import { TaskRepository } from '../../../core/repo.js';
-import { SearchFilters, OutputFormat } from '../../../core/types.js';
-import { helpFormatter } from '../../helpers/help-formatter.js';
+import { TaskRepository } from '../../../core/repo.ts';
+import { SearchFilters, OutputFormat } from '../../../core/types.ts';
+import { helpFormatter } from '../../helpers/help-formatter.ts';
 
 export function createNextCommand() {
   const nextCommand = new Command('next')
@@ -68,13 +68,15 @@ export function createNextCommand() {
         }
         
         // Get multiple next tasks if requested
-        const tasks = await repo.getNextTasks(filters, count);
-        
-        if (tasks.length === 0) {
+        const tasksResult = await repo.getNextTasks(filters, count);
+
+        if (!tasksResult.success || !tasksResult.data || tasksResult.data.length === 0) {
           console.log('No tasks found matching the criteria');
           repo.close();
           return;
         }
+
+        const tasks = tasksResult.data;
         
         if (format === 'json') {
           console.log(JSON.stringify(tasks, null, 2));

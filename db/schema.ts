@@ -1,8 +1,13 @@
 import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
 
+// Re-export the file tracking tables from schema-extensions
+export * from './schema-extensions.ts';
+
 export const tasks = sqliteTable('tasks', {
   id: text('id').primaryKey(),
   title: text('title').notNull(),
+  description: text('description'),
+  body: text('body'),
   status: text('status', { enum: ['todo', 'in-progress', 'done'] }).default('todo').notNull(),
   createdAt: integer('created_at', { mode: 'timestamp' }).notNull().$defaultFn(() => new Date()),
   updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull().$defaultFn(() => new Date()),

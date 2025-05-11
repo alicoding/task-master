@@ -1,4 +1,4 @@
-import { createDb } from './init.js';
+import { createDb } from './init.ts';
 import { migrate } from 'drizzle-orm/better-sqlite3/migrator';
 import { mkdir } from 'fs/promises';
 import { dirname } from 'path';
@@ -25,16 +25,39 @@ async function runMigration() {
   console.log('Running migrations...');
   
   try {
-    // Create a raw statement to import the migration SQL directly
-    const migrationSql = await import('fs').then(fs => 
-      fs.promises.readFile(new URL('./migrations/0000_previous_purifiers.sql', import.meta.url), 'utf-8')
-    );
-    
-    console.log('Executing SQL migration script...');
-    sqlite.exec(migrationSql);
-    console.log('SQL migration executed successfully');
+    // Import fs module for file operations
+    const fs = await import('fs');
+
+    // Get all migration files in order
+    const migrations = [
+      '0000_previous_purifiers.sql',
+      '0001_add_description_body.sql',
+      '0001_task_description_body.sql', // Include both versions for compatibility
+      '0002_file_tracking_tables.sql',
+      '0003_definition_of_done.sql'
+    ];
+
+    // Execute each migration in order
+    for (const migrationFile of migrations) {
+      try {
+        console.log(`Applying migration: ${migrationFile}`);
+        const migrationSql = await fs.promises.readFile(
+          new URL(`./migrations/${migrationFile}`, import.meta.url),
+          'utf-8'
+        );
+
+        sqlite.exec(migrationSql);
+        console.log(`Migration ${migrationFile} applied successfully`);
+      } catch (err) {
+        // If file doesn't exist or there's another error with this migration
+        console.warn(`Warning: Could not apply migration ${migrationFile}:`, err);
+        // Continue with other migrations
+      }
+    }
+
+    console.log('All migrations processed');
   } catch (error) {
-    console.error('Error running migration directly:', error);
+    console.error('Error running migrations:', error);
     throw error;
   }
   

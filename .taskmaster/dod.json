@@ -1,0 +1,57 @@
+{
+  "enabled": true,
+  "defaultItems": [
+    {
+      "id": "imports-verified",
+      "description": "All imports verified against their source modules"
+    },
+    {
+      "id": "typescript-patterns",
+      "description": "TypeScript-only patterns followed throughout implementation"
+    },
+    {
+      "id": "cli-commands",
+      "description": "CLI commands run without errors after implementation"
+    },
+    {
+      "id": "regression",
+      "description": "No regression in existing functionality"
+    },
+    {
+      "id": "tested",
+      "description": "Code tested with example use cases"
+    }
+  ],
+  "tagItems": {
+    "feature": [
+      {
+        "id": "user-doc",
+        "description": "User documentation updated"
+      },
+      {
+        "id": "tests-added",
+        "description": "Tests added for new functionality"
+      }
+    ],
+    "bug": [
+      {
+        "id": "root-cause",
+        "description": "Root cause identified and documented"
+      },
+      {
+        "id": "regression-test",
+        "description": "Regression test added to prevent recurrence"
+      }
+    ],
+    "refactor": [
+      {
+        "id": "backward-compatible",
+        "description": "Changes maintain backward compatibility"
+      },
+      {
+        "id": "tests-passing",
+        "description": "All existing tests passing"
+      }
+    ]
+  }
+}

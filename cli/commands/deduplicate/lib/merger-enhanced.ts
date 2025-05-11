@@ -2,8 +2,8 @@
  * Enhanced merger functionality with improved UX
  */
 
-import { TaskRepository } from '../../../../core/repo.js';
-import { DuplicateGroup, ColorizeFunction } from './utils.js';
+import { TaskRepository } from '../../../../core/repo.ts';
+import { DuplicateGroup, ColorizeFunction } from './utils.ts';
 import readline from 'readline';
 
 /**
@@ -213,8 +213,12 @@ export async function handleMerge(
       tags: Array.from(allTags),
       metadata: mergedMetadata
     });
-    
-    console.log(colorize(`  ✅ Primary task updated: ${updateResult.id}`, 'green'));
+
+    if (updateResult.success && updateResult.data) {
+      console.log(colorize(`  ✅ Primary task updated: ${updateResult.data.id}`, 'green'));
+    } else {
+      console.log(colorize(`  ❌ Error updating primary task: ${updateResult.error?.message || 'Unknown error'}`, 'red'));
+    }
     
     // Ask what to do with secondary tasks
     console.log(colorize('\n● STEP 4: SECONDARY TASKS', 'blue', 'bold'));

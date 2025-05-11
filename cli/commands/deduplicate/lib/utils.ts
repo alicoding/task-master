@@ -1,16 +1,10 @@
-import { Task } from '../../../../db/schema.js';
-import chalk from 'chalk';
-
-/**
- * Types for chalk colors and styles
- */
-export type ChalkColor = 'red' | 'green' | 'blue' | 'yellow' | 'magenta' | 'cyan' | 'gray' | 'white';
-export type ChalkStyle = 'bold' | 'italic' | 'underline' | 'dim';
+import { Task } from '../../../../db/schema.ts';
+import { ChalkColor, ChalkStyle, colorize } from '../../../utils/chalk-utils.ts';
 
 /**
  * Type for colorize function
  */
-export type ColorizeFunction = (text: string, color?: string, style?: string) => string;
+export type ColorizeFunction = (text: string, color?: ChalkColor, style?: ChalkStyle) => string;
 
 /**
  * Options for processing duplicates
@@ -37,17 +31,9 @@ export interface DuplicateGroup {
  * Create a colorize function for consistent output styling
  */
 export function createColorize(useColors: boolean, jsonOutput: boolean): ColorizeFunction {
-  return function colorize(text: string, color?: string, style?: string): string {
+  return function colorizeText(text: string, color?: ChalkColor, style?: ChalkStyle): string {
     if (!useColors || jsonOutput) return text;
-    
-    let result = text;
-    if (color && (chalk as any)[color]) {
-      result = (chalk as any)[color](result);
-    }
-    if (style && (chalk as any)[style]) {
-      result = (chalk as any)[style](result);
-    }
-    return result;
+    return colorize(text, color, style);
   };
 }
 

@@ -1,8 +1,8 @@
 import readline from 'readline';
-import { TaskRepository } from '../../../../core/repo.js';
-import { DuplicateGroup, ColorizeFunction } from './utils.js';
-import { handleMerge } from './merger.js';
-import { displayDetailedGroupView, displayInteractiveHelp } from './formatter.js';
+import { TaskRepository } from '../../../../core/repo.ts';
+import { DuplicateGroup, ColorizeFunction } from './utils.ts';
+import { handleMerge } from './merger.ts';
+import { displayDetailedGroupView, displayInteractiveHelp } from './formatter.ts';
 
 /**
  * Run interactive mode

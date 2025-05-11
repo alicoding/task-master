@@ -4,23 +4,23 @@
  */
 
 // Export context and command-related classes
-export * from './context.js';
-export * from './command.js';
+export * from './context.ts';
+export * from './command.ts';
 
 // Export command handlers
-export * from './handlers/index.js';
+export * from './handlers/index.ts';
 
 // Export the API service and router
-export { ApiService } from './service-new.js';
-export { ApiRouter } from './router-new.js';
+export { ApiService } from './service-new.ts';
+export { ApiRouter } from './router-new.ts';
 
 // Export types
-export * from './types.js';
+export * from './types.ts';
 
 // Import the command registry and initialize it
-import { commandRegistry } from './command.js';
-import { initCommandRegistry } from './handlers/index.js';
-import { BatchHandler } from './handlers/batch-handler.js';
+import { commandRegistry } from './command.ts';
+import { initCommandRegistry } from './handlers/index.ts';
+import { BatchHandler } from './handlers/batch-handler.ts';
 
 // Initialize the command registry
 initCommandRegistry();

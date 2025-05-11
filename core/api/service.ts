@@ -3,9 +3,9 @@
  * @deprecated Use service-new.ts instead which uses the command architecture
  */
 
-import { TaskRepository } from '../repo.js';
-import { TaskGraph } from '../graph.js';
-import { Task, TaskWithChildren } from '../types.js';
+import { TaskRepository } from '../repo.ts';
+import { TaskGraph } from '../graph.ts';
+import { Task, TaskWithChildren } from '../types.ts';
 import {
   Operation,
   BatchOperations,
@@ -13,9 +13,9 @@ import {
   ExportResult,
   ImportResult,
   OperationResult
-} from './types.js';
+} from './types.ts';
 
-import { ApiService as NewApiService } from './service-new.js';
+import { ApiService as NewApiService } from './service-new.ts';
 
 /**
  * ApiService provides a centralized service for accessing Task Master functionality

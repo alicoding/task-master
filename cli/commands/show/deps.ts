@@ -4,10 +4,10 @@
  */
 
 import { Command } from 'commander';
-import { TaskRepository } from '../../../core/repo.js';
-import { TaskGraph } from '../../../core/graph.js';
-import { OutputFormat } from '../../../core/types.js';
-import { TaskWithChildren } from '../../../core/types.js';
+import { TaskRepository } from '../../../core/repo.ts';
+import { TaskGraph } from '../../../core/graph.ts';
+import { OutputFormat } from '../../../core/types.ts';
+import { TaskWithChildren } from '../../../core/types.ts';
 
 export async function createDepsCommand() {
   const depsCommand = new Command('deps')
@@ -24,7 +24,7 @@ export async function createDepsCommand() {
 
   // Import helpFormatter here to avoid circular dependency
   // Using dynamic import instead of require for ESM compatibility
-  const helpFormatterModule = await import('../../helpers/help-formatter.js');
+  const helpFormatterModule = await import('../../helpers/help-formatter.ts');
   const helpFormatter = helpFormatterModule.helpFormatter;
 
   // Enhance help with examples and additional information

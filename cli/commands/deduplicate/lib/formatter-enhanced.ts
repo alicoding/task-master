@@ -2,7 +2,7 @@
  * Enhanced formatter for deduplication with improved visual presentation
  */
 
-import { DuplicateGroup, ColorizeFunction } from './utils.js';
+import { DuplicateGroup, ColorizeFunction } from './utils.ts';
 
 /**
  * Display duplicate groups with improved visual formatting

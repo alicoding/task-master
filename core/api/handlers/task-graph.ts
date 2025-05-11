@@ -3,8 +3,8 @@
  * Visualizes task hierarchy in various formats
  */
 
-import { BaseCommandHandler, CommandParams } from '../command.js';
-import { CommandContext } from '../context.js';
+import { BaseCommandHandler, CommandParams } from '../command.ts';
+import { CommandContext } from '../context.ts';
 
 /**
  * Parameters for graph visualization

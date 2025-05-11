@@ -3,12 +3,12 @@
  * Uses any OpenAI API-compatible endpoint (like LLaMA.cpp server, LocalAI, etc.)
  */
 
-import { OpenAiProvider } from './openai-provider.js';
+import { OpenAiProvider } from './openai-provider.ts';
 import {
   OpenAiConfig,
   CompletionOptions,
   CompletionResult
-} from './types.js';
+} from './types.ts';
 
 /**
  * Configuration for custom OpenAI-compatible providers

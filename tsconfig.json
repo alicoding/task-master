@@ -9,7 +9,20 @@
     "skipLibCheck": true,
     "outDir": "dist",
     "sourceMap": true,
-    "declaration": true
+    "declaration": true,
+    "allowImportingTsExtensions": true,
+    "emitDeclarationOnly": false,
+    "noEmit": true,
+    // Add support for .ts extensions in imports
+    "baseUrl": ".",
+    "paths": {
+      "*": ["*"]
+    }
+  },
+  "ts-node": {
+    "transpileOnly": true,
+    "esm": true,
+    "experimentalSpecifierResolution": "node"
   },
   "include": ["**/*.ts"],
   "exclude": ["node_modules", "dist"]

@@ -1,12 +1,12 @@
 import { Command } from 'commander';
-import { TaskRepository } from '../../../core/repo.js';
-import { NlpService } from '../../../core/nlp-service.js';
-import { helpFormatter } from '../../helpers/help-formatter.js';
-import { createColorize, getEmptyResultsMessage, getNoTasksMessage, formatJsonOutput } from './lib/utils.js';
-import { findDuplicateGroups } from './lib/finder.js';
-import { displayDuplicateGroups } from './lib/formatter-enhanced.js';
-import { runInteractiveMode, runAutoMergeSuggestions } from './lib/interactive-enhanced.js';
-import { processTasks } from './lib/processor.js';
+import { TaskRepository } from '../../../core/repo.ts';
+import { NlpService } from '../../../core/nlp-service.ts';
+import { helpFormatter } from '../../helpers/help-formatter.ts';
+import { createColorize, getEmptyResultsMessage, getNoTasksMessage, formatJsonOutput } from './lib/utils.ts';
+import { findDuplicateGroups } from './lib/finder.ts';
+import { displayDuplicateGroups } from './lib/formatter-enhanced.ts';
+import { runInteractiveMode, runAutoMergeSuggestions } from './lib/interactive-enhanced.ts';
+import { processTasks } from './lib/processor.ts';
 
 /**
  * Define the deduplicate command options

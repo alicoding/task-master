@@ -1,8 +1,8 @@
-import { TaskRepository } from '../../../../core/repo.js';
-import { NlpService } from '../../../../core/nlp-service.js';
+import { TaskRepository } from '../../../../core/repo.ts';
+import { NlpService } from '../../../../core/nlp-service.ts';
 import readline from 'readline';
-import { ProcessingOptions, TriageResults, colorizeStatus, colorizeReadiness, ChalkColor, ChalkStyle } from './utils.js';
-import { TaskReadiness, TaskStatus } from '../../../../core/types.js';
+import { ProcessingOptions, TriageResults, colorizeStatus, colorizeReadiness, ChalkColor, ChalkStyle } from './utils.ts';
+import { TaskReadiness, TaskStatus } from '../../../../core/types.ts';
 
 /**
  * Run interactive triage mode

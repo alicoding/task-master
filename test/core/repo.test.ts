@@ -1,11 +1,12 @@
 import { test } from 'uvu';
 import * as assert from 'uvu/assert';
-import { TaskRepository } from '../../core/repo.js';
-import { TaskInsertOptions, TaskUpdateOptions } from '../../core/types.js';
+import { TaskRepository } from '../../core/repo.ts';
+import { TaskInsertOptions, TaskUpdateOptions } from '../../core/types.ts';
+import { createTestRepository } from './test-helpers.ts';
 
 test('TaskRepository - create and get tasks', async () => {
-  // Create repo with in-memory DB for testing and use legacy mode
-  const repo = new TaskRepository('./test.db', true, true);
+  // Create repo with in-memory DB for testing with proper schema
+  const repo = createTestRepository();
   
   // Create a root-level task
   const taskOptions: TaskInsertOptions = {
@@ -62,8 +63,8 @@ test('TaskRepository - create and get tasks', async () => {
 });
 
 test('TaskRepository - update tasks', async () => {
-  // Create repo with in-memory DB for testing and use legacy mode
-  const repo = new TaskRepository('./test.db', true, true);
+  // Create repo with in-memory DB for testing with proper schema
+  const repo = createTestRepository();
   
   // Create a task
   const taskOptions: TaskInsertOptions = {
@@ -95,8 +96,8 @@ test('TaskRepository - update tasks', async () => {
 });
 
 test('TaskRepository - remove tasks', async () => {
-  // Create repo with in-memory DB for testing and use legacy mode
-  const repo = new TaskRepository('./test.db', true, true);
+  // Create repo with in-memory DB for testing with proper schema
+  const repo = createTestRepository();
   
   // Create a task
   const taskOptions: TaskInsertOptions = {
@@ -122,8 +123,8 @@ test('TaskRepository - remove tasks', async () => {
 });
 
 test('TaskRepository - search tasks', async () => {
-  // Create repo with in-memory DB for testing and use legacy mode
-  const repo = new TaskRepository('./test.db', true, true);
+  // Create repo with in-memory DB for testing with proper schema
+  const repo = createTestRepository();
   
   // Create task 1
   await repo.createTask({

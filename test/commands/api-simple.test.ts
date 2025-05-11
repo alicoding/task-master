@@ -1,7 +1,7 @@
 import { test } from 'uvu';
 import * as assert from 'uvu/assert';
-import { TaskRepository } from '../../core/repo.js';
-import { createApiCommand } from '../../cli/commands/api/index.js';
+import { TaskRepository } from '../../core/repo.ts';
+import { createApiCommand } from '../../cli/commands/api/index.ts';
 
 test('API Command - basic functionality', async () => {
   // Create repo with in-memory DB for testing

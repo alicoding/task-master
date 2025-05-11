@@ -4,33 +4,33 @@
  */
 
 // Re-export all handlers
-export * from './task-add.js';
-export * from './task-update.js';
-export * from './task-remove.js';
-export * from './task-search.js';
-export * from './task-show.js';
-export * from './task-graph.js';
-export * from './task-deps.js';
-export * from './batch-handler.js';
-export * from './task-merge.js';
-export * from './task-metadata.js';
+export * from './task-add.ts';
+export * from './task-update.ts';
+export * from './task-remove.ts';
+export * from './task-search.ts';
+export * from './task-show.ts';
+export * from './task-graph.ts';
+export * from './task-deps.ts';
+export * from './batch-handler.ts';
+export * from './task-merge.ts';
+export * from './task-metadata.ts';
 
-import { commandRegistry, CommandHandler } from '../command.js';
-import { AddTaskHandler } from './task-add.js';
-import { UpdateTaskHandler } from './task-update.js';
-import { RemoveTaskHandler } from './task-remove.js';
-import { SearchTaskHandler } from './task-search.js';
-import { ShowTaskHandler } from './task-show.js';
-import { GraphTaskHandler } from './task-graph.js';
-import { DepsTaskHandler } from './task-deps.js';
-import { BatchHandler } from './batch-handler.js';
-import { MergeTaskHandler } from './task-merge.js';
+import { commandRegistry, CommandHandler } from '../command.ts';
+import { AddTaskHandler } from './task-add.ts';
+import { UpdateTaskHandler } from './task-update.ts';
+import { RemoveTaskHandler } from './task-remove.ts';
+import { SearchTaskHandler } from './task-search.ts';
+import { ShowTaskHandler } from './task-show.ts';
+import { GraphTaskHandler } from './task-graph.ts';
+import { DepsTaskHandler } from './task-deps.ts';
+import { BatchHandler } from './batch-handler.ts';
+import { MergeTaskHandler } from './task-merge.ts';
 import { 
   GetMetadataHandler, 
   SetMetadataHandler, 
   RemoveMetadataHandler, 
   AppendMetadataHandler 
-} from './task-metadata.js';
+} from './task-metadata.ts';
 
 /**
  * Register all command handlers in the registry

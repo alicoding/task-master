@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { Command } from 'commander';
-import { createTriageCommand } from './commands/triage/index.js';
-import { helpFormatter } from './helpers/help-formatter.js';
+import { createTriageCommand } from './commands/triage/index.ts';
+import { helpFormatter } from './helpers/help-formatter.ts';
 
 // This is a simplified entry point that only includes the triage command
 // to avoid dependency issues with the NLP libraries

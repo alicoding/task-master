@@ -1,12 +1,12 @@
 import { Command } from 'commander';
-import { TaskRepository } from '../../../core/repo.js';
-import { TaskGraph } from '../../../core/graph.js';
-import { NlpService } from '../../../core/nlp-service-mock.js';
+import { TaskRepository } from '../../../core/repo.ts';
+import { TaskGraph } from '../../../core/graph.ts';
+import { NlpService } from '../../../core/nlp-service-mock.ts';
 import fs from 'fs/promises';
-import { helpFormatter } from '../../helpers/help-formatter.js';
-import { processPlanWithEnhancedUI } from './lib/processor-enhanced.js';
-import { runInteractiveMode } from './lib/interactive-enhanced.js';
-import { createEmptyResults, createColorize, ProcessingOptions, TriageResults, TriageTask } from './lib/utils.js';
+import { helpFormatter } from '../../helpers/help-formatter.ts';
+import { processPlanWithEnhancedUI } from './lib/processor-enhanced.ts';
+import { runInteractiveMode } from './lib/interactive-enhanced.ts';
+import { createEmptyResults, createColorize, ProcessingOptions, TriageResults, TriageTask } from './lib/utils.ts';
 
 /**
  * Define the triage command options type
@@ -300,4 +300,4 @@ function outputResults(
 }
 
 // Import necessary types
-import { ChalkColor, ChalkStyle } from './lib/utils.js';
+import { ChalkColor, ChalkStyle } from './lib/utils.ts';

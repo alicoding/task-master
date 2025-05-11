@@ -3,7 +3,7 @@
  * This demonstrates how to use the API client for external integrations
  */
 
-import { ApiClient } from '../core/api/index.js';
+import { ApiClient } from '../core/api/index.ts';
 
 async function main() {
   console.log('Task Master API Client Example');

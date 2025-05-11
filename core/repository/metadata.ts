@@ -1,4 +1,4 @@
-import { BaseTaskRepository } from './base.js';
+import { BaseTaskRepository } from './base.ts';
 
 /**
  * Metadata functionality for the TaskRepository
@@ -13,15 +13,17 @@ export class TaskMetadataRepository extends BaseTaskRepository {
    * @returns Updated task or undefined if not found
    */
   async updateMetadata(
-    taskId: string, 
-    key: string, 
-    value: any, 
+    taskId: string,
+    key: string,
+    value: any,
     operation: 'set' | 'remove' | 'append' = 'set'
   ) {
-    const task = await this.getTask(taskId);
-    if (!task) {
+    const taskResult = await this.getTask(taskId);
+    if (!taskResult.success || !taskResult.data) {
       return undefined;
     }
+
+    const task = taskResult.data;
     
     // Clone the existing metadata
     const metadata = { ...task.metadata };
@@ -63,18 +65,42 @@ export class TaskMetadataRepository extends BaseTaskRepository {
    * @returns Metadata object or undefined if task not found
    */
   async getMetadata(taskId: string) {
-    const task = await this.getTask(taskId);
-    return task?.metadata;
+    const taskResult = await this.getTask(taskId);
+    if (!taskResult.success) {
+      return undefined;
+    }
+    return taskResult.data?.metadata || {};
   }
   
   /**
    * Get a specific metadata field
    * @param taskId Task ID
-   * @param key Metadata field key
+   * @param key Metadata field key (supports dot notation for nested fields)
    * @returns Field value or undefined if not found
    */
   async getMetadataField(taskId: string, key: string) {
-    const task = await this.getTask(taskId);
-    return task?.metadata?.[key];
+    const taskResult = await this.getTask(taskId);
+    if (!taskResult.success) {
+      return undefined;
+    }
+
+    // Handle nested field access with dot notation
+    if (key.includes('.')) {
+      const parts = key.split('.');
+      let value = taskResult.data?.metadata;
+
+      // Navigate through the nested structure
+      for (const part of parts) {
+        if (value === undefined || value === null) {
+          return undefined;
+        }
+        value = value[part];
+      }
+
+      return value;
+    }
+
+    // Simple field access
+    return taskResult.data?.metadata?.[key];
   }
 }

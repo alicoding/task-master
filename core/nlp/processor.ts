@@ -2,9 +2,9 @@
  * Processor module for NLP service
  * Handles processing queries and calculating similarity
  */
-import { NlpManager } from 'node-nlp-typescript';
-import { ProcessedQuery, ExtractedSearchFilters } from './types.js';
-import { ENTITY_TERMS_TO_REMOVE } from './entities.js';
+import { NlpManager } from '../nlp-mock/index.ts';
+import { ProcessedQuery, ExtractedSearchFilters } from './types.ts';
+import { ENTITY_TERMS_TO_REMOVE } from './entities.ts';
 
 /**
  * Process a search query to extract intents and entities
@@ -20,30 +20,34 @@ export async function processQuery(
   tokenizer: any,
   stemmer: any
 ): Promise<ProcessedQuery> {
+  // Handle null/undefined inputs
+  if (query == null) query = '';
+  if (typeof query !== 'string') query = String(query);
+
   // Normalize the query
   const normalizedQuery = query.toLowerCase().trim();
   
-  // Tokenize the query
-  const tokens = tokenizer.tokenize(normalizedQuery);
-  
-  // Get stems for each token
+  // Tokenize the query with fallback
+  const tokens = tokenizer?.tokenize ? tokenizer.tokenize(normalizedQuery) : normalizedQuery.split(/\s+/);
+
+  // Get stems for each token with fallback
   const stems = tokens
     .filter(token => token.length > 2)
-    .map(token => stemmer.stem(token));
+    .map(token => stemmer?.stem ? stemmer.stem(token) : token.toLowerCase());
   
   // Process the query with NLP manager
   const result = await nlpManager.process('en', normalizedQuery);
   
-  // Extract entities by type
+  // Extract entities by type with safety check
   const entities: Record<string, string[]> = {};
-  for (const entity of result.entities) {
+  for (const entity of result?.entities || []) {
     const type = entity.entity;
     entities[type] = entities[type] || [];
     entities[type].push(entity.option);
   }
-  
-  // Extract intents
-  const intents = result.intents
+
+  // Extract intents with safety check
+  const intents = (result?.intents || [])
     .filter(intent => intent.score > 0.3)
     .map(intent => ({
       name: intent.intent,
@@ -76,6 +80,12 @@ export async function calculateSimilarity(
   stemmer: any,
   nlpManager: NlpManager
 ): Promise<number> {
+  // Handle null/undefined inputs
+  if (text1 == null) text1 = '';
+  if (text2 == null) text2 = '';
+  if (typeof text1 !== 'string') text1 = String(text1);
+  if (typeof text2 !== 'string') text2 = String(text2);
+
   // Normalize texts
   const norm1 = text1.toLowerCase().trim();
   const norm2 = text2.toLowerCase().trim();
@@ -86,18 +96,18 @@ export async function calculateSimilarity(
   // If identical, similarity is 1
   if (norm1 === norm2) return 1;
   
-  // Tokenize both texts
-  const tokens1 = tokenizer.tokenize(norm1);
-  const tokens2 = tokenizer.tokenize(norm2);
+  // Tokenize both texts with fallback
+  const tokens1 = tokenizer?.tokenize ? tokenizer.tokenize(norm1) : norm1.split(/\s+/);
+  const tokens2 = tokenizer?.tokenize ? tokenizer.tokenize(norm2) : norm2.split(/\s+/);
   
-  // Get stems for both texts
+  // Get stems for both texts with fallback
   const stems1 = tokens1
     .filter(token => token.length > 2)
-    .map(token => stemmer.stem(token));
-  
+    .map(token => stemmer?.stem ? stemmer.stem(token) : token.toLowerCase());
+
   const stems2 = tokens2
     .filter(token => token.length > 2)
-    .map(token => stemmer.stem(token));
+    .map(token => stemmer?.stem ? stemmer.stem(token) : token.toLowerCase());
   
   // Calculate Jaccard similarity on stems
   const intersection = stems1.filter(stem => stems2.includes(stem));
@@ -109,10 +119,10 @@ export async function calculateSimilarity(
   // Process both texts with NLP manager to get cosine similarity
   const result1 = await nlpManager.process('en', norm1);
   const result2 = await nlpManager.process('en', norm2);
-  
-  // Extract intents and compare
-  const intents1 = result1.intents.map(intent => intent.intent);
-  const intents2 = result2.intents.map(intent => intent.intent);
+
+  // Extract intents and compare - ensure they exist
+  const intents1 = result1?.intents?.map(intent => intent.intent) || [];
+  const intents2 = result2?.intents?.map(intent => intent.intent) || [];
   
   // Calculate intent similarity (if any intents were found)
   let intentSimilarity = 0;
@@ -142,6 +152,10 @@ export async function extractSearchFilters(
   tokenizer: any,
   stemmer: any
 ): Promise<ExtractedSearchFilters> {
+  // Handle null/undefined inputs
+  if (query == null) query = '';
+  if (typeof query !== 'string') query = String(query);
+
   // Process the query
   const processed = await processQuery(query, nlpManager, tokenizer, stemmer);
   

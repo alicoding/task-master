@@ -3,4 +3,4 @@
  * Re-exports the TaskGraph class from the modular structure
  */
 
-export { TaskGraph } from './graph/index.js';
+export { TaskGraph } from './graph/index.ts';

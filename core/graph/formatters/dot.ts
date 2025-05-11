@@ -2,7 +2,7 @@
  * DOT format generator for task graph visualization
  */
 
-import { TaskWithChildren } from '../../types.js';
+import { TaskWithChildren } from '../../types.ts';
 
 /**
  * Format tasks in DOT format for Graphviz

@@ -1,5 +1,5 @@
 import chalk from 'chalk';
-import { TaskReadiness, TaskStatus } from '../../../../core/types.js';
+import { TaskReadiness, TaskStatus } from '../../../../core/types.ts';
 
 // Define allowed color and style types
 export type ChalkColor = 'blue' | 'yellow' | 'green' | 'red' | 'magenta' | 'cyan' | 'gray' | 'white';

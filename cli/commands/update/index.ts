@@ -1,21 +1,26 @@
 import { Command } from 'commander';
-import { TaskRepository } from '../../../core/repo.js';
-import { TaskUpdateOptions, OutputFormat } from '../../../core/types.js';
+import { TaskRepository } from '../../../core/repo.ts';
+import { TaskUpdateOptions, OutputFormat } from '../../../core/types.ts';
 import fs from 'fs/promises';
-import { createBatchUpdateCommand } from './batch.js';
-import { helpFormatter } from '../../helpers/help-formatter.js';
+import { createBatchUpdateCommand } from './batch.ts';
+import { helpFormatter } from '../../helpers/help-formatter.ts';
+import { InteractiveUpdateForm } from './interactive-form.ts';
 
 export async function createUpdateCommand() {
   const updateCommand = new Command('update')
     .description('Update tasks')
     .option('--id <id>', 'Task ID to update')
     .option('--title <title>', 'New task title')
+    .option('--description <description>', 'Short description of the task')
+    .option('--body <body>', 'Detailed task body/content')
     .option('--status <status>', 'New task status (todo, in-progress, done)')
     .option('--readiness <readiness>', 'New task readiness (draft, ready, blocked)')
     .option('--tags <tags...>', 'New task tags')
     .option('--metadata <json>', 'JSON string with metadata to add/update (PATCH-style)')
     .option('--format <format>', 'Output format (text, json)', 'text')
+    .option('--interactive', 'Use interactive mode for updating task')
     .option('--dry-run', 'Show what would be updated without making changes')
+    // --force option removed as DoD is now informational only
 
   // Enhance help with examples and additional information
   helpFormatter.enhanceHelp(updateCommand, {
@@ -78,35 +83,55 @@ export async function createUpdateCommand() {
             format
           });
         } else if (options.id) {
-          // Single task update
-          const updateOptions: TaskUpdateOptions = {
-            id: options.id
-          };
-          
-          if (options.title) updateOptions.title = options.title;
-          if (options.status) updateOptions.status = options.status;
-          if (options.readiness) updateOptions.readiness = options.readiness;
-          if (options.tags) updateOptions.tags = options.tags;
-          
-          // Handle metadata from command line
-          if (options.metadata) {
-            try {
-              updateOptions.metadata = JSON.parse(options.metadata);
-            } catch (e) {
-              console.error('Invalid JSON for metadata:', e);
-              repo.close();
-              return;
-            }
-          }
-          
-          // Get the current task for dry run or displaying changes
+          // Get the current task for updating
           const originalTask = await repo.getTask(options.id);
           if (!originalTask) {
             console.error(`Task with ID ${options.id} not found`);
             repo.close();
             return;
           }
-          
+
+          let updateOptions: TaskUpdateOptions;
+
+          // Check if interactive mode is enabled
+          if (options.interactive) {
+            // Use interactive form for update
+            const form = new InteractiveUpdateForm(originalTask, repo, true);
+            const formResult = await form.run();
+
+            // If user cancelled, exit
+            if (!formResult) {
+              repo.close();
+              return;
+            }
+
+            updateOptions = formResult;
+          } else {
+            // Regular command line update
+            updateOptions = {
+              id: options.id
+            };
+
+            if (options.title) updateOptions.title = options.title;
+            if (options.description !== undefined) updateOptions.description = options.description;
+            if (options.body !== undefined) updateOptions.body = options.body;
+            if (options.status) updateOptions.status = options.status;
+            if (options.readiness) updateOptions.readiness = options.readiness;
+            if (options.tags) updateOptions.tags = options.tags;
+
+            // Handle metadata from command line
+            if (options.metadata) {
+              try {
+                updateOptions.metadata = JSON.parse(options.metadata);
+              } catch (e) {
+                console.error('Invalid JSON for metadata:', e);
+                repo.close();
+                return;
+              }
+            }
+          }
+
+          // Handle dry run mode
           if (dryRun) {
             console.log(`Would update task ${options.id}:`);
             console.log('- Current:', JSON.stringify(originalTask, null, 2));
@@ -114,19 +139,48 @@ export async function createUpdateCommand() {
             repo.close();
             return;
           }
-          
-          const task = await repo.updateTask(updateOptions);
-          
+
+          // DoD requirements are now purely informational and don't require verification
+
+          const result = await repo.updateTask(updateOptions);
+
+          if (!result.success || !result.data) {
+            console.error(`Failed to update task: ${result.error?.message || 'Unknown error'}`);
+            repo.close();
+            return;
+          }
+
+          const task = result.data;
+
           if (format === 'json') {
             console.log(JSON.stringify(task, null, 2));
           } else {
-            console.log(`Task ${task.id} updated successfully`);
-            console.log(`Title: ${task.title}`);
-            console.log(`Status: ${task.status}`);
-            console.log(`Readiness: ${task.readiness}`);
-            console.log(`Tags: ${task.tags.join(', ') || 'none'}`);
+            const chalk = (await import('chalk')).default;
+            console.log(chalk.green.bold(`\n✅ Task ${task.id} updated successfully!`));
+            console.log(chalk.bold.white(`${task.title}`));
+
+            if (task.description !== undefined && task.description !== null) {
+              console.log(`\n${chalk.cyan('Description:')}\n${task.description}`);
+            }
+
+            if (task.body !== undefined && task.body !== null) {
+              console.log(`\n${chalk.cyan('Details:')}\n${task.body}`);
+            }
+
+            console.log(`\n${chalk.yellow('Status:')} ${task.status}`);
+            console.log(`${chalk.yellow('Readiness:')} ${task.readiness}`);
+
+            if (task.tags && task.tags.length > 0) {
+              console.log(`${chalk.yellow('Tags:')} ${task.tags.map(tag => chalk.green(`#${tag}`)).join(' ')}`);
+            } else {
+              console.log(`${chalk.yellow('Tags:')} none`);
+            }
+
+            console.log(`\n${chalk.gray('Created:')} ${new Date(task.createdAt).toLocaleString()}`);
+            console.log(`${chalk.gray('Updated:')} ${new Date(task.updatedAt).toLocaleString()}`);
+
             if (Object.keys(task.metadata || {}).length > 0) {
-              console.log(`Metadata: ${JSON.stringify(task.metadata, null, 2)}`);
+              console.log(`\n${chalk.gray('Metadata:')}\n${JSON.stringify(task.metadata, null, 2)}`);
             }
           }
         } else {

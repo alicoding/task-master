@@ -1,5 +1,5 @@
-import { TaskRepository } from '../../../../core/repo.js';
-import { DuplicateGroup, ColorizeFunction } from './utils.js';
+import { TaskRepository } from '../../../../core/repo.ts';
+import { DuplicateGroup, ColorizeFunction } from './utils.ts';
 import readline from 'readline';
 
 /**
@@ -181,7 +181,11 @@ export async function handleMerge(
     }
     
     console.log(colorize('\n✅ Merge completed successfully!', 'green', 'bold'));
-    console.log(`Primary task ${updateResult.id} now contains merged data.`);
+    if (updateResult.success && updateResult.data) {
+      console.log(`Primary task ${updateResult.data.id} now contains merged data.`);
+    } else {
+      console.log(`Primary task update completed with issues.`);
+    }
   } catch (error) {
     console.error('Error during merge:', error);
     console.log(colorize('Merge failed. See error details above.', 'red'));

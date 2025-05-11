@@ -1,7 +1,7 @@
 import { Command } from 'commander';
 import fs from 'fs/promises';
-import { helpFormatter } from '../../../helpers/help-formatter.js';
-import { ApiService } from '../../../../core/api/service.js';
+import { helpFormatter } from '../../../helpers/help-formatter.ts';
+import { ApiService } from '../../../../core/api/service.ts';
 
 /**
  * Create the export command

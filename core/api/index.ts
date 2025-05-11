@@ -1,6 +1,6 @@
-export * from './types.js';
-export { ApiService } from './service.js';
-export { ApiClient } from './client.js';
+export * from './types.ts';
+export { ApiService } from './service.ts';
+export { ApiClient } from './client.ts';
 
 // Re-export for convenience
-export { default as ApiRouter } from './router.js';
+export { default as ApiRouter } from './router.ts';

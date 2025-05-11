@@ -1,10 +1,10 @@
-import { BaseAiProvider } from './base-provider.js';
+import { BaseAiProvider } from './base-provider.ts';
 import {
   MockAiConfig,
   CompletionOptions,
   CompletionResult,
   TaskOperationType
-} from './types.js';
+} from './types.ts';
 
 /**
  * Mock AI provider for testing

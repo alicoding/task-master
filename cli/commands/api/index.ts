@@ -1,8 +1,8 @@
 import { Command } from 'commander';
-import { createExportCommand } from './commands/export.js';
-import { createImportCommand } from './commands/import.js';
-import { createBatchCommand } from './commands/batch.js';
-import { helpFormatter } from '../../helpers/help-formatter.js';
+import { createExportCommand } from './commands/export.ts';
+import { createImportCommand } from './commands/import.ts';
+import { createBatchCommand } from './commands/batch.ts';
+import { helpFormatter } from '../../helpers/help-formatter.ts';
 
 /**
  * Create the API command

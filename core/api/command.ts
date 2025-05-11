@@ -3,7 +3,7 @@
  * Provides a standard interface for executing commands via CLI or API
  */
 
-import { CommandContext, CommandResponse, ExecutionOptions } from './context.js';
+import { CommandContext, CommandResponse, ExecutionOptions } from './context.ts';
 
 /**
  * Base interface for command parameters

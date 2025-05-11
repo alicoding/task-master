@@ -11,7 +11,7 @@ import {
   AnthropicProvider,
   CustomOpenAiProvider,
   MockAiProvider
-} from '../core/ai/index.js';
+} from '../core/ai/index.ts';
 
 // Create a simple task for demo purposes
 const demoTask = {

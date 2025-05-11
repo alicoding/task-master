@@ -3,9 +3,9 @@
  * Searches for tasks based on various criteria
  */
 
-import { BaseCommandHandler, CommandParams } from '../command.js';
-import { CommandContext } from '../context.js';
-import { Task } from '../../types.js';
+import { BaseCommandHandler, CommandParams } from '../command.ts';
+import { CommandContext } from '../context.ts';
+import { Task } from '../../types.ts';
 
 /**
  * Parameters for searching tasks

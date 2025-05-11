@@ -4,19 +4,19 @@
  */
 
 // Export types
-export * from './types.js';
+export * from './types.ts';
 
 // Export base provider
-export { BaseAiProvider } from './base-provider.js';
+export { BaseAiProvider } from './base-provider.ts';
 
 // Export concrete providers
-export { OpenAiProvider } from './openai-provider.js';
-export { AnthropicProvider } from './anthropic-provider.js';
-export { CustomOpenAiProvider } from './custom-openai-provider.js';
-export { MockAiProvider } from './mock-provider.js';
+export { OpenAiProvider } from './openai-provider.ts';
+export { AnthropicProvider } from './anthropic-provider.ts';
+export { CustomOpenAiProvider } from './custom-openai-provider.ts';
+export { MockAiProvider } from './mock-provider.ts';
 
 // Export factory
-export { AiProviderFactory, ExtendedProviderType } from './factory.js';
+export { AiProviderFactory, ExtendedProviderType } from './factory.ts';
 
 // Export operations
-export { TaskOperations } from './operations.js';
+export { TaskOperations } from './operations.ts';

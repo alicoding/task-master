@@ -1,7 +1,7 @@
 import { test } from 'uvu';
 import * as assert from 'uvu/assert';
-import { TaskRepository } from '../../core/repo.js';
-import { createMetadataCommand } from '../../cli/commands/metadata/index.js';
+import { TaskRepository } from '../../core/repo.ts';
+import { createMetadataCommand } from '../../cli/commands/metadata/index.ts';
 
 test('Metadata Command - basic functionality', async () => {
   // Create repo with in-memory DB for testing

@@ -1,8 +1,8 @@
-import { AiProvider, AiConfig, AiProviderType } from './types.js';
-import { OpenAiProvider } from './openai-provider.js';
-import { AnthropicProvider } from './anthropic-provider.js';
-import { CustomOpenAiProvider } from './custom-openai-provider.js';
-import { MockAiProvider } from './mock-provider.js';
+import { AiProvider, AiConfig, AiProviderType } from './types.ts';
+import { OpenAiProvider } from './openai-provider.ts';
+import { AnthropicProvider } from './anthropic-provider.ts';
+import { CustomOpenAiProvider } from './custom-openai-provider.ts';
+import { MockAiProvider } from './mock-provider.ts';
 
 /**
  * Extended provider types

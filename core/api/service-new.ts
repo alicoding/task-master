@@ -3,10 +3,10 @@
  * Provides a unified service for accessing TaskMaster functionality
  */
 
-import { commandRegistry } from './command.js';
-import { CommandContext, InputSource, OutputMode } from './context.js';
-import { initCommandRegistry } from './handlers/index.js';
-import { BatchHandler } from './handlers/batch-handler.js';
+import { commandRegistry } from './command.ts';
+import { CommandContext, InputSource, OutputMode } from './context.ts';
+import { initCommandRegistry } from './handlers/index.ts';
+import { BatchHandler } from './handlers/batch-handler.ts';
 
 // Add the batch handler to the registry
 commandRegistry.register(new BatchHandler());

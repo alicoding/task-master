@@ -1,8 +1,8 @@
-import { TaskRepository } from '../../../../core/repo.js';
-import { NlpService } from '../../../../core/nlp-service.js';
-import { Task } from '../../../../db/schema.js';
-import { ColorizeFunction } from './utils.js';
-import { findDuplicateGroups } from './finder.js';
+import { TaskRepository } from '../../../../core/repo.ts';
+import { NlpService } from '../../../../core/nlp-service.ts';
+import { Task } from '../../../../db/schema.ts';
+import { ColorizeFunction } from './utils.ts';
+import { findDuplicateGroups } from './finder.ts';
 
 /**
  * Process tasks and find duplicates
@@ -16,19 +16,26 @@ export async function processTasks(
   }
 ) {
   // Get all tasks
-  let allTasks = await repo.getAllTasks();
-  
+  const tasksResult = await repo.getAllTasks();
+
+  // Handle the operation result pattern
+  if (!tasksResult.success || !tasksResult.data) {
+    return [];
+  }
+
+  let allTasks = tasksResult.data;
+
   // Apply filters if provided
   if (options.status) {
     allTasks = allTasks.filter(task => task.status === options.status);
   }
-  
+
   if (options.tag && options.tag.length > 0) {
-    allTasks = allTasks.filter(task => 
+    allTasks = allTasks.filter(task =>
       options.tag!.some(tag => task.tags.includes(tag))
     );
   }
-  
+
   return allTasks;
 }
 
@@ -51,7 +58,7 @@ export async function processAutoMerge(
   console.log(colorize(`\nAuto-merge suggestions for ${highSimilarityGroups.length} groups:\n`, 'blue', 'bold'));
   
   // Import here to avoid circular dependencies
-  const { suggestMerge } = await import('./merger.js');
+  const { suggestMerge } = await import('./merger.ts');
   
   for (let i = 0; i < highSimilarityGroups.length; i++) {
     const group = highSimilarityGroups[i];

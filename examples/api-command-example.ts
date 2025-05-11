@@ -3,10 +3,10 @@
  * This shows how to use the API to execute commands programmatically
  */
 
-import { ApiService } from '../core/api/index-new.js';
-import { CommandContext, InputSource, OutputMode } from '../core/api/context.js';
-import { commandRegistry } from '../core/api/command.js';
-import { initCommandRegistry } from '../core/api/handlers/index.js';
+import { ApiService } from '../core/api/index-new.ts';
+import { CommandContext, InputSource, OutputMode } from '../core/api/context.ts';
+import { commandRegistry } from '../core/api/command.ts';
+import { initCommandRegistry } from '../core/api/handlers/index.ts';
 
 // Initialize command registry
 initCommandRegistry();

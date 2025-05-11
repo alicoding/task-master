@@ -5,38 +5,23 @@
 
 import { Command } from 'commander';
 import readline from 'readline';
-import chalk from 'chalk';
-import { helpFormatter } from '../../helpers/help-formatter.js';
-import { commandRegistry } from '../../../core/api/command.js';
-import { CommandContext, InputSource, OutputMode } from '../../../core/api/context.js';
-import { AddTaskParams } from '../../../core/api/handlers/task-add.js';
-import { TaskInsertOptions, OutputFormat } from '../../../core/types.js';
-import { TaskRepository } from '../../../core/repo.js';
+import { helpFormatter } from '../../helpers/help-formatter.ts';
+import { commandRegistry } from '../../../core/api/command.ts';
+import { CommandContext, InputSource, OutputMode } from '../../../core/api/context.ts';
+import { AddTaskParams } from '../../../core/api/handlers/task-add.ts';
+import { TaskInsertOptions, OutputFormat } from '../../../core/types.ts';
+import { TaskRepository } from '../../../core/repo.ts';
+import { InteractiveTaskForm } from './interactive-form.ts';
+import { ChalkColor, ChalkStyle, createColorize } from '../../utils/chalk-utils.ts';
 
 /**
  * UI helper for displaying and handling similar tasks
  */
 class SimilarTasksUI {
-  private useColors: boolean;
-  
+  private colorize: (text: string, color?: ChalkColor, style?: ChalkStyle) => string;
+
   constructor(useColors: boolean = true) {
-    this.useColors = useColors;
-  }
-  
-  /**
-   * Color helper function
-   */
-  colorize(text: string, color?: string, style?: string): string {
-    if (!this.useColors) return text;
-    
-    let result = text;
-    if (color && chalk[color]) {
-      result = chalk[color](result);
-    }
-    if (style && chalk[style]) {
-      result = chalk[style](result);
-    }
-    return result;
+    this.colorize = createColorize(useColors);
   }
   
   /**
@@ -169,20 +154,32 @@ class SimilarTasksUI {
    */
   displayTaskResult(task: any, operation: string = 'created'): void {
     console.log(this.colorize(`\n✅ Task ${task.id} ${operation} successfully!`, 'green', 'bold'));
-    console.log(`Title: ${task.title}`);
-    console.log(`Status: ${task.status}`);
-    console.log(`Readiness: ${task.readiness}`);
-    
+    console.log(this.colorize(`${task.title}`, 'white', 'bold'));
+
+    if (task.description !== undefined && task.description !== null) {
+      console.log(`\n${this.colorize('Description:', 'blue')} ${task.description}`);
+    }
+
+    if (task.body !== undefined && task.body !== null) {
+      console.log(`\n${this.colorize('Details:', 'blue')}\n${task.body}`);
+    }
+
+    console.log(`\n${this.colorize('Status:', 'yellow')} ${task.status}`);
+    console.log(`${this.colorize('Readiness:', 'yellow')} ${task.readiness}`);
+
     if (task.tags && task.tags.length > 0) {
-      console.log(`Tags: ${task.tags.join(', ')}`);
+      console.log(`${this.colorize('Tags:', 'yellow')} ${task.tags.map((tag: string) => this.colorize(`#${tag}`, 'green')).join(' ')}`);
     }
-    
+
     if (task.parentId) {
-      console.log(`Parent: ${task.parentId}`);
+      console.log(`${this.colorize('Parent:', 'yellow')} ${task.parentId}`);
     }
-    
+
+    console.log(`\n${this.colorize('Created:', 'gray')} ${new Date(task.createdAt).toLocaleString()}`);
+    console.log(`${this.colorize('Updated:', 'gray')} ${new Date(task.updatedAt).toLocaleString()}`);
+
     if (task.metadata && Object.keys(task.metadata).length > 0) {
-      console.log('Metadata:', JSON.stringify(task.metadata, null, 2));
+      console.log(`\n${this.colorize('Metadata:', 'gray')}\n${JSON.stringify(task.metadata, null, 2)}`);
     }
   }
   
@@ -237,8 +234,16 @@ export class AddCommandHandler {
     }
     
     // Check for similar tasks
-    const similarTasks = await this.repo.findSimilarTasks(options.title);
-    
+    const similarTasksResult = await this.repo.findSimilarTasks(options.title);
+
+    // Handle result from new TaskOperationResult pattern
+    let similarTasks = [];
+    if (similarTasksResult.success && similarTasksResult.data) {
+      similarTasks = similarTasksResult.data;
+    } else {
+      console.warn("Warning: Could not check for similar tasks");
+    }
+
     // Filter by threshold
     const filteredTasks = similarTasks.filter(task => {
       const score = task.metadata?.similarityScore || 0;
@@ -341,9 +346,14 @@ export class AddCommandHandler {
                 tags: combinedTags,
                 metadata: mergedMetadata
               });
-              
-              this.ui.displayTaskResult(updateResult, 'merged');
-              return updateResult;
+
+              // Handle result from new TaskOperationResult pattern
+              if (!updateResult.success || !updateResult.data) {
+                throw new Error(`Failed to merge task: ${updateResult.error?.message || 'Unknown error'}`);
+              }
+
+              this.ui.displayTaskResult(updateResult.data, 'merged');
+              return updateResult.data;
             } else {
               // Update operation - just update the existing task
               console.log(this.ui.colorize(`\nUpdating task ${taskToUpdate.id}...`, 'yellow'));
@@ -357,9 +367,14 @@ export class AddCommandHandler {
                 tags: options.tags,
                 metadata
               });
-              
-              this.ui.displayTaskResult(updateResult, 'updated');
-              return updateResult;
+
+              // Handle result from new TaskOperationResult pattern
+              if (!updateResult.success || !updateResult.data) {
+                throw new Error(`Failed to update task: ${updateResult.error?.message || 'Unknown error'}`);
+              }
+
+              this.ui.displayTaskResult(updateResult.data, 'updated');
+              return updateResult.data;
             }
           }
           // If 'a' or anything else, continue with task creation
@@ -376,6 +391,8 @@ export class AddCommandHandler {
     // Create task options
     const taskOptions: TaskInsertOptions = {
       title: options.title,
+      description: options.description,
+      body: options.body,
       status: options.status,
       readiness: options.readiness,
       tags: options.tags,
@@ -385,15 +402,48 @@ export class AddCommandHandler {
     };
     
     // Create the task
-    const task = await this.repo.createTask(taskOptions);
-    
+    const taskResult = await this.repo.createTask(taskOptions);
+
+    // Handle result from new TaskOperationResult pattern
+    if (!taskResult.success || !taskResult.data) {
+      throw new Error(`Failed to create task: ${taskResult.error?.message || 'Unknown error'}`);
+    }
+
+    const task = taskResult.data;
+
+    // Handle DoD options
+    if (options.dod !== undefined) {
+      try {
+        const { DoDManager } = await import('../../../core/dod/manager.ts');
+        const dodManager = new DoDManager();
+
+        // Set DoD enabled state based on options
+        if (options.dod === false) {
+          // User explicitly disabled DoD with --no-dod
+          await dodManager.setTaskDoDEnabled(task.id, false);
+        } else {
+          // Enable DoD and add items if provided
+          await dodManager.setTaskDoDEnabled(task.id, true);
+
+          // Add DoD items if specified
+          if (Array.isArray(options.dod) && options.dod.length > 0) {
+            for (const item of options.dod) {
+              await dodManager.addTaskDoDItem(task.id, item);
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Warning: Failed to set up Definition of Done:', error);
+      }
+    }
+
     // Display results based on output format
     if (format === 'json') {
       console.log(JSON.stringify(task, null, 2));
     } else {
       this.ui.displayTaskResult(task);
     }
-    
+
     return task;
   }
 }
@@ -405,6 +455,8 @@ export function createAddCommand() {
   const addCommand = new Command('add')
     .description('Add a new task')
     .requiredOption('--title <string>', 'Task title')
+    .option('--description <string>', 'Short description of the task')
+    .option('--body <string>', 'Detailed task body/content')
     .option('--child-of <id>', 'Make this task a child of the specified task ID')
     .option('--after <id>', 'Add this task after the specified task ID')
     .option('--status <status>', 'Task status (todo, in-progress, done)')
@@ -415,7 +467,10 @@ export function createAddCommand() {
     .option('--force', 'Skip similarity check and confirmation')
     .option('--dry-run', 'Check for similarities without creating the task')
     .option('--no-color', 'Disable colored output')
-    .option('--similarity-threshold <number>', 'Similarity threshold (0-100)', '30');
+    .option('--interactive', 'Use interactive mode for task creation')
+    .option('--similarity-threshold <number>', 'Similarity threshold (0-100)', '30')
+    .option('--dod <items...>', 'Definition of Done items to add to the task')
+    .option('--no-dod', 'Disable Definition of Done for this task');
 
   // Enhance help with examples and additional information
   helpFormatter.enhanceHelp(addCommand, {
@@ -456,6 +511,42 @@ export function createAddCommand() {
   // Execute the command using the command handler
   addCommand.action(async (options) => {
     try {
+      // Check if interactive mode is enabled
+      if (options.interactive) {
+        // Use the interactive form
+        const form = new InteractiveTaskForm(options.color !== false);
+        const taskOptions = await form.run();
+
+        // If the user cancelled, exit without creating a task
+        if (!taskOptions) {
+          return;
+        }
+
+        // Merge form input with command line options (form takes precedence)
+        const mergedOptions = {
+          ...options,
+          ...taskOptions,
+          // These flags should always come from command line
+          format: options.format,
+          force: options.force,
+          dryRun: options.dryRun,
+          color: options.color,
+          similarityThreshold: options.similarityThreshold
+        };
+
+        // Proceed with task creation using the merged options
+        const repo = new TaskRepository();
+        const handler = new AddCommandHandler(repo, options.color !== false);
+
+        try {
+          await handler.handleAddCommand(mergedOptions);
+        } finally {
+          repo.close();
+        }
+
+        return;
+      }
+
       // Option 1: Use the CommandRegistry and API architecture
       if (commandRegistry.has('add')) {
         // Create context for command execution
@@ -464,39 +555,45 @@ export function createAddCommand() {
           source: InputSource.Cli,
           dryRun: options.dryRun
         });
-        
+
         // Prepare parameters for the command handler
         const params: AddTaskParams = {
           title: options.title,
+          description: options.description,
+          body: options.body,
           childOf: options.childOf,
           status: options.status,
           readiness: options.readiness,
           tags: options.tags,
           metadata: options.metadata
         };
-        
+
         // Add CLI-specific options
         const cliOptions = {
           force: options.force,
           similarityThreshold: options.similarityThreshold,
           color: options.color
         };
-        
+
         // Merge parameters for command execution
         const commandParams = { ...params, ...cliOptions };
-        
+
         // Execute the command through the registry
         const handler = commandRegistry.get('add');
-        await handler.execute(context, commandParams);
-        
+        if (handler) {
+          await handler.execute(context, commandParams);
+        } else {
+          throw new Error('Add command handler not found in registry');
+        }
+
         // Clean up
         context.close();
-      } 
+      }
       // Option 2: Direct implementation (fallback)
       else {
         const repo = new TaskRepository();
         const handler = new AddCommandHandler(repo, options.color !== false);
-        
+
         try {
           await handler.handleAddCommand(options);
         } finally {

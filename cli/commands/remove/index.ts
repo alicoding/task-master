@@ -1,9 +1,9 @@
 import { Command } from 'commander';
-import { TaskRepository } from '../../../core/repo.js';
-import { TaskGraph } from '../../../core/graph.js';
-import { OutputFormat } from '../../../core/types.js';
+import { TaskRepository } from '../../../core/repo.ts';
+import { TaskGraph } from '../../../core/graph.ts';
+import { OutputFormat } from '../../../core/types.ts';
 import readline from 'readline';
-import { helpFormatter } from '../../helpers/help-formatter.js';
+import { helpFormatter } from '../../helpers/help-formatter.ts';
 
 export function createRemoveCommand() {
   const removeCommand = new Command('remove')

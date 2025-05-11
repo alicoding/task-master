@@ -3,17 +3,17 @@
  */
 
 import { Command } from 'commander';
-import { TaskRepository } from '../../../core/repo.js';
-import { OutputFormat } from '../../../core/types.js';
-import { helpFormatter } from '../../helpers/help-formatter.js';
-import { commandRegistry } from '../../../core/api/command.js';
-import { CommandContext, InputSource, OutputMode } from '../../../core/api/context.js';
+import { TaskRepository } from '../../../core/repo.ts';
+import { OutputFormat } from '../../../core/types.ts';
+import { helpFormatter } from '../../helpers/help-formatter.ts';
+import { commandRegistry } from '../../../core/api/command.ts';
+import { CommandContext, InputSource, OutputMode } from '../../../core/api/context.ts';
 import { 
   SetMetadataParams,
   RemoveMetadataParams,
   GetMetadataParams,
   MetadataResult
-} from '../../../core/api/handlers/task-metadata.js';
+} from '../../../core/api/handlers/task-metadata.ts';
 
 /**
  * Helper class for metadata value parsing

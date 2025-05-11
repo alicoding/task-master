@@ -4,8 +4,8 @@
  */
 
 import { Command } from 'commander';
-import { TaskRepository } from '../../../core/repo.js';
-import { TaskUpdateOptions } from '../../../core/types.js';
+import { TaskRepository } from '../../../core/repo.ts';
+import { TaskUpdateOptions } from '../../../core/types.ts';
 import fs from 'fs/promises';
 
 export async function createBatchUpdateCommand() {
@@ -18,7 +18,7 @@ export async function createBatchUpdateCommand() {
 
   // Import helpFormatter here to avoid circular dependency
   // Using dynamic import instead of require for ESM compatibility
-  const helpFormatterModule = await import('../../helpers/help-formatter.js');
+  const helpFormatterModule = await import('../../helpers/help-formatter.ts');
   const helpFormatter = helpFormatterModule.helpFormatter;
 
   // Enhance help with examples and additional information

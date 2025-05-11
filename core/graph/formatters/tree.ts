@@ -2,7 +2,7 @@
  * Tree text formatter for task graph visualization
  */
 
-import { TaskWithChildren } from '../../types.js';
+import { TaskWithChildren } from '../../types.ts';
 
 /**
  * Get status symbol for visual display

@@ -4,10 +4,12 @@
  */
 
 import { Command } from 'commander';
-import { AiProviderFactory } from '../../../core/ai/factory.js';
-import { TaskOperations } from '../../../core/ai/operations.js';
-import { TaskRepository } from '../../../core/repo.js';
-import { helpFormatter } from '../../helpers/help-formatter.js';
+import { AiProviderFactory } from '../../../core/ai/factory.ts';
+import { TaskOperations } from '../../../core/ai/operations.ts';
+import { TaskRepository } from '../../../core/repo.ts';
+import { helpFormatter } from '../../helpers/help-formatter.ts';
+import { TaskOperationResult } from '../../../core/types.ts';
+import { Task } from '../../../db/schema.ts';
 
 /**
  * Create the AI command
@@ -18,7 +20,7 @@ export function createAiCommand() {
     .option('--provider <type>', 'AI provider to use (openai, anthropic, custom-openai, mock)', process.env.AI_PROVIDER_TYPE || 'mock')
     .option('--model <model>', 'Model to use with the AI provider', process.env.AI_MODEL)
     .option('--debug', 'Enable debug mode for AI operations', process.env.AI_DEBUG === 'true');
-  
+
   // Enhance help with examples and additional information
   helpFormatter.enhanceHelp(aiCommand, {
     description: 'Use AI to enhance your task management workflow with features like task generation, prioritization, subtask creation, tagging, and analysis.',
@@ -65,7 +67,7 @@ export function createAiCommand() {
     ],
     seeAlso: ['add', 'update', 'search']
   });
-  
+
   // Register AI subcommands
   aiCommand
     .command('test-connection')
@@ -76,16 +78,16 @@ export function createAiCommand() {
       const provider = parentOptions.provider || 'mock';
       const model = parentOptions.model;
       const debug = parentOptions.debug || false;
-      
+
       console.log(`Testing connection to ${provider} provider...`);
-      
+
       try {
         // Create the provider based on the specified type
         const aiProvider = createProvider(provider, model, debug);
-        
+
         // Test connection
         const success = await AiProviderFactory.testConnection(aiProvider);
-        
+
         if (success) {
           console.log(`✅ Successfully connected to ${aiProvider.getName()}`);
         } else {
@@ -94,11 +96,11 @@ export function createAiCommand() {
           process.exit(1);
         }
       } catch (error) {
-        console.error(`❌ Error testing connection: ${error.message}`);
+        console.error(`❌ Error testing connection: ${error instanceof Error ? error.message : String(error)}`);
         process.exit(1);
       }
     });
-  
+
   aiCommand
     .command('generate-subtasks')
     .description('Generate subtasks for a task')
@@ -111,36 +113,37 @@ export function createAiCommand() {
       const provider = parentOptions.provider || 'mock';
       const model = parentOptions.model;
       const debug = parentOptions.debug || false;
-      
+
       try {
         // Get the task from the repository
         const repo = new TaskRepository();
-        const task = await repo.getTask(options.id);
-        
-        if (!task) {
-          console.error(`Task ${options.id} not found`);
+        const taskResult = await repo.getTask(options.id);
+
+        if (!taskResult.success || !taskResult.data) {
+          console.error(`Task ${options.id} not found: ${taskResult.error?.message || 'Unknown error'}`);
           repo.close();
           process.exit(1);
         }
-        
+
+        const task = taskResult.data;
         console.log(`Generating subtasks for: ${task.id} - ${task.title}...`);
-        
+
         // Create the AI provider and operations
         const aiProvider = createProvider(provider, model, debug);
         await aiProvider.initialize();
-        
+
         const operations = new TaskOperations(aiProvider);
-        
+
         // Generate subtasks
         const count = parseInt(options.count);
         const result = await operations.generateSubtasks(task, { count });
-        
+
         console.log('\nSuggested subtasks:');
-        
+
         // Create subtasks in the repository
-        const createdTasks = [];
+        const createdTasks: Task[] = [];
         for (const subtaskTitle of result.subtasks) {
-          const subtask = await repo.createTask({
+          const subtaskResult = await repo.createTask({
             title: subtaskTitle,
             status: 'todo',
             readiness: 'draft',
@@ -148,19 +151,23 @@ export function createAiCommand() {
             tags: [...(task.tags || [])],
             metadata: { generatedBy: 'ai' }
           });
-          
-          createdTasks.push(subtask);
-          console.log(`- ${subtask.id}: ${subtask.title}`);
+
+          if (subtaskResult.success && subtaskResult.data) {
+            createdTasks.push(subtaskResult.data);
+            console.log(`- ${subtaskResult.data.id}: ${subtaskResult.data.title}`);
+          } else {
+            console.error(`  Failed to create subtask "${subtaskTitle}": ${subtaskResult.error?.message || 'Unknown error'}`);
+          }
         }
-        
+
         console.log(`\n✅ Created ${createdTasks.length} subtasks for task ${task.id}`);
         repo.close();
       } catch (error) {
-        console.error(`❌ Error generating subtasks: ${error.message}`);
+        console.error(`❌ Error generating subtasks: ${error instanceof Error ? error.message : 'Unknown error'}`);
         process.exit(1);
       }
     });
-  
+
   aiCommand
     .command('suggest-tags')
     .description('Suggest tags for a task')
@@ -172,56 +179,61 @@ export function createAiCommand() {
       const provider = parentOptions.provider || 'mock';
       const model = parentOptions.model;
       const debug = parentOptions.debug || false;
-      
+
       try {
         // Get the task from the repository
         const repo = new TaskRepository();
-        const task = await repo.getTask(options.id);
-        
-        if (!task) {
-          console.error(`Task ${options.id} not found`);
+        const taskResult = await repo.getTask(options.id);
+
+        if (!taskResult.success || !taskResult.data) {
+          console.error(`Task ${options.id} not found: ${taskResult.error?.message || 'Unknown error'}`);
           repo.close();
           process.exit(1);
         }
-        
+
+        const task = taskResult.data;
         console.log(`Suggesting tags for: ${task.id} - ${task.title}...`);
-        
+
         // Create the AI provider and operations
         const aiProvider = createProvider(provider, model, debug);
         await aiProvider.initialize();
-        
+
         const operations = new TaskOperations(aiProvider);
-        
+
         // Suggest tags
         const result = await operations.suggestTags(task);
-        
+
         console.log('\nSuggested tags:');
         for (const tag of result.tags) {
           console.log(`- ${tag}`);
         }
-        
+
         // Apply tags if requested
         if (options.apply && result.tags.length > 0) {
           // Combine existing and new tags, removing duplicates
           const existingTags = task.tags || [];
           const allTags = [...new Set([...existingTags, ...result.tags])];
-          
+
           // Update the task
-          await repo.updateTask({
+          const updateResult = await repo.updateTask({
             id: task.id,
             tags: allTags
           });
-          
-          console.log(`\n✅ Applied ${result.tags.length} tags to task ${task.id}`);
+
+          if (updateResult.success) {
+            console.log(`\n✅ Applied ${result.tags.length} tags to task ${task.id}`);
+          } else {
+            console.error(`\n❌ Failed to apply tags: ${updateResult.error?.message || 'Unknown error'}`);
+          }
         }
-        
+
         repo.close();
       } catch (error) {
-        console.error(`❌ Error suggesting tags: ${error.message}`);
+        console.error(`❌ Error suggesting tags: ${error instanceof Error ? error.message : 'Unknown error'}`);
         process.exit(1);
       }
     });
-  
+
   aiCommand
     .command('analyze')
     .description('Analyze a task')
@@ -232,52 +244,53 @@ export function createAiCommand() {
       const provider = parentOptions.provider || 'mock';
       const model = parentOptions.model;
       const debug = parentOptions.debug || false;
-      
+
       try {
         // Get the task from the repository
         const repo = new TaskRepository();
-        const task = await repo.getTask(options.id);
-        
-        if (!task) {
-          console.error(`Task ${options.id} not found`);
+        const taskResult = await repo.getTask(options.id);
+
+        if (!taskResult.success || !taskResult.data) {
+          console.error(`Task ${options.id} not found: ${taskResult.error?.message || 'Unknown error'}`);
           repo.close();
           process.exit(1);
         }
-        
+
+        const task = taskResult.data;
         console.log(`Analyzing task: ${task.id} - ${task.title}...`);
-        
+
         // Create the AI provider and operations
         const aiProvider = createProvider(provider, model, debug);
         await aiProvider.initialize();
-        
+
         const operations = new TaskOperations(aiProvider);
-        
+
         // Analyze task
         const result = await operations.analyzeTask(task);
-        
+
         console.log('\nAnalysis:');
-        
+
         // Display structured analysis if available
         if (result.analysis && Object.keys(result.analysis).length > 0) {
           for (const [key, value] of Object.entries(result.analysis)) {
             // Convert key from camelCase to Title Case
             const formattedKey = key.replace(/([A-Z])/g, ' $1')
               .replace(/^./, str => str.toUpperCase());
-            
+
             console.log(`- ${formattedKey}: ${value}`);
           }
         } else {
           // Display raw analysis
           console.log(result.raw);
         }
-        
+
         repo.close();
       } catch (error) {
-        console.error(`❌ Error analyzing task: ${error.message}`);
+        console.error(`❌ Error analyzing task: ${error instanceof Error ? error.message : 'Unknown error'}`);
         process.exit(1);
       }
     });
-  
+
   aiCommand
     .command('prioritize')
     .description('AI-powered prioritization of tasks')
@@ -289,19 +302,27 @@ export function createAiCommand() {
       const provider = parentOptions.provider || 'mock';
       const model = parentOptions.model;
       const debug = parentOptions.debug || false;
-      
+
       try {
         // Get tasks from the repository
         const repo = new TaskRepository();
-        let tasks = await repo.getAllTasks();
-        
+        const tasksResult = await repo.getAllTasks();
+
+        if (!tasksResult.success || !tasksResult.data) {
+          console.error(`Failed to retrieve tasks: ${tasksResult.error?.message || 'Unknown error'}`);
+          repo.close();
+          process.exit(1);
+        }
+
+        let tasks = tasksResult.data;
+
         // Apply filter if provided
         if (options.filter) {
           console.log(`Filtering tasks with: ${options.filter}`);
-          
+
           // Parse filter (simple implementation)
           const [key, value] = options.filter.split(':');
-          
+
           if (key && value) {
             if (key === 'tag') {
               tasks = tasks.filter(task => (task.tags || []).includes(value));
@@ -312,60 +333,64 @@ export function createAiCommand() {
             }
           }
         }
-        
+
         if (tasks.length === 0) {
           console.log('No tasks to prioritize');
           repo.close();
           return;
         }
-        
+
         console.log(`Prioritizing ${tasks.length} tasks...`);
-        
+
         // Create the AI provider and operations
         const aiProvider = createProvider(provider, model, debug);
         await aiProvider.initialize();
-        
+
         const operations = new TaskOperations(aiProvider);
-        
+
         // Prioritize tasks
         const result = await operations.prioritizeTasks(tasks);
-        
+
         console.log('\nPriorities:');
-        
+
         // Display and potentially apply priorities
         for (const [id, priority] of Object.entries(result.priorities)) {
           const task = tasks.find(t => t.id === id);
           if (task) {
             console.log(`- ${task.id}: ${task.title} - ${priority}`);
-            
+
             // Apply priority as a tag if requested
             if (options.apply) {
               const existingTags = task.tags || [];
               const priorityTag = `priority:${priority}`;
-              
+
               // Remove any existing priority tags
-              const filteredTags = existingTags.filter(tag => !tag.startsWith('priority:'));
-              
+              const filteredTags = existingTags.filter((tag: string) => !tag.startsWith('priority:'));
+
               // Add the new priority tag
-              await repo.updateTask({
+              const updateResult = await repo.updateTask({
                 id: task.id,
                 tags: [...filteredTags, priorityTag]
               });
+
+              if (!updateResult.success) {
+                console.error(`  Failed to apply priority tag to task ${task.id}: ${updateResult.error?.message || 'Unknown error'}`);
+              }
             }
           }
         }
-        
+
         if (options.apply) {
           console.log(`\n✅ Applied priorities as tags to ${Object.keys(result.priorities).length} tasks`);
         }
-        
+
         repo.close();
       } catch (error) {
-        console.error(`❌ Error prioritizing tasks: ${error.message}`);
+        console.error(`❌ Error prioritizing tasks: ${error instanceof Error ? error.message : 'Unknown error'}`);
         process.exit(1);
       }
     });
-  
+
   aiCommand
     .command('generate-tasks')
     .description('Generate tasks from text description')
@@ -378,47 +403,51 @@ export function createAiCommand() {
       const provider = parentOptions.provider || 'mock';
       const model = parentOptions.model;
       const debug = parentOptions.debug || false;
-      
+
       try {
         const description = options.fromText;
         console.log(`Generating tasks from description: "${description}"...`);
-        
+
         // Create the AI provider and operations
         const aiProvider = createProvider(provider, model, debug);
         await aiProvider.initialize();
-        
+
         const operations = new TaskOperations(aiProvider);
-        
+
         // Generate tasks
         const result = await operations.generateTasksFromDescription(description);
-        
+
         console.log('\nGenerated tasks:');
-        
+
         // Create tasks if requested
         if (options.create) {
           const repo = new TaskRepository();
-          const createdTasks = [];
-          
+          const createdTasks: Task[] = [];
+
           for (const taskData of result.tasks) {
-            const task = await repo.createTask({
+            const taskResult = await repo.createTask({
               title: taskData.title,
-              status: taskData.status || 'todo',
-              readiness: taskData.readiness || 'draft',
+              status: (taskData.status as 'todo' | 'in-progress' | 'done') || 'todo',
+              readiness: (taskData.readiness as 'draft' | 'ready' | 'blocked') || 'draft',
               childOf: options.parentId,
               tags: taskData.tags || [],
-              metadata: { 
+              metadata: {
                 generatedBy: 'ai',
                 description: taskData.description
               }
             });
-            
-            createdTasks.push(task);
-            console.log(`- ${task.id}: ${task.title}`);
-            if (taskData.description) {
-              console.log(`  Description: ${taskData.description}`);
+
+            if (taskResult.success && taskResult.data) {
+              createdTasks.push(taskResult.data);
+              console.log(`- ${taskResult.data.id}: ${taskResult.data.title}`);
+              if (taskData.description) {
+                console.log(`  Description: ${taskData.description}`);
+              }
+            } else {
+              console.error(`  Failed to create task "${taskData.title}": ${taskResult.error?.message || 'Unknown error'}`);
             }
           }
-          
+
           console.log(`\n✅ Created ${createdTasks.length} tasks from description`);
           repo.close();
         } else {
@@ -434,11 +463,11 @@ export function createAiCommand() {
           });
         }
       } catch (error) {
-        console.error(`❌ Error generating tasks: ${error.message}`);
+        console.error(`❌ Error generating tasks: ${error instanceof Error ? error.message : 'Unknown error'}`);
         process.exit(1);
       }
     });
-  
+
   return aiCommand;
 }
 
@@ -451,24 +480,24 @@ function createProvider(type: string, model?: string, debug: boolean = false) {
     case 'openai':
       if (model) process.env.OPENAI_MODEL = model;
       break;
-      
+
     case 'anthropic':
       if (model) process.env.ANTHROPIC_MODEL = model;
       break;
-      
+
     case 'custom-openai':
       if (model) process.env.CUSTOM_OPENAI_MODEL = model;
       break;
   }
-  
+
   // Set global debug flag
   if (debug) {
     process.env.AI_DEBUG = 'true';
   }
-  
+
   // Set provider type
   process.env.AI_PROVIDER_TYPE = type;
-  
+
   // Create the provider from environment
   return AiProviderFactory.createFromEnvironment();
 }

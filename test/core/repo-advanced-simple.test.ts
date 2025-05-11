@@ -1,6 +1,6 @@
 import { test } from 'uvu';
 import * as assert from 'uvu/assert';
-import { TaskRepository } from '../../core/repo.js';
+import { TaskRepository } from '../../core/repo.ts';
 
 test('TaskRepository - advanced functionality', async () => {
   // Create repo with in-memory DB for testing

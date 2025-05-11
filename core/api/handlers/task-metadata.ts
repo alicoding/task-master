@@ -3,9 +3,9 @@
  * Manage metadata fields on tasks
  */
 
-import { BaseCommandHandler, CommandParams } from '../command.js';
-import { CommandContext } from '../context.js';
-import { Task } from '../../types.js';
+import { BaseCommandHandler, CommandParams } from '../command.ts';
+import { CommandContext } from '../context.ts';
+import { Task } from '../../types.ts';
 
 /**
  * Base parameters for metadata operations
@@ -90,7 +90,7 @@ export class GetMetadataHandler extends BaseCommandHandler<GetMetadataParams, Me
     // If a specific field was requested
     if (params.field) {
       const value = await repo.getMetadataField(params.id, params.field);
-      
+
       return {
         task,
         field: params.field,
@@ -100,6 +100,14 @@ export class GetMetadataHandler extends BaseCommandHandler<GetMetadataParams, Me
       };
     }
     
+    // Debug logging
+    console.log('DEBUG - Task object in handler:', {
+      id: task.id,
+      title: task.title,
+      hasMetadata: !!task.metadata,
+      metadataKeys: task.metadata ? Object.keys(task.metadata) : []
+    });
+
     // Return all metadata
     return {
       task,

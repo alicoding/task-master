@@ -1,7 +1,7 @@
 import { test } from 'uvu';
 import * as assert from 'uvu/assert';
-import { TaskRepository } from '../../core/repo.js';
-import { createNextCommand } from '../../cli/commands/next/index.js';
+import { TaskRepository } from '../../core/repo.ts';
+import { createNextCommand } from '../../cli/commands/next/index.ts';
 
 test('Next Command - basic functionality', async () => {
   // Create repo with in-memory DB for testing

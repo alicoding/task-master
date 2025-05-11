@@ -2,8 +2,8 @@
  * Detailed text formatter for task graph visualization
  */
 
-import { TaskWithChildren } from '../../types.js';
-import { getStatusSymbol, getReadinessSymbol } from './tree.js';
+import { TaskWithChildren } from '../../types.ts';
+import { getStatusSymbol, getReadinessSymbol } from './tree.ts';
 
 /**
  * Detailed text format with full information

@@ -1,16 +1,19 @@
-import { BaseTaskRepository } from './base.js';
-import { TaskCreationRepository } from './creation.js';
-import { TaskSearchRepository } from './search.js';
-import { TaskMetadataRepository } from './metadata.js';
-import { TaskHierarchyRepository } from './hierarchy.js';
-import { RepositoryFactory } from './factory.js';
-import { createDb } from '../../db/init.js';
-import { Task } from '../../db/schema.js';
+import { BaseTaskRepository } from './base.ts';
+import { TaskCreationRepository } from './creation.ts';
+import { TaskSearchRepository } from './search.ts';
+import { TaskMetadataRepository } from './metadata.ts';
+import { TaskHierarchyRepository } from './hierarchy.ts';
+import { FileTrackingRepository } from './file-tracking.ts';
+import { RepositoryFactory, createRepository } from './factory.ts';
+import { createDb } from '../../db/init.ts';
+import { Task } from '../../db/schema.ts';
 import {
   TaskInsertOptions,
   TaskUpdateOptions,
-  SearchFilters
-} from '../types.js';
+  SearchFilters,
+  TaskOperationResult
+} from '../types.ts';
+import { EnhancedTaskRepository } from './enhanced.ts';
 
 /**
  * Main TaskRepository class that combines all functionality
@@ -21,22 +24,24 @@ export class TaskRepository implements
   Omit<TaskCreationRepository, 'db' | 'sqlite'>,
   Omit<TaskSearchRepository, 'db' | 'sqlite'>,
   Omit<TaskMetadataRepository, 'db' | 'sqlite'>,
-  Omit<TaskHierarchyRepository, 'db' | 'sqlite'> {
+  Omit<TaskHierarchyRepository, 'db' | 'sqlite'>,
+  Omit<FileTrackingRepository, 'db' | 'sqlite'> {
 
   private baseRepo: BaseTaskRepository;
   private creationRepo: TaskCreationRepository;
   private searchRepo: TaskSearchRepository;
   private metadataRepo: TaskMetadataRepository;
   private hierarchyRepo: TaskHierarchyRepository;
+  private fileTrackingRepo: FileTrackingRepository;
   private legacyMode: boolean;
 
   constructor(dbPath: string = './db/taskmaster.db', inMemory: boolean = false, legacyMode: boolean = false) {
     this.legacyMode = legacyMode;
 
-    // For testing, we'll enable legacy mode by default
-    // This ensures backward compatibility during the transition
-    // Later we can gradually switch to the modern mode
-    const useModernMode = !legacyMode && process.env.USE_MODERN_REPO_MODE === 'true';
+    // Determine which mode to use
+    const useModernMode = !legacyMode && (process.env.USE_MODERN_REPO_MODE === 'true');
+    // Determine if we should use optimizations
+    const useOptimizations = process.env.USE_OPTIMIZED_REPO !== 'false';
 
     if (legacyMode || !useModernMode) {
       // In legacy mode or during transition, use a single connection but don't use the factory
@@ -53,29 +58,47 @@ export class TaskRepository implements
       const db = connection.db;
       const sqlite = connection.sqlite;
 
-      // Share the connection among all repositories
-      this.baseRepo = new BaseTaskRepository(db, sqlite);
+      // Use the enhanced repository if optimizations are enabled
+      if (useOptimizations && !legacyMode) {
+        this.baseRepo = new EnhancedTaskRepository(dbPath, inMemory);
+      } else {
+        this.baseRepo = new BaseTaskRepository(db, sqlite);
+      }
+
+      // Share the connection among specialized repositories
       this.creationRepo = new TaskCreationRepository(db, sqlite);
       this.searchRepo = new TaskSearchRepository(db, sqlite);
       this.metadataRepo = new TaskMetadataRepository(db, sqlite);
       this.hierarchyRepo = new TaskHierarchyRepository(db, sqlite);
+      this.fileTrackingRepo = new FileTrackingRepository(db, sqlite);
     } else {
       // In modern mode, initialize the factory and share connections
       const { db, sqlite } = RepositoryFactory.initialize(dbPath, inMemory);
 
-      // Create repositories with shared connection
-      this.baseRepo = new BaseTaskRepository(db, sqlite);
+      // Use the enhanced repository if optimizations are enabled
+      if (useOptimizations) {
+        this.baseRepo = new EnhancedTaskRepository(dbPath, inMemory);
+      } else {
+        this.baseRepo = new BaseTaskRepository(db, sqlite);
+      }
+
+      // Create specialized repositories with shared connection
       this.creationRepo = new TaskCreationRepository(db, sqlite);
       this.searchRepo = new TaskSearchRepository(db, sqlite);
       this.metadataRepo = new TaskMetadataRepository(db, sqlite);
       this.hierarchyRepo = new TaskHierarchyRepository(db, sqlite);
+      this.fileTrackingRepo = new FileTrackingRepository(db, sqlite);
     }
   }
   
   // Base repository methods
   close() { return this.baseRepo.close(); }
   getTask(id: string) { return this.baseRepo.getTask(id); }
-  getAllTasks() { return this.baseRepo.getAllTasks(); }
+
+  async getAllTasks(): Promise<TaskOperationResult<Task[]>> {
+    return this.baseRepo.getAllTasks();
+  }
+
   updateTask(options: TaskUpdateOptions) { return this.baseRepo.updateTask(options); }
   removeTask(id: string) { return this.baseRepo.removeTask(id); }
   
@@ -109,4 +132,22 @@ export class TaskRepository implements
   reorderRootTasksAfterDeletion(deletedTaskId: string) {
     return this.hierarchyRepo.reorderRootTasksAfterDeletion(deletedTaskId);
   }
+  async getChildTasks(taskId: string): Promise<Task[]> {
+    const result = await this.hierarchyRepo.getChildTasks(taskId);
+    return result.success && result.data ? result.data : [];
+  }
+  
+  // File tracking repository methods
+  trackFile(filePath: string) { return this.fileTrackingRepo.trackFile(filePath); }
+  associateFileWithTask(
+    taskId: string,
+    filePath: string,
+    relationshipType: 'implements' | 'tests' | 'documents' | 'related' = 'related',
+    confidence: number = 100
+  ) { 
+    return this.fileTrackingRepo.associateFileWithTask(taskId, filePath, relationshipType, confidence); 
+  }
+  getFilesForTask(taskId: string) { return this.fileTrackingRepo.getFilesForTask(taskId); }
+  getTasksForFile(filePath: string) { return this.fileTrackingRepo.getTasksForFile(filePath); }
+  getFileChangeHistory(filePath: string) { return this.fileTrackingRepo.getFileChangeHistory(filePath); }
 }

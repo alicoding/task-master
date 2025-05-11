@@ -8,12 +8,21 @@ This document provides comprehensive technical documentation for Task Master, a 
 2. [Core Concepts](#core-concepts)
 3. [Command System](#command-system)
 4. [Repository Pattern](#repository-pattern)
+   - [Repository Structure](#repository-structure)
+   - [Database Schema](#database-schema)
+   - [Performance Optimization](#performance-optimization)
+   - [Migrations](#migrations)
 5. [Graph Visualization](#graph-visualization)
 6. [API Layer](#api-layer)
 7. [NLP Features](#nlp-features)
+   - [Key NLP Components](#key-nlp-components)
+   - [NLP-Enhanced Search](#nlp-enhanced-search)
+   - [Performance Optimization](#performance-optimization)
 8. [AI Integration](#ai-integration)
-9. [Testing](#testing)
-10. [Building and Running](#building-and-running)
+9. [Error Handling](#error-handling)
+10. [Logging System](#logging-system)
+11. [Testing](#testing)
+12. [Building and Running](#building-and-running)
 
 ## Project Structure
 
@@ -121,6 +130,8 @@ The repository is divided into functional areas:
 - `hierarchy.ts`: Hierarchical task relationships
 - `search.ts`: Task search operations
 - `metadata.ts`: Metadata operations
+- `enhanced.ts`: Performance-optimized operations with caching
+- `optimized-operations.ts`: Database caching and batch processing
 
 ### Database Schema
 
@@ -139,6 +150,28 @@ export const tasks = sqliteTable('tasks', {
   metadata: text('metadata').notNull().default('{}')
 });
 ```
+
+### Performance Optimization
+
+Task Master includes advanced database optimization features:
+
+- **In-memory caching** with TTL for frequently accessed data
+- **Intelligent cache invalidation** to maintain data consistency
+- **Batch operations** for multiple task modifications
+- **Optimized queries** to reduce database access
+
+The optimization system is managed through:
+
+- `DatabaseCache`: Singleton cache manager with TTL support
+- `OptimizedDatabaseOperations`: Core operations with caching
+- `EnhancedTaskRepository`: Repository with transparent optimizations
+- `RepositoryFactory`: Factory that creates optimized repositories
+
+Configuration is handled through environment variables:
+- `USE_OPTIMIZED_REPO`: Set to 'false' to disable optimizations
+- `USE_MODERN_REPO_MODE`: Set to 'true' to use the modern repository mode
+
+For more details, see [Database Optimization](DATABASE_OPTIMIZATION.md).
 
 ### Migrations
 
@@ -211,6 +244,7 @@ Task Master includes natural language processing capabilities to enhance search 
 ### Key NLP Components
 
 - `NlpService`: Central service for NLP functionality
+- `OptimizedNlpService`: Performance-optimized implementation with caching
 - Tokenization and stemming for improved text matching
 - Synonym expansion for better search results
 - Fuzzy matching with Levenshtein distance
@@ -224,6 +258,23 @@ The search functionality uses NLP to provide more intelligent results:
 - Finding related terms (synonyms)
 - Handling typos and spelling variations (fuzzy matching)
 - Extracting concepts from natural language queries
+
+### Performance Optimization
+
+The optimized NLP implementation provides significant performance improvements:
+
+- **Caching Layer**: TTL-based caching for query processing, similarity calculations, and filter extraction
+- **Early-Exit Optimizations**: Fast paths for quick rejection of non-matching content
+- **Bulk Processing**: Efficient processing of multiple items at once
+- **Tiered Calculation**: Progressive similarity calculation for better performance
+- **Profiling Utilities**: Performance monitoring and analysis
+
+The optimized implementation can be controlled through environment variables:
+- `TASKMASTER_OPTIMIZED_NLP`: Set to 'false' to disable optimized implementation
+- `TASKMASTER_NLP_PROFILING`: Set to 'true' to enable performance profiling
+- `TASKMASTER_NLP_MODEL_PATH`: Custom path for the NLP model file
+
+For more details, see [NLP Optimization](NLP_OPTIMIZATION.md).
 
 ## AI Integration
 
@@ -253,6 +304,123 @@ export AI_PROVIDER_TYPE=openai
 export OPENAI_API_KEY=your_api_key
 export OPENAI_MODEL=gpt-4
 ```
+
+## Error Handling
+
+Task Master implements a structured error handling system for consistent error reporting and handling across all components.
+
+### Error Types
+
+Errors are managed through the `TaskError` class and `TaskErrorCode` enum:
+
+```typescript
+export class TaskError extends Error {
+  public code: TaskErrorCode;
+
+  constructor(message: string, code: TaskErrorCode) {
+    super(message);
+    this.name = 'TaskError';
+    this.code = code;
+  }
+}
+
+export enum TaskErrorCode {
+  NOT_FOUND = 'NOT_FOUND',
+  INVALID_INPUT = 'INVALID_INPUT',
+  DATABASE_ERROR = 'DATABASE_ERROR',
+  DEPENDENCY_ERROR = 'DEPENDENCY_ERROR',
+  PERMISSION_ERROR = 'PERMISSION_ERROR',
+  GENERAL_ERROR = 'GENERAL_ERROR'
+}
+```
+
+### Result Pattern
+
+Operations return a `TaskOperationResult<T>` that includes success status and error information:
+
+```typescript
+interface TaskOperationResult<T> {
+  success: boolean;
+  data?: T;
+  error?: TaskError;
+}
+```
+
+### Error Propagation
+
+Errors propagate through the system layers:
+
+1. **Repository Layer**: Originates most errors during data operations
+2. **Service Layer**: Adds business logic errors and propagates repository errors
+3. **API Layer**: Maps errors to appropriate HTTP status codes
+4. **CLI Layer**: Presents user-friendly error messages
+
+### Best Practices
+
+When implementing error handling:
+
+- Always check `success` before accessing `data`
+- Use type guards for specific error type handling
+- Wrap operations in try/catch blocks
+- Provide meaningful error messages
+- Use appropriate error codes
+
+For more details on error handling, see [Error Handling](ERROR_HANDLING.md).
+
+## Logging System
+
+Task Master implements a standardized logging system that provides consistent log formatting and behavior across the codebase.
+
+### Logger Components
+
+- `Logger`: Main class for logging with context and configurable log levels
+- `LogLevel`: Enum for log levels (DEBUG, INFO, WARN, ERROR, NONE)
+- `createLogger()`: Factory function to create a logger instance
+- `configureLogger()`: Configure global logging behavior
+
+### Log Format
+
+The standard log format includes:
+- Timestamp
+- Log level (with color coding)
+- Context information
+- Message
+- Optional error details
+- Optional metadata
+
+### Usage Patterns
+
+```typescript
+// Create a logger with context
+const logger = createLogger('ModuleName');
+
+// Basic logging
+logger.info('Operation completed successfully');
+logger.warn('Potential issue detected', { details });
+logger.error('Operation failed', error, { operation: 'save' });
+
+// Child loggers for subsystems
+const subLogger = logger.child('SubOperation');
+subLogger.info('Starting sub-operation');
+```
+
+### Integration with Error Handling
+
+The logging system integrates with the error handling system to provide comprehensive error logs:
+
+```typescript
+try {
+  // Operation
+} catch (error) {
+  logger.error('Failed to perform operation', error, { context });
+  return {
+    success: false,
+    error: new TaskError(error.message, TaskErrorCode.OPERATION_FAILED)
+  };
+}
+```
+
+For more details on the logging system, see [Logging](LOGGING.md).
 
 ## Testing
 
