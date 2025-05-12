@@ -32,8 +32,8 @@ import {
   combineSearchResults
 } from '../matchers/fuzzy-matcher.ts';
 
-// Import the NlpManager from node-nlp-typescript
-import { NlpManager } from 'node-nlp-typescript';
+// Import the ESM-compatible NlpManager
+import { NlpManager } from '../esm-compat/nlp-manager.ts';
 
 /**
  * NLP Service for Task Master

@@ -11,6 +11,7 @@ export * from './simple.ts';
 export * from './tree.ts';
 export * from './detailed.ts';
 export * from './mermaid.ts';
+export * from './enhanced-tree.ts';
 
 // Task view formatters
 export * from './boxed-task.ts';

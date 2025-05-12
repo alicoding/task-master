@@ -20,14 +20,14 @@ const isTestEnvironment = process.env.NODE_ENV === 'test' ||
  * @param options Configuration options for NLP service creation
  * @returns An NLP service implementation
  */
-export function createNlpService(
+export async function createNlpService(
   options: {
     modelPath?: string,
     forceTestSafe?: boolean,
     useOptimized?: boolean,
     enableProfiling?: boolean
   } = {}
-): NlpServiceInterface {
+): Promise<NlpServiceInterface> {
   const {
     modelPath,
     forceTestSafe = false,
@@ -45,16 +45,16 @@ export function createNlpService(
     // Use optimized implementation if requested
     if (useOptimized) {
       try {
-        const { OptimizedNlpService } = require('./services/optimized-nlp-service.ts');
-        return new OptimizedNlpService(modelPath, enableProfiling);
+        const optimizedModule = await import('./services/optimized-nlp-service.ts');
+        return new optimizedModule.OptimizedNlpService(modelPath, enableProfiling);
       } catch (optimizedError) {
         console.warn('Failed to load OptimizedNlpService, falling back to standard NlpService:', optimizedError);
       }
     }
-    
+
     // Standard implementation
-    const { NlpService } = require('./services/nlp-service.ts');
-    return new NlpService(modelPath);
+    const standardModule = await import('./services/nlp-service.ts');
+    return new standardModule.NlpService(modelPath);
   } catch (error) {
     console.warn('Failed to load NlpService, falling back to MockNlpService:', error);
     return new MockNlpService(modelPath || '');
@@ -75,13 +75,13 @@ export function createMockNlpService(): NlpServiceInterface {
  * @param enableProfiling Whether to enable performance profiling
  * @returns An optimized NLP service implementation
  */
-export function createOptimizedNlpService(
+export async function createOptimizedNlpService(
   modelPath?: string,
   enableProfiling: boolean = false
-): NlpServiceInterface {
+): Promise<NlpServiceInterface> {
   try {
-    const { OptimizedNlpService } = require('./services/optimized-nlp-service.ts');
-    return new OptimizedNlpService(modelPath, enableProfiling);
+    const optimizedModule = await import('./services/optimized-nlp-service.ts');
+    return new optimizedModule.OptimizedNlpService(modelPath, enableProfiling);
   } catch (error) {
     console.warn('Failed to load OptimizedNlpService, falling back to MockNlpService:', error);
     return new MockNlpService(modelPath || '');

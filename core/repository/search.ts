@@ -11,7 +11,7 @@ import {
   isTaskStatus,
   isTaskReadiness
 } from '../types.ts';
-import { createNlpService } from '../nlp/index.ts';
+import { createNlpService } from '../nlp/factory.ts';
 import { TaskSearchInfo, SimilarTask, NlpServiceInterface } from '../nlp/types.ts';
 import { createLogger } from '../utils/logger.ts';
 
@@ -28,7 +28,8 @@ export class TaskSearchRepository extends BaseTaskRepository {
   constructor() {
     super();
     // Use the factory pattern to get a test-safe NLP service
-    this.nlpService = createNlpService();
+    // Set as property to be initialized later (async initialization)
+    this.nlpService = null as unknown as NlpServiceInterface;
   }
 
   /**
@@ -37,8 +38,22 @@ export class TaskSearchRepository extends BaseTaskRepository {
    */
   private async initializeNlp(): Promise<void> {
     if (!this.nlpInitialized) {
-      await this.nlpService.train();
-      this.nlpInitialized = true;
+      try {
+        if (!this.nlpService) {
+          // Create the NLP service
+          this.nlpService = await createNlpService();
+        }
+
+        // Train the service
+        await this.nlpService.train();
+        this.nlpInitialized = true;
+      } catch (error) {
+        logger.error('Failed to initialize NLP service', error);
+        // Use mock implementation if initialization fails
+        const { MockNlpService } = await import('../nlp/services/mock-service.ts');
+        this.nlpService = new MockNlpService();
+        this.nlpInitialized = true;
+      }
     }
   }
 

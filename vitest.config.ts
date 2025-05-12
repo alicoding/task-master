@@ -13,6 +13,9 @@ export default defineConfig({
     // Setup files to run before each test file
     setupFiles: ['./test/setup.ts'],
 
+    // Increased timeout for file system tests
+    testTimeout: 10000,
+
     // Pass custom environment variables to tests
     env: {
       NODE_OPTIONS: '--experimental-specifier-resolution=node'

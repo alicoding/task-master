@@ -1,245 +1,194 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides essential guidance for Claude Code when working with the Task Master CLI project.
+
+## CRITICAL PROJECT REQUIREMENTS
+
+- **YOU MUST USE TypeScript-only implementation with `.ts` extensions in all imports**
+- **NEVER use `.js` extensions in any import statements** 
+- **All code must maintain strict type safety throughout the codebase**
+- **Use ESM module system exclusively**
+
+## Project Structure
+
+- Core functionality in `src/core/`
+- CLI commands in `src/cli/commands/`
+- Repository pattern for database access
+- Task graph implementation in `src/graph/`
+- NLP utilities in `src/nlp/`
+- API endpoints in `src/api/`
 
 ## Project Commands
 - Build: `npm run build` - Compiles TypeScript to JavaScript
 - Dev: `npm run dev -- [command]` - Runs the CLI with live TS compilation
-- Test: `npm run test` - Runs all tests
+- Test: `npm run test` - Runs all tests (uses Vitest)
 - Single test: `npm run test test/core/repo.test.ts` - Run specific test file
-- Database: 
-  - Init: `npm run db:init` - Initialize database
+- Database operations: 
+  - Init: `npm run db:init` - Initialize SQLite database
   - Migrate: `npm run db:migrate` - Apply migrations
 
-## Task Tracking - Dogfooding
-- Use Task Master to track implementation work: `npm run dev -- add "Task description"`
-- Update task status as you make progress: `npm run dev -- update --id <task-id> --status in-progress`
-- Mark tasks complete when done: `npm run dev -- update --id <task-id> --status done`
-- Show current tasks: `npm run dev -- show`
-- Check task graph: `npm run dev -- show --graph`
-- Associate code files with tasks as you work on them: `npm run dev -- daemon associate <task-id> <file-path>`
-- Before marking a task complete, verify the Definition of Done requirements
+## Task Master Features
+- Task graph with parent-child relationships backed by SQLite
+- Task-code relationship tracking through daemon
+- Hierarchical task structures
+- Status tracking and integrated analysis
+- Definition of Done (DoD) system for quality control
+- Vitest test framework (recently migrated from custom scripts)
 
-## Code Style Guidelines
-- IMPORTANT: Use TypeScript-only implementation with `.ts` extension in imports (e.g., `import { x } from './y.ts'`)
-- NEVER use `.js` extensions in import statements
-- TypeScript with strict typing - define interfaces in core/types.ts
-- Use async/await with try/catch for error handling
-- Command pattern: each CLI command has its own module in cli/commands/
-- Functions: camelCase, Classes: PascalCase
-- Types: union types for bounded options (e.g., `type Status = 'todo' | 'in-progress'`)
-- Database access through repository pattern
-- CLI commands handle outputs and user interaction
+## Project Code Patterns
 
-## Definition of Done
-- All imports verified against their source modules using `.ts` extensions
-- TypeScript-only patterns followed throughout implementation
-- CLI commands run without errors after implementation
-- No regression in existing functionality
-- Code tested with example use cases
-- Task-Code relationships captured using Task Master daemon
-- Implementation verified against all requirements before marking task complete
+### Architecture
+- **Command pattern**: Each CLI command has its own module in `cli/commands/`
+- **Repository pattern**: Database access abstracted through repositories
+- **Task graph**: Task relationships represented as a directed graph
+- **Observer pattern**: Daemon watches file changes for task-code relationships
 
-## Work Log
+### Coding Standards
+- **Naming**: Functions use camelCase, Classes use PascalCase
+- **Types**: Define interfaces in `core/types.ts`, use union types for bounded options
+- **Error handling**: Use async/await with try/catch
+- **Testing**: Vitest-based testing with isolation for CI/CD integration
 
-### 2024-05-11: Test Coverage Improvements
+## Definition of Done Checklist
 
-Completed the following test coverage improvements:
+### Code Quality Requirements
+1. All imports MUST use `.ts` extensions (never `.js`)
+2. All code MUST follow TypeScript-only patterns with proper type safety
+3. All modules MUST use ESM syntax (no CommonJS require statements)
+4. No TypeScript `any` type unless absolutely necessary with documented reason
+5. Functions and methods MUST include JSDoc comments with descriptions and param annotations
+6. **VERIFY all import/export names exactly match module definitions**
+7. **TEST all module imports work by running the command before committing**
 
-1. Graph module (increased from 28.93% to 49.36%):
-   - Created tests for core util functions in `graph/utils.ts` (100% coverage)
-   - Added tests for graph traversal and hierarchy building
-   - Implemented tests for DOT and Mermaid formatters
+### Testing Requirements
+8. Test coverage MUST be maintained or increased with each change
+9. Each new feature MUST be developed using Test-Driven Development (TDD):
+   - Write tests first to define expected behavior
+   - Implement the minimum code required to pass tests
+   - Refactor while maintaining test coverage
+10. All tests MUST pass with `npm test` command
+11. Test descriptions MUST accurately describe what they're verifying
+12. Tests MUST be isolated and not depend on external state
+13. **INCLUDE module import validation tests for all new components**
 
-2. Formatters (increased from 18.71% to 26.62%):
-   - Added tests for JSON formatter
-   - Improved tests for DOT and Mermaid formatters
-   - Added tests for UI config functionality (100% coverage)
+### Functional Requirements
+14. CLI commands MUST run without errors or hanging
+15. No regressions in existing functionality (strict no-regression policy)
+16. Implementation MUST be verified against specific requirements
+17. Error handling MUST be comprehensive with useful error messages
+18. Task-Code relationships MUST be captured and maintained
+19. **TEST command integration by running with `npm run dev -- [command]`**
 
-3. Repository module:
-   - Created tests for Repository Factory
-   - Added tests for core functionality of repositories
+### Documentation Requirements
+20. Code includes clear comments for complex logic
+21. JSDoc documentation for all public APIs
+22. README and documentation kept in sync with new features
+23. Task descriptions maintained with accurate status
+24. **Document all module exports in JSDoc comments**
 
-4. NLP utils (increased from 30% to 100%):
-   - Implemented tests for distance.ts (Levenshtein, fuzzy matching)
-   - Added tests for stemming.ts
-   - Added comprehensive tests for tokenization.ts
-   - Implemented tests for synonyms.ts
+## Recent Updates
 
-### 2024-05-11: Documentation Improvements
+- Test coverage significantly improved across modules
+- Added comprehensive JSDoc documentation to Graph and NLP modules
+- Enhanced Vitest integration tests for CLI commands
+- Implemented database performance optimizations with caching
+- Added detailed developer documentation
+- Refactored complex functions for better maintainability
 
-Added comprehensive JSDoc documentation to the following modules:
+## Known Issues to Monitor
+1. Import extension consistency (must use `.ts`, never `.js`)
+2. **Export/import name mismatches (function names must match exactly)**
+3. Test framework integration with Vitest (recently migrated)
+4. Module resolution in TypeScript projects
+5. Database schema compatibility with code models
+6. NLP service ESM compatibility with external libraries
+7. Task visualization performance with large hierarchies
 
-1. Graph module:
-   - Enhanced documentation in `graph/index.ts` with detailed method descriptions
-   - Added comprehensive JSDoc to `graph/utils.ts` with examples and edge cases
+## Implementation Workflow
+1. Fix critical issues first (errors, failing tests, command hangs)
+2. Prioritize tasks marked as "ready" in the backlog
+3. Follow TDD methodology for all new implementations:
+   - Write tests first to define expected behavior
+   - Implement the minimum code needed to pass the tests
+   - Refactor for readability and performance
+   - Verify no regressions
+4. Focus on completing feature sets (parent tasks with children) for cohesive implementation
+5. Document all changes with clear commit messages
+6. Ensure DoD requirements are met before marking tasks as complete
 
-2. NLP utils:
-   - Added detailed module-level documentation to all NLP utility files
-   - Enhanced function documentation for:
-     - `tokenization.ts`: Added examples and detailed descriptions for all functions
-     - `stemming.ts`: Added comprehensive documentation with examples for stemming algorithms
-     - `synonyms.ts`: Enhanced documentation for the synonym map and expansion functions
-   - Added @example annotations with expected outputs
-   - Included detailed descriptions of algorithm behavior and edge cases
+## Autopilot Mode Instructions
+When asked to "continue" without a specific task context:
 
-### 2024-05-11: Integration Test Improvements
+1. First, complete any task currently in progress
+2. If no task is in progress, pick the next task following this priority:
+   - Find in-progress tasks and complete them first
+   - Find TODO tasks with [ready] status
+   - Refine TODO tasks with [draft] status until they become [ready]
+   - If no tasks remain, focus on increasing test coverage
+3. Always follow the Definition of Done (DoD) checklist for all work
+4. Ensure no failing tests, no type errors, and strictly follow project guidelines
+5. If you identify an opportunity for enhancement, add it to the backlog for review
+6. Continue in autopilot mode until explicitly asked to stop
+7. Document all work in appropriate markdown files (TASK_CODE_*) and update status files
 
-Created comprehensive integration tests for CLI commands:
+Remember: The goal is continuous improvement while maintaining code quality. Make the CLI better with each task completed.
 
-1. Added Vitest-based integration tests for core CLI commands:
-   - `update-command.vitest.ts`: Tests for task updating functionality
-   - `search-command.vitest.ts`: Tests for task search and filtering
-   - `next-command.vitest.ts`: Tests for next task recommendation
+## Module Import Validation
 
-2. Test coverage highlights:
-   - Command option handling for all parameters
-   - JSON and text output formats
-   - Error handling and edge cases
-   - Complex filtering and sorting operations
-   - Natural language processing integration
-   - Dry run functionality
-   - Metadata handling
+To prevent runtime errors related to module imports, ALWAYS include the following checks:
 
-3. Testing approach:
-   - Used Vitest for consistent testing framework
-   - Created isolated test environments with in-memory databases
-   - Used mock data generation for reproducible tests
-   - Applied spy techniques for verifying console output
-   - Added comprehensive assertions for behavior verification
+1. **Verify Export/Import Names**: Always check that imported functions/classes match the exact names exported from the module. Use the IDE to verify imports when possible.
 
-4. Updated Vitest configuration to properly include new test files
+2. **Run Import Validation Tests**: Use the module-imports.vitest.ts pattern to test that modules can be imported correctly:
+   ```typescript
+   // Example import validation test
+   it('should verify db/init.ts exports the expected functions', async () => {
+     const dbInitPath = '../../db/init.ts';
+     const missingExports = await validateExports(dbInitPath, ['createDb']);
+     expect(missingExports).toEqual([]);
+   });
+   ```
 
-### 2024-05-11: Error Handling Test Improvements
+3. **Test CLI Commands**: Always run `npm run dev -- [command]` before committing to ensure the command can be executed without import errors.
 
-Added comprehensive error handling tests for core modules:
+4. **Document Module Exports**: Include clear JSDoc documentation on all exported functions/classes to make their purpose and usage clear.
 
-1. Repository error handling (`error-handling.vitest.ts`):
-   - Task CRUD operation error handling
-   - Input validation error handling
-   - Database error handling
-   - Not found condition handling
-   - Metadata validation errors
+5. **Check Circular Dependencies**: Be cautious of circular imports which can cause runtime errors that are difficult to debug.
 
-2. API error handling (`api-error-handling.vitest.ts`):
-   - API service error propagation
-   - API router HTTP status code mapping
-   - Invalid request handling
-   - Invalid endpoint handling
-   - Unexpected error recovery
+If you add a new module or modify existing exports, always:
+- Create/update import validation tests
+- Test the functionality by running the relevant commands
+- Document the exports and their purposes
+- Verify module name resolution paths are correct
 
-3. NLP error handling (`nlp-error-handling.vitest.ts`):
-   - NLP service input validation
-   - Distance calculation edge cases
-   - Stemming function robustness
-   - Tokenization error handling
-   - Synonym function input validation
+## Module-Specific Guidelines
 
-4. Testing approach:
-   - Isolated component testing
-   - Targeted error injection
-   - Mock component failures
-   - Edge case handling
-   - Null/undefined handling
-   - Error propagation verification
-   - API contract validation
+### NLP Module
+- Use ESM-compatible imports for all external libraries
+- Implement fallback mechanisms for library compatibility issues
+- Maintain test coverage for NLP operations
+- Consider performance and memory usage with large datasets
 
-### 2024-05-11: Database Optimization Improvements
+### Task Visualization
+- Use semantic relationship indicators (↳, →, ↔) for different dependency types
+- Implement consistent color schemes for status and relationship types
+- Provide proper indentation and tree structure
+- Include legend explaining the relationship symbols
+- Ensure performance with large task hierarchies
 
-Implemented extensive database performance optimizations:
+### Repository Layer
+- Implement proper error handling with descriptive messages
+- Ensure consistency between database schema and code models
+- Optimize query patterns for common operations
+- Maintain atomicity for multi-step operations
+- Regularly test with larger datasets
 
-1. Caching Layer (`optimized-operations.ts`):
-   - Added in-memory cache with TTL for frequently accessed data
-   - Implemented optimized batch operations for multi-item transactions
-   - Created cache key management for effective invalidation
-   - Added prefix-based cache clearing for related items
-
-2. Enhanced Repository (`enhanced.ts`):
-   - Created optimized repository implementation with transparent caching
-   - Added efficient task retrieval with cache hit optimization
-   - Implemented intelligent cache invalidation on updates and deletions
-   - Added optimized bulk operations for reduced transaction overhead
-
-3. Repository Factory Enhancement:
-   - Updated factory to support optimized repository creation
-   - Added environment variable control for optimization toggling
-   - Maintained backward compatibility with legacy mode
-   - Created smooth transition path to optimized implementation
-
-4. Performance Improvements:
-   - Reduced database queries for repeated operations
-   - Eliminated N+1 query patterns in related data access
-   - Improved response time for common operations like task listing
-   - Added optimized search queries with cached results
-   - Implemented single-query batch operations
-
-5. Added comprehensive tests for optimized database operations:
-   - Cache behavior verification
-   - Cache invalidation testing
-   - Data consistency checks
-   - Performance improvement validation
-   - TTL expiration validation
-
-### 2024-05-11: Developer Documentation Improvements
-
-Enhanced developer documentation with comprehensive guides:
-
-1. Created `DATABASE_OPTIMIZATION.md`:
-   - Detailed explanation of caching strategy and implementation
-   - Documentation of performance improvements and architecture
-   - Configuration and usage guidelines for optimization features
-   - Integration patterns and best practices
-
-2. Created `ERROR_HANDLING.md`:
-   - Comprehensive guide to error handling patterns
-   - Error types and propagation documentation
-   - Best practices for checking and handling errors
-   - Repository, API, and CLI error handling patterns
-
-3. Updated main `DEVELOPER_DOCS.md`:
-   - Enhanced table of contents with detailed subsections
-   - Added error handling section with code examples
-   - Updated repository pattern documentation with optimization details
-   - Improved code examples and references
-
-4. Documentation Architecture:
-   - Main developer guide with high-level overview
-   - Specialized topic guides for detailed functionality
-   - Cross-references between documents for navigation
-   - Code examples for practical implementation
-
-### 2024-05-11: Code Refactoring Improvements
-
-Refactored complex functions to improve code maintainability:
-
-1. Search command refactoring:
-   - Split monolithic action function into smaller, focused functions
-   - Created `search-handler.ts` for the main search logic
-   - Created `color-utils.ts` for color management
-   - Applied single responsibility principle to each function
-   - Added stronger typing for better type safety
-
-2. Code organization improvements:
-   - Applied module extraction pattern
-   - Created focused utility modules
-   - Applied clear function boundaries
-   - Added detailed JSDoc comments for each function
-   - Improved error handling with proper try/catch blocks
-
-3. Design improvements:
-   - Applied dependency injection for testing
-   - Added function composition for complex operations
-   - Created clear interfaces for function parameters
-   - Simplified complex conditional logic
-   - Improved overall code readability
-
-4. Benefits:
-   - Enhanced maintainability with smaller, focused functions
-   - Improved testability through better separation of concerns
-   - Clearer function responsibilities and interfaces
-   - Better error handling and recovery
-   - Reduced cognitive load when understanding the codebase
-
-Next steps:
-- Profile and optimize NLP processing
-- Fix TypeScript compiler warnings
+### Testing Best Practices
+- Focus on behavior-driven test descriptions
+- Isolate tests to prevent cross-contamination
+- Use mocks and stubs for external dependencies
+- Maintain test coverage for edge cases
+- Structure tests to mirror the codebase organization
+- **ALWAYS include module import validation tests for new modules**
+- Verify exports/imports match in integration tests
+- Test CLI commands with `npm run dev -- command` before committing

@@ -36,8 +36,8 @@ import {
 } from '../matchers/fuzzy-matcher.ts';
 import { getNlpProfiler, profileMethod } from '../utils/profiler.ts';
 
-// Import the NlpManager from node-nlp-typescript
-import { NlpManager } from 'node-nlp-typescript';
+// Import the ESM-compatible NlpManager
+import { NlpManager } from '../esm-compat/nlp-manager.ts';
 
 /**
  * Optimized NLP Service for Task Master
@@ -129,7 +129,7 @@ export class OptimizedNlpService extends BaseNlpService {
    * Train the NLP manager with example task descriptions
    * This should be called before using the service for search and analysis
    */
-  @profileMethod('NlpService')
+  // @profileMethod('NlpService') - temporarily removed for ESM compatibility
   async train(): Promise<void> {
     const profiler = getNlpProfiler();
     
@@ -159,7 +159,7 @@ export class OptimizedNlpService extends BaseNlpService {
    * @param query User's search query
    * @returns Processed query with extracted information
    */
-  @profileMethod('NlpService')
+  // @profileMethod('NlpService') - temporarily removed for ESM compatibility
   async processQuery(query: string): Promise<ProcessedQuery> {
     await this.ensureInitialized();
     return processQuery(query, this.nlpManager, this.tokenizer, this.stemmer);
@@ -171,7 +171,7 @@ export class OptimizedNlpService extends BaseNlpService {
    * @param text2 Second text
    * @returns Similarity score between 0 and 1
    */
-  @profileMethod('NlpService')
+  // @profileMethod('NlpService') - temporarily removed for ESM compatibility
   async getSimilarity(text1: string, text2: string): Promise<number> {
     await this.ensureInitialized();
     return calculateSimilarity(
@@ -190,7 +190,7 @@ export class OptimizedNlpService extends BaseNlpService {
    * @param threshold Minimum similarity threshold
    * @returns Array of [index, score] pairs for texts above threshold
    */
-  @profileMethod('NlpService')
+  // @profileMethod('NlpService') - temporarily removed for ESM compatibility
   async bulkGetSimilarity(
     target: string,
     texts: string[],
@@ -216,7 +216,7 @@ export class OptimizedNlpService extends BaseNlpService {
    * @param useFuzzy Whether to also use fuzzy matching
    * @returns Array of tasks with similarity scores
    */
-  @profileMethod('NlpService')
+  // @profileMethod('NlpService') - temporarily removed for ESM compatibility
   async findSimilarTasks(
     tasks: TaskSearchInfo[],
     title: string,
@@ -279,7 +279,7 @@ export class OptimizedNlpService extends BaseNlpService {
    * @param query Search query in natural language
    * @returns Extracted search filters
    */
-  @profileMethod('NlpService')
+  // @profileMethod('NlpService') - temporarily removed for ESM compatibility
   async extractSearchFilters(query: string): Promise<ExtractedSearchFilters> {
     await this.ensureInitialized();
     return extractSearchFilters(query, this.nlpManager, this.tokenizer, this.stemmer);

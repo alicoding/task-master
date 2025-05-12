@@ -5,6 +5,7 @@
 
 export * from './file-tracking-daemon.ts';
 export * from './factory.ts';
+export * from './analysis-engine.ts';
 
 // Re-export types for convenience
 export type {
@@ -13,3 +14,8 @@ export type {
   TaskAssociationEvent,
   DaemonState
 } from './file-tracking-daemon.ts';
+
+export type {
+  AnalysisEngineConfig,
+  FileAnalysisResult
+} from './analysis-engine.ts';

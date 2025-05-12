@@ -1,0 +1,4 @@
+
+> task-master@1.0.0 test:coverage
+> NODE_OPTIONS=--experimental-specifier-resolution=node npx vitest run --coverage --config vitest.unified.config.ts --json
+

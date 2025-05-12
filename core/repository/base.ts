@@ -18,6 +18,23 @@ import { createLogger } from '../utils/logger.ts';
 // Create logger for base repository
 const logger = createLogger('Repository:Base');
 
+// Store a reference to the registration function to avoid circular imports
+let connectionRegistrationFunction: ((connection: { close: () => void }) => void) | null = null;
+
+// Dynamically load the registration function
+async function getRegistrationFunction() {
+  if (!connectionRegistrationFunction) {
+    try {
+      const { registerConnection } = await import('../../cli/entry.ts');
+      connectionRegistrationFunction = registerConnection;
+    } catch (error) {
+      logger.debug('Could not load connection registration function', { error });
+      return null;
+    }
+  }
+  return connectionRegistrationFunction;
+}
+
 /**
  * Database connection type
  */
@@ -61,12 +78,18 @@ export class BaseTaskRepository {
         const connection = RepositoryFactory.getConnection();
         this.db = connection.db;
         this.sqlite = connection.sqlite;
+
+        // Register for cleanup on exit
+        this.registerForCleanup();
         return;
       } catch (e) {
         // Factory not initialized, fall back to default
         const connection = createDb('./db/taskmaster.db', false);
         this.db = connection.db;
         this.sqlite = connection.sqlite;
+
+        // Register for cleanup on exit
+        this.registerForCleanup();
         return;
       }
     }
@@ -75,6 +98,8 @@ export class BaseTaskRepository {
     if (dbOrPath && typeof dbOrPath !== 'string') {
       this.db = dbOrPath;
       this.sqlite = sqliteOrMemory as Database.Database;
+
+      // Don't register shared connections for cleanup
     } else {
       // We're receiving path and inMemory flag
       const dbPath = (dbOrPath as string) || './db/taskmaster.db';
@@ -82,9 +107,27 @@ export class BaseTaskRepository {
       const connection = createDb(dbPath, inMemory);
       this.db = connection.db;
       this.sqlite = connection.sqlite;
+
+      // Register for cleanup on exit
+      this.registerForCleanup();
     }
   }
   
+  /**
+   * Register this repository for cleanup on process exit
+   * @private
+   */
+  private registerForCleanup(): void {
+    // Use setTimeout to avoid blocking the constructor
+    setTimeout(async () => {
+      const registerFn = await getRegistrationFunction();
+      if (registerFn) {
+        registerFn(this);
+        logger.debug('Repository registered for cleanup', { source: 'registerForCleanup' });
+      }
+    }, 0);
+  }
+
   /**
    * Close database connection when done
    * @returns True if successful, false if there was an error
@@ -93,10 +136,16 @@ export class BaseTaskRepository {
     // Only close if we own the connection (not shared via factory)
     if (this.sqlite) {
       try {
-        this.sqlite.close();
+        // Check if the database is already closed
+        if (this.sqlite.open) {
+          this.sqlite.close();
+          logger.debug('Database connection closed successfully', { source: 'close' });
+        } else {
+          logger.debug('Database already closed', { source: 'close' });
+        }
       } catch (e) {
         // Ignore errors when closing already closed connections
-        logger.debug('Database already closed', { source: 'close' });
+        logger.debug('Error closing database', { source: 'close', error: e });
         return false;
       }
     }

@@ -109,6 +109,10 @@ export class MockNlpService extends BaseNlpService {
    * @returns Extracted search filters
    */
   async extractSearchFilters(query: string): Promise<ExtractedSearchFilters> {
+    // Handle null/undefined inputs
+    if (query == null) query = '';
+    if (typeof query !== 'string') query = String(query);
+
     // Simple extraction - look for key terms
     const lowerQuery = query.toLowerCase();
     const result: ExtractedSearchFilters = {};

@@ -421,9 +421,19 @@ export class FileSystemWatcher extends EventEmitter {
   private handleReady(): void {
     if (this.watcher) {
       // Get approximate count of watched files
-      this.watchedFiles = this.watcher.getWatched()
-        .reduce((sum, files) => sum + Object.keys(files).length, 0);
-      
+      // The watcher.getWatched() returns an object with dirs as keys and arrays of files as values
+      const watched = this.watcher.getWatched();
+      let count = 0;
+
+      // Count all files in all directories
+      for (const dir in watched) {
+        if (Object.prototype.hasOwnProperty.call(watched, dir)) {
+          count += watched[dir].length;
+        }
+      }
+
+      this.watchedFiles = count;
+
       this.emit('ready', {
         watchedFiles: this.watchedFiles,
         paths: this.config.watchPaths

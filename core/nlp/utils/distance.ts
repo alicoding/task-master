@@ -5,6 +5,11 @@
  * used in natural language processing operations. These utilities are particularly useful
  * for fuzzy matching, search operations, and determining how similar strings or token sets are.
  *
+ * The module includes:
+ * - Levenshtein edit distance for character-level string comparison
+ * - Fuzzy scoring based on normalized Levenshtein distance
+ * - Jaccard similarity for token set comparison
+ *
  * @module NlpDistanceUtils
  */
 
@@ -89,16 +94,24 @@ export function calculateJaccardSimilarity(tokens1: string[], tokens2: string[])
 
   const set1 = new Set(tokens1);
   const set2 = new Set(tokens2);
-  
+
   // For tests, empty arrays should return 0
   if (set1.size === 0 || set2.size === 0) return 0;
-  
+
   // Calculate intersection size
   const intersection = new Set([...set1].filter(x => set2.has(x)));
-  
+
   // Calculate union size
   const union = new Set([...set1, ...set2]);
-  
+
   // Return Jaccard index
   return intersection.size / union.size;
 }
+
+/**
+ * Alias for calculateJaccardSimilarity for backward compatibility
+ * @param tokens1 First set of tokens
+ * @param tokens2 Second set of tokens
+ * @returns Similarity score (0-1, with 1 being identical)
+ */
+export const jaccardSimilarity = calculateJaccardSimilarity;

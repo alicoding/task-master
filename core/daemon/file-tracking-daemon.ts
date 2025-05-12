@@ -13,6 +13,8 @@ import fs from 'fs/promises';
 import { TaskOperationResult } from '../types.ts';
 import { FileSystemWatcher, FileSystemWatcherConfig } from './file-system-watcher.ts';
 import { extractTaskIdsFromContent, classifyFileType, calculateConfidenceScore } from './utils.ts';
+import { AnalysisEngine, AnalysisEngineConfig } from './analysis-engine.ts';
+import { FileChangeAnalyzer, FileChangeAnalyzerConfig } from './file-change-analyzer.ts';
 import { files } from '../../db/schema-extensions.ts';
 import { tasks } from '../../db/schema.ts';
 import { eq, desc, or } from 'drizzle-orm';
@@ -26,6 +28,8 @@ export interface FileTrackingDaemonConfig {
   pollingInterval?: number;
   maxConcurrentOperations?: number;
   includeExtensions?: string[]; // File extensions to watch
+  analysisConfig?: Partial<AnalysisEngineConfig>; // Configuration for analysis engine
+  fileChangeAnalyzerConfig?: Partial<FileChangeAnalyzerConfig>; // Configuration for file change analyzer
 }
 
 // Types for file change events
@@ -63,6 +67,10 @@ export class FileTrackingDaemon extends EventEmitter {
   private _state: DaemonState = 'stopped';
   // Make the watcher accessible to the CLI command for status reporting
   public readonly _watcher: FileSystemWatcher | null = null;
+  // Add the analysis engine
+  private _analysisEngine: AnalysisEngine | null = null;
+  // Add the file change analyzer
+  private _fileChangeAnalyzer: FileChangeAnalyzer | null = null;
   private _taskAssociations = new Map<string, Set<string>>(); // Map of filePath -> taskIds
   private _pendingOperations = new Set<Promise<any>>();
   private _isProcessingEvents = false;
@@ -164,6 +172,22 @@ export class FileTrackingDaemon extends EventEmitter {
       // Start the watcher
       await this._watcher.start();
 
+      // Initialize the analysis engine
+      this._analysisEngine = new AnalysisEngine(
+        this._repository,
+        {
+          ...this._config.analysisConfig,
+          confidenceThreshold: this._config.confidenceThreshold || 70
+        }
+      );
+
+      // Initialize the file change analyzer
+      this._fileChangeAnalyzer = new FileChangeAnalyzer({
+        ...this._config.fileChangeAnalyzerConfig,
+        fileExtensions: this._config.includeExtensions || [],
+        excludePatterns: this._config.excludePaths || []
+      });
+
       this._startTime = new Date();
       this._state = 'running';
       this.emit('stateChange', this._state);
@@ -215,6 +239,8 @@ export class FileTrackingDaemon extends EventEmitter {
       // Clean up
       this._eventQueue = [];
       this._isProcessingEvents = false;
+      this._analysisEngine = null;
+      this._fileChangeAnalyzer = null;
 
       const runtime = this._startTime ? new Date().getTime() - this._startTime.getTime() : 0;
 
@@ -340,15 +366,28 @@ export class FileTrackingDaemon extends EventEmitter {
 
       // Process each event in the batch concurrently
       const operations = batch.map(event => this.processFileChange(event));
-      
+
       // Track pending operations
       operations.forEach(op => this._pendingOperations.add(op));
-      
+
       // Wait for all operations to complete
       await Promise.all(operations);
-      
+
       // Remove completed operations from tracking
       operations.forEach(op => this._pendingOperations.delete(op));
+
+      // If analysis engine is available and auto-associate is enabled, process batch with analysis engine
+      if (this._analysisEngine && this._config.autoAssociate && batch.length > 0) {
+        // Process batch with analysis engine
+        try {
+          const associationCount = await this._analysisEngine.processBatchFileChanges(batch);
+          if (associationCount > 0) {
+            console.log(`[FileTrackingDaemon] Analysis engine created ${associationCount} file-task associations`);
+          }
+        } catch (analysisError) {
+          console.error('[FileTrackingDaemon] Error in batch analysis:', analysisError);
+        }
+      }
 
       // Continue processing if there are more events
       if (this._eventQueue.length > 0) {
@@ -360,7 +399,7 @@ export class FileTrackingDaemon extends EventEmitter {
       this._errorCount++;
       this._isProcessingEvents = false;
       this.emit('error', error instanceof Error ? error : new Error(String(error)));
-      
+
       // Continue processing after an error
       if (this._eventQueue.length > 0) {
         // Add a small delay before retrying
@@ -457,6 +496,36 @@ export class FileTrackingDaemon extends EventEmitter {
         throw new Error(`Failed to track file ${event.path}: ${trackResult.error?.message}`);
       }
 
+      // If we have file change analyzer, update file metadata
+      if (this._fileChangeAnalyzer) {
+        const analysisResult = await this._fileChangeAnalyzer.analyzeFileChange({
+          type: event.type === 'renamed' ? 'modified' : event.type,
+          path: event.path,
+          timestamp: event.timestamp
+        });
+
+        if (analysisResult) {
+          // Store metadata for the file
+          await this._repository.updateFile(trackResult.data.id, {
+            metadata: JSON.stringify({
+              fileType: analysisResult.fileType,
+              language: analysisResult.language,
+              complexity: analysisResult.complexityMetrics,
+              keywords: analysisResult.keywords,
+              analyzedAt: new Date().toISOString()
+            })
+          });
+
+          // Emit file analyzed event
+          this.emit('fileAnalyzed', {
+            fileId: trackResult.data.id,
+            filePath: event.path,
+            metadata: analysisResult,
+            timestamp: new Date()
+          });
+        }
+      }
+
       // If auto-association is enabled, try to find tasks that should be associated with this file
       if (this._config.autoAssociate) {
         await this.tryAutoAssociateTasks(event.path, trackResult.data.id);
@@ -469,103 +538,70 @@ export class FileTrackingDaemon extends EventEmitter {
 
   /**
    * Try to automatically associate a file with relevant tasks
-   * Implements Task 17.2: File-Task association logic
+   * Implements Task 17.5: Analysis Engine for relating file changes to tasks
    */
   private async tryAutoAssociateTasks(filePath: string, fileId: number): Promise<void> {
     try {
-      // Read the file content
-      const content = await fs.readFile(filePath, 'utf-8');
-
-      // Extract task IDs from content
-      const taskIds = extractTaskIdsFromContent(content);
-
-      // If no task IDs found, try to find tasks by other means
-      if (taskIds.length === 0) {
-        // Try to find tasks by filename
-        const filename = path.basename(filePath);
-        const filenameMatch = filename.match(/task[- _]?(\d+)/i);
-
-        if (filenameMatch && filenameMatch[1]) {
-          taskIds.push(filenameMatch[1]);
-        }
+      // If analysis engine is not initialized or auto-association is disabled, skip
+      if (!this._analysisEngine || !this._config.autoAssociate) {
+        return;
       }
 
-      // If still no task IDs found, check for recent tasks
-      if (taskIds.length === 0) {
-        // Get the 5 most recently updated tasks
-        const recentTasks = await this._repository._db.select()
-          .from(tasks)
-          .where(
-            or(
-              eq(tasks.status, 'todo'),
-              eq(tasks.status, 'in-progress')
-            )
-          )
-          .orderBy(desc(tasks.updatedAt))
-          .limit(5);
+      // Create a file change event for analysis
+      const event: FileChangeEvent = {
+        path: filePath,
+        type: 'created', // Treat as created for initial analysis
+        timestamp: new Date()
+      };
 
-        // Add them as potential matches with lower confidence
-        for (const task of recentTasks) {
-          taskIds.push(task.id);
-        }
-      }
+      // Analyze the file
+      const analysisResult = await this._analysisEngine.analyzeFileChange(event);
 
-      if (taskIds.length === 0) {
+      if (!analysisResult || analysisResult.taskMatches.length === 0) {
         console.log(`[FileTrackingDaemon] No tasks found to associate with file ${filePath}`);
         return;
       }
 
-      // Get file type classification
-      const relationshipType = classifyFileType(path.basename(filePath), content);
+      // Associate the file with matching tasks
+      const success = await this._analysisEngine.associateFilesWithTasks(analysisResult);
 
-      // Associate the file with each task
-      let associationCount = 0;
+      if (success) {
+        // Update association tracking
+        const associationCount = analysisResult.taskMatches.length;
+        this._analysisStats.autoAssociated += associationCount;
+        this._analysisStats.lastAssociation = new Date();
 
-      for (const taskId of taskIds) {
-        // Calculate confidence score
-        const confidence = calculateConfidenceScore(taskId, path.basename(filePath), content);
-
-        // Skip if below confidence threshold
-        if (confidence < (this._config.confidenceThreshold || 70)) {
-          continue;
+        // Track associations in memory for quick lookups
+        if (!this._taskAssociations.has(filePath)) {
+          this._taskAssociations.set(filePath, new Set<string>());
         }
 
-        // Associate file with task
-        const associationResult = await this._repository.associateFileWithTask(
-          taskId,
-          filePath,
-          relationshipType,
-          confidence
-        );
+        // Emit task association events
+        for (const match of analysisResult.taskMatches) {
+          // Only process matches above the confidence threshold
+          if (match.confidence >= (this._config.confidenceThreshold || 70)) {
+            const taskId = match.taskId;
+            const relationshipType = analysisResult.suggestedRelationships.get(taskId) || 'related';
 
-        if (associationResult.success) {
-          // Update association tracking
-          associationCount++;
-          this._analysisStats.autoAssociated++;
-          this._analysisStats.lastAssociation = new Date();
+            // Add to in-memory tracking
+            this._taskAssociations.get(filePath)?.add(taskId);
 
-          if (!this._taskAssociations.has(filePath)) {
-            this._taskAssociations.set(filePath, new Set<string>());
+            // Emit task association event
+            this.emit('taskAssociated', {
+              filePath,
+              taskId,
+              confidence: match.confidence,
+              relationshipType,
+              automatic: true
+            });
+
+            console.log(`[FileTrackingDaemon] Auto-associated file ${filePath} with task ${taskId} (${relationshipType}, ${match.confidence}% confidence): ${match.matchReason}`);
           }
-          this._taskAssociations.get(filePath)?.add(taskId);
-
-          // Emit task association event
-          this.emit('taskAssociated', {
-            filePath,
-            taskId,
-            confidence,
-            relationshipType,
-            automatic: true
-          });
-
-          console.log(`[FileTrackingDaemon] Auto-associated file ${filePath} with task ${taskId} (${relationshipType}, ${confidence}% confidence)`);
         }
-      }
 
-      if (associationCount === 0) {
-        console.log(`[FileTrackingDaemon] No tasks met the confidence threshold for file ${filePath}`);
-      } else {
         console.log(`[FileTrackingDaemon] Associated file ${filePath} with ${associationCount} tasks`);
+      } else {
+        console.log(`[FileTrackingDaemon] No tasks met the confidence threshold for file ${filePath}`);
       }
     } catch (error) {
       console.error(`[FileTrackingDaemon] Error auto-associating tasks for file ${filePath}:`, error);
@@ -679,7 +715,9 @@ export class FileTrackingDaemon extends EventEmitter {
       confidenceThreshold: config.confidenceThreshold || 70,
       pollingInterval: config.pollingInterval || 1000,
       maxConcurrentOperations: config.maxConcurrentOperations || 5,
-      includeExtensions: config.includeExtensions || []
+      includeExtensions: config.includeExtensions || [],
+      analysisConfig: config.analysisConfig || {},
+      fileChangeAnalyzerConfig: config.fileChangeAnalyzerConfig || {}
     };
   }
 }
