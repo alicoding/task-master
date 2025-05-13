@@ -1,4 +1,4 @@
-import { ApiService } from './service.ts';
+import { ApiService } from './service';
 
 /**
  * ApiRouter handles HTTP API requests

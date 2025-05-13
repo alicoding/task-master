@@ -6,9 +6,9 @@
 import { test } from 'uvu';
 import * as assert from 'uvu/assert';
 import * as sinon from 'sinon';
-import { TaskRepository } from '../../core/repo.ts';
-import { MetadataCommandHandler } from '../../cli/commands/metadata/metadata-command.ts';
-import { OutputFormat } from '../../core/types.ts';
+import { TaskRepository } from '../../core/repo';
+import { MetadataCommandHandler } from '../../cli/commands/metadata/metadata-command';
+import { OutputFormat } from '../../core/types';
 
 // Test variables
 let repo: TaskRepository;

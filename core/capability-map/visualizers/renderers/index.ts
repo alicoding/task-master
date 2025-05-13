@@ -2,8 +2,8 @@
  * Renderers for capability map visualizations
  */
 
-export * from './base-renderer.ts';
-export * from './text-renderer.ts';
-export * from './mermaid-renderer.ts';
-export * from './dot-renderer.ts';
-export * from './json-renderer.ts';
+export * from './base-renderer';
+export * from './text-renderer';
+export * from './mermaid-renderer';
+export * from './dot-renderer';
+export * from './json-renderer';

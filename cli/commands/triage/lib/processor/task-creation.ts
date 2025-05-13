@@ -3,8 +3,10 @@
  * Handles creating new tasks
  */
 
-import { TaskRepository } from '../../../../../core/repo.ts';
-import { ProcessingOptions, TriageResults, TriageTask } from '../utils.ts';
+import { ChalkColor, asChalkColor } from '@/cli/utils/chalk-utils';
+import { TaskRepository } from '../../../../../core/repo';
+import { ProcessingOptions, TriageResults, TriageTask } from '../utils';
+
 
 /**
  * Create a new task
@@ -33,14 +35,14 @@ export async function createNewTask(
       metadata: taskData.metadata
     });
 
-    results.added.push(newTask);
+    results?.added.push(newTask);
 
     if (!jsonOutput) {
-      console.log(colorize(`│    ✓ Created new task ${newTask.id}`, 'green'));
+      console.log(colorize(`│    ✓ Created new task ${newTask.id}`, asChalkColor((asChalkColor(('green' as ChalkColor))))));
       
       // Show hierarchy info if applicable
       if (newTask.parentId) {
-        console.log(colorize(`│      Child of task: ${newTask.parentId}`, 'blue'));
+        console.log(colorize(`│      Child of task: ${newTask.parentId}`, asChalkColor((asChalkColor(('blue' as ChalkColor))))));
       }
       
       // Show key properties
@@ -50,7 +52,7 @@ export async function createNewTask(
       if (taskData.tags && taskData.tags.length > 0) properties.push(`tags: [${taskData.tags.join(', ')}]`);
       
       if (properties.length > 0) {
-        console.log(colorize(`│      Properties: ${properties.join(', ')}`, 'gray'));
+        console.log(colorize(`│      Properties: ${properties.join(', ')}`, asChalkColor((asChalkColor(('gray' as ChalkColor))))));
       }
     }
   } else {
@@ -63,10 +65,10 @@ export async function createNewTask(
       dry_run: true
     };
 
-    results.added.push(simTask);
+    results?.added.push(simTask);
 
     if (!jsonOutput) {
-      console.log(colorize(`│    ✓ Would create new task: "${taskData.title}"`, 'green'));
+      console.log(colorize(`│    ✓ Would create new task: "${taskData.title}"`, asChalkColor((asChalkColor(('green' as ChalkColor))))));
     }
   }
 }

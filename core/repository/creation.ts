@@ -1,12 +1,9 @@
 import { eq, isNull } from 'drizzle-orm';
-import { BaseTaskRepository } from './base.ts';
-import { tasks, dependencies, Task, NewTask } from '../../db/schema.ts';
-import {
-  TaskInsertOptions,
-  TaskOperationResult,
-  TaskError,
-  TaskErrorCode
-} from '../types.ts';
+import { BaseTaskRepository } from './base';
+import { tasks, dependencies, Task, NewTask } from '../../db/schema';
+import { TaskInsertOptions, TaskOperationResult, TaskError, TaskErrorCode } from '../types';
+import { tasks, dependencies, Task, NewTask } from '../../db/schema';
+import { tasks, dependencies, Task, NewTask } from '../../db/schema';
 
 /**
  * Task creation functionality for the TaskRepository
@@ -49,19 +46,19 @@ export class TaskCreationRepository extends BaseTaskRepository {
         // Query the database to count how many existing child tasks there are
         // Fix for SQLite query - use single quotes for literal '.' character
         const result = this.sqlite.prepare(
-          "SELECT MAX(CAST(SUBSTR(id, INSTR(id, '.') + 1) AS INTEGER)) as max_child_num FROM tasks WHERE parent_id = ? OR id LIKE ?"
+          "SELECT MAX(CAST(SUBSTR(id, INSTR(id, '.') + 1) AS INTEGER)) as max_child_num FROM tasks WHERE parentId = ? OR id LIKE ?"
         ).get(options.childOf, `${options.childOf}.%`);
 
         console.log('Child task query result:', JSON.stringify(result));
 
         // Additional direct query to see all child tasks
         const allChildTasks = this.sqlite.prepare(
-          'SELECT id, title, parent_id FROM tasks WHERE parent_id = ? OR id LIKE ?'
+          'SELECT id, title, parentId FROM tasks WHERE parentId = ? OR id LIKE ?'
         ).all(options.childOf, `${options.childOf}.%`);
 
         console.log('All child tasks:', JSON.stringify(allChildTasks));
 
-        const maxChildNum = result && result.max_child_num ? parseInt(result.max_child_num, 10) : 0;
+        const maxChildNum = result && result['max_child_num'] ? parseInt(result['max_child_num'], 10) : 0;
         console.log(`Max child number found: ${maxChildNum}, next child ID will be: ${options.childOf}.${maxChildNum + 1}`);
 
         return {
@@ -114,7 +111,7 @@ export class TaskCreationRepository extends BaseTaskRepository {
 
       // If it's a new root task - use a direct SQL statement with sqlite
       const rootTasks = this.sqlite.prepare(
-        'SELECT id FROM tasks WHERE parent_id IS NULL'
+        'SELECT id FROM tasks WHERE parentId IS NULL'
       ).all();
 
       return {
@@ -333,8 +330,8 @@ export class TaskCreationRepository extends BaseTaskRepository {
 
         // Update any dependency references where this task is a parent
         await this.db.update(tasks)
-          .set({ parent_id: newId })
-          .where(eq(tasks.parent_id, oldId));
+          .set({ parentId: newId })
+          .where(eq(tasks.parentId, oldId));
 
         // Update any dependency references in the dependencies table
         const dependenciesResult = await this.updateDependencyReferences(oldId, newId);

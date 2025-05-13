@@ -5,8 +5,8 @@
  * for machine processing and data interchange.
  */
 
-import { CapabilityMap } from '../../index.ts';
-import { EnhancedVisualizationOptions } from '../options.ts';
+import { CapabilityMap } from '../../index';
+import { EnhancedVisualizationOptions } from '../options';
 import {
   calculateOverallProgress,
   getCapabilityProgress,
@@ -15,7 +15,7 @@ import {
   enhanceDescription,
   formatRelationshipType,
   createHierarchicalGroups
-} from '../utils/index.ts';
+} from '../utils/index';
 
 /**
  * Render enhanced JSON output with additional metadata

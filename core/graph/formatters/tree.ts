@@ -2,7 +2,7 @@
  * Tree text formatter for task graph visualization
  */
 
-import { TaskWithChildren } from '../../types.ts';
+import { TaskWithChildren } from '../../types';
 
 /**
  * Get status symbol for visual display
@@ -168,7 +168,7 @@ export function formatHierarchyWithSymbols(
       
       // Add tags if not empty and not in compact mode
       if (!compact && task.tags && task.tags.length > 0) {
-        result += `${childPrefix}   tags: ${task.tags.join(', ')}\n`;
+        result += `${childPrefix}   tags: ${task.tags?.join(', ')}\n`;
       }
     }
     

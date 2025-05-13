@@ -1,4 +1,4 @@
-import { BaseTaskRepository } from './base.ts';
+import { BaseTaskRepository } from './base';
 
 /**
  * Metadata functionality for the TaskRepository

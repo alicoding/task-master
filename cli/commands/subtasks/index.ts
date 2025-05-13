@@ -1,7 +1,7 @@
 import { Command } from 'commander';
-import { TaskRepository } from '../../../core/repo.ts';
-import { OutputFormat } from '../../../core/types.ts';
-import { helpFormatter } from '../../helpers/help-formatter.ts';
+import { TaskRepository } from '../../../core/repo';
+import { OutputFormat } from '../../../core/types';
+import { helpFormatter } from '../../helpers/help-formatter';
 
 export function createSubtasksCommand() {
   const subtasksCommand = new Command('subtasks')
@@ -50,23 +50,23 @@ export function createSubtasksCommand() {
         // Get all tasks
         const tasksResult = await repo.getAllTasks();
         
-        if (!tasksResult.success || !tasksResult.data) {
-          console.error('Error retrieving tasks:', tasksResult.error?.message || 'Unknown error');
+        if (!tasksResult?.success || !tasksResult?.data) {
+          console?.error('Error retrieving tasks:', tasksResult?.error?.message || 'Unknown error');
           repo.close();
           return;
         }
         
         // Find the specified task
-        const parentTask = tasksResult.data.find(task => task.id === taskId);
+        const parentTask = tasksResult?.data?.find(task => task.id === taskId);
         
         if (!parentTask) {
-          console.error(`Task with ID ${taskId} not found`);
+          console?.error(`Task with ID ${taskId} not found`);
           repo.close();
           return;
         }
         
         // Find subtasks
-        const subtasks = tasksResult.data.filter(task => {
+        const subtasks = tasksResult?.data?.filter(task => {
           // Direct subtasks have IDs that start with the parent ID followed by a dot
           const isDirectSubtask = task.id.startsWith(taskId + '.');
           
@@ -123,7 +123,7 @@ export function createSubtasksCommand() {
             console.log(`  Status: ${task.status}`);
             console.log(`  Readiness: ${task.readiness}`);
             if (task.tags && task.tags.length > 0) {
-              console.log(`  Tags: ${task.tags.join(', ')}`);
+              console.log(`  Tags: ${task.tags?.join(', ')}`);
             }
             console.log(''); // Empty line between tasks
           });
@@ -131,7 +131,7 @@ export function createSubtasksCommand() {
         
         repo.close();
       } catch (error) {
-        console.error('Error retrieving subtasks:', error);
+        console?.error('Error retrieving subtasks:', error);
         process.exit(1);
       }
     });

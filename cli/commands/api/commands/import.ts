@@ -1,7 +1,7 @@
 import { Command } from 'commander';
 import fs from 'fs/promises';
-import { helpFormatter } from '../../../helpers/help-formatter.ts';
-import { ApiService } from '../../../../core/api/service.ts';
+import { helpFormatter } from '../../../helpers/help-formatter';
+import { ApiService } from '../../../../core/api/service';
 
 /**
  * Create the import command
@@ -49,7 +49,7 @@ export function createImportCommand() {
         const importData = JSON.parse(fileContent);
         
         if (!importData.tasks || !Array.isArray(importData.tasks)) {
-          console.error('Invalid import file format. Expected a "tasks" array.');
+          console?.error('Invalid import file format. Expected a "tasks" array.');
           apiService.close();
           return;
         }
@@ -69,7 +69,7 @@ export function createImportCommand() {
         
         apiService.close();
       } catch (error) {
-        console.error('Error importing tasks:', error);
+        console?.error('Error importing tasks:', error);
         process.exit(1);
       }
     });

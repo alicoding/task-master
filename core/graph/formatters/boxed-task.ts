@@ -2,7 +2,8 @@
  * Boxed task formatter with advanced visual elements
  */
 
-import { Task } from '../../types.ts';
+import { Task } from '../../types';
+import { ChalkColor, asChalkColor } from "@/cli/utils/chalk-utils";
 
 // Dynamic imports for ESM compatibility
 let chalk: any;
@@ -302,7 +303,7 @@ export async function formatBoxedTask(task: Task, options: any = {}): Promise<st
       padding: 1,
       margin: { top: 1, bottom: 0 },
       borderStyle: 'round',
-      borderColor: useColor ? 'blue' : undefined,
+      borderColor: useColor ? ('blue' as ChalkColor) : undefined,
       title: useColor && chalk ? chalk.blue.bold('TASK DETAILS') : 'TASK DETAILS',
       titleAlignment: 'center'
     });
@@ -323,7 +324,7 @@ export async function formatBoxedTask(task: Task, options: any = {}): Promise<st
       padding: 1,
       margin: { top: 0, bottom: 1 },
       borderStyle: 'single',
-      borderColor: useColor ? 'yellow' : undefined,
+      borderColor: useColor ? ('yellow' as ChalkColor) : undefined,
       title: useColor && chalk ? chalk.yellow.bold('STATUS') : 'STATUS',
       titleAlignment: 'center'
     });
@@ -333,7 +334,7 @@ export async function formatBoxedTask(task: Task, options: any = {}): Promise<st
       padding: 1,
       margin: { top: 0, bottom: 1 },
       borderStyle: 'single',
-      borderColor: useColor ? 'gray' : undefined,
+      borderColor: useColor ? ('gray' as ChalkColor) : undefined,
       title: useColor && chalk ? chalk.gray.bold('TIMESTAMPS') : 'TIMESTAMPS',
       titleAlignment: 'center'
     });
@@ -345,7 +346,7 @@ export async function formatBoxedTask(task: Task, options: any = {}): Promise<st
         padding: 1,
         margin: { top: 0, bottom: 0 },
         borderStyle: 'single',
-        borderColor: useColor ? 'gray' : undefined,
+        borderColor: useColor ? ('gray' as ChalkColor) : undefined,
         title: useColor && chalk ? chalk.gray.bold('METADATA') : 'METADATA',
         titleAlignment: 'center'
       });

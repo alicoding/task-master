@@ -5,7 +5,7 @@
  * in various organizational structures.
  */
 
-import { CapabilityNode, CapabilityEdge } from '../../index.ts';
+import { CapabilityNode, CapabilityEdge } from '../../index';
 
 /**
  * Create hierarchical groups of capabilities based on relationships and types

@@ -2,7 +2,7 @@
  * Entity definitions for the NLP service
  * Defines common task-related terms and provides methods to add them to NLP manager
  */
-import { NlpManager } from '../types.ts';
+import { NlpManager } from '../types';
 
 /**
  * Common task-related terms for entity extraction

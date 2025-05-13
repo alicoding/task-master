@@ -13,10 +13,10 @@
  * strict Test-Driven Development practices and Definition of Done requirements.
  */
 
-import { TaskRepository } from '../core/repo.ts';
-import { TaskGraph } from '../core/graph.ts';
-import { Task } from '../db/schema.ts';
-import { RepositoryFactory } from '../core/repository/factory.ts';
+import { TaskRepository } from '../core/repo';
+import { TaskGraph } from '../core/graph';
+import { Task } from '../db/schema';
+import { RepositoryFactory } from '../core/repository/factory';
 
 // Create a local cleanup function to avoid importing from CLI entry
 // which would trigger Commander initialization

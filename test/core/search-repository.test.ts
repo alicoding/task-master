@@ -1,7 +1,7 @@
 import { test } from 'uvu';
 import * as assert from 'uvu/assert';
-import { RepositoryFactory } from '../../core/repository/factory.ts';
-import { TaskSearchRepository } from '../../core/repository/search.ts';
+import { RepositoryFactory } from '../../core/repository/factory';
+import { TaskSearchRepository } from '../../core/repository/search';
 import { 
   SearchFilters,
   TaskStatus,
@@ -9,8 +9,8 @@ import {
   TaskError,
   TaskErrorCode,
   Task
-} from '../../core/types.ts';
-import { createTestDatabase, createTestRepository, generateTestTask } from './test-helpers.ts';
+} from '../../core/types';
+import { createTestDatabase, createTestRepository, generateTestTask } from './test-helpers';
 
 // Helper to create a search repository with test data
 async function createTestSearchRepository(): Promise<TaskSearchRepository> {

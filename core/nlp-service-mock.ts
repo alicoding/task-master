@@ -9,7 +9,7 @@
  */
 
 // Use the test-safe implementation for backward compatibility
-import { TestSafeNlpService } from './nlp/testing/nlp-test-utils.ts';
+import { TestSafeNlpService } from './nlp/testing/nlp-test-utils';
 export { TestSafeNlpService as MockNlpService, TestSafeNlpService as NlpService };
 
 // Re-export types for backward compatibility

@@ -5,8 +5,8 @@
  * in Task Master, comparing the standard and optimized implementations.
  */
 
-import { createNlpService, createOptimizedNlpService } from '../core/nlp/index.ts';
-import { TaskRepository } from '../core/repo.ts';
+import { createNlpService, createOptimizedNlpService } from '../core/nlp/index';
+import { TaskRepository } from '../core/repo';
 
 // Sample queries for benchmarking
 const sampleQueries = [

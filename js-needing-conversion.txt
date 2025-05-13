@@ -1,0 +1,7 @@
+examples/capability-map-test.js
+scripts/analyze-test-coverage.js
+scripts/fix-test-patterns.js
+scripts/select-test-to-migrate.js
+scripts/test-metadata.js
+test-runner.js
+vitest-runner.js

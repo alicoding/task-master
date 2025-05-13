@@ -6,9 +6,10 @@
  */
 
 import { Command } from 'commander';
-import { createNlpService } from '../../../core/nlp/index.ts';
-import { TaskRepository } from '../../../core/repo.ts';
+import { createNlpService } from '../../../core/nlp/index';
+import { TaskRepository } from '../../../core/repo';
 import chalk from 'chalk';
+import { ProfilableNlpService } from '../../../core/nlp/types';
 
 /**
  * Create the NLP profile command
@@ -66,38 +67,61 @@ async function runProfileBenchmark(
   console.log();
   
   // Create the appropriate NLP service
-  const nlpService = createNlpService({
+  const nlpService = await createNlpService({
     useOptimized,
     enableProfiling: true
-  });
-  
+  }) as ProfilableNlpService;
+
   // Set up repository
   const repo = new TaskRepository();
-  
+
   try {
     // Initialize the NLP service
     console.log('Initializing NLP service...');
-    await nlpService.train();
-    
+    if (typeof nlpService.train === 'function') {
+      await nlpService.train();
+    }
+
     // Get some sample tasks
     const tasks = await repo.getAllTasks();
     
-    if (!tasks.success || !tasks.data || tasks.data.length === 0) {
+    if (!tasks?.success || !tasks?.data || tasks?.data?.length === 0) {
       console.log(chalk.red('No tasks found for benchmarking'));
       return;
     }
     
+    // Ensure we have valid task data
+    if (!tasks || !tasks.success || !tasks.data) {
+      console.error('Failed to retrieve tasks for benchmarking');
+      return;
+    }
+
     const sampleTasks = tasks.data.slice(0, Math.min(tasks.data.length, 50));
     console.log(`Using ${sampleTasks.length} tasks for benchmarking\n`);
-    
+
     // Prepare search info
-    const searchInfo = sampleTasks.map(task => ({
-      id: task.id,
-      title: task.title,
-      description: typeof task.metadata === 'string'
-        ? JSON.parse(task.metadata).description
-        : task.metadata?.description
-    }));
+    const searchInfo = sampleTasks.map(task => {
+      let description = null;
+      if (task.metadata) {
+        if (typeof task.metadata === 'string') {
+          try {
+            const parsed = JSON.parse(task.metadata);
+            description = parsed && typeof parsed === 'object' && 'description' in parsed ? parsed.description : null;
+          } catch (e) {
+            description = null;
+          }
+        } else {
+          description = task.metadata && typeof task.metadata === 'object' && 'description' in task.metadata ?
+            (task.metadata as Record<string, any>).description : null;
+        }
+      }
+
+      return {
+        id: task.id,
+        title: task.title,
+        description
+      };
+    });
     
     // Run the benchmark
     console.log(chalk.green('Running benchmark...'));
@@ -109,24 +133,26 @@ async function runProfileBenchmark(
       const iterationStart = performance.now();
       
       // Process query
-      await nlpService.processQuery(query);
-      
+      if (typeof nlpService.processQuery === 'function') {
+        await nlpService.processQuery(query);
+      }
+
       // Extract search filters
-      await nlpService.extractSearchFilters(query);
-      
+      if (typeof nlpService.extractSearchFilters === 'function') {
+        await nlpService.extractSearchFilters(query);
+      }
+
       // Find similar tasks
-      await nlpService.findSimilarTasks(searchInfo, query, 0.3, true);
+      if (typeof nlpService.findSimilarTasks === 'function') {
+        await nlpService.findSimilarTasks(searchInfo, query, 0.3, true);
+      }
       
       const iterationTime = performance.now() - iterationStart;
       console.log(`  Iteration ${i + 1}: ${iterationTime.toFixed(2)}ms`);
       
       // Clear cache between iterations if needed
       if (useOptimized && !enableCache && i < iterations - 1) {
-        // @ts-ignore - We know OptimizedNlpService has this method
-        if (typeof nlpService.clearCache === 'function') {
-          // @ts-ignore
-          nlpService.clearCache();
-        }
+        nlpService.clearCache();
       }
     }
     
@@ -141,22 +167,20 @@ async function runProfileBenchmark(
     // Show detailed profiling information if requested
     if (showDetail && useOptimized) {
       console.log();
-      // @ts-ignore - We know OptimizedNlpService has this method
-      if (typeof nlpService.printProfilingResults === 'function') {
-        // @ts-ignore
-        nlpService.printProfilingResults();
-      }
-      
+      nlpService.printProfilingResults();
+
       // Show cache stats if enabled
       if (enableCache) {
-        // @ts-ignore - We know OptimizedNlpService has this method
-        if (typeof nlpService.getCacheStats === 'function') {
-          // @ts-ignore
-          const cacheStats = nlpService.getCacheStats();
-          console.log(chalk.green('\nCache Statistics:'));
-          console.log(`  Query cache entries: ${cacheStats.query}`);
-          console.log(`  Similarity cache entries: ${cacheStats.similarity}`);
-          console.log(`  Filters cache entries: ${cacheStats.filters}`);
+        const cacheStats = nlpService.getCacheStats();
+        console.log(chalk.green('\nCache Statistics:'));
+        if (cacheStats && typeof cacheStats === 'object') {
+          const query = cacheStats.query ?? 0;
+          const similarity = cacheStats.similarity ?? 0;
+          const filters = cacheStats.filters ?? 0;
+
+          console.log(`  Query cache entries: ${query}`);
+          console.log(`  Similarity cache entries: ${similarity}`);
+          console.log(`  Filters cache entries: ${filters}`);
         }
       }
     }

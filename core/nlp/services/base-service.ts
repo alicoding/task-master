@@ -8,7 +8,7 @@ import {
   TaskSearchInfo, 
   SimilarTask, 
   ExtractedSearchFilters 
-} from '../types.ts';
+} from '../types';
 
 /**
  * Abstract base class for NLP services

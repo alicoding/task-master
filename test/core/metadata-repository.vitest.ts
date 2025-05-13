@@ -9,8 +9,8 @@
  */
 
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { TaskMetadataRepository } from '../../core/repository/metadata.ts';
-import { TaskErrorCode } from '../../core/types.ts';
+import { TaskMetadataRepository } from '../../core/repository/metadata';
+import { TaskErrorCode } from '../../core/types';
 
 // Helper to get a test database path
 const getTestDbPath = () => `./test-${Date.now()}.db`;

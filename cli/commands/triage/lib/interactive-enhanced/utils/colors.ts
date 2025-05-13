@@ -2,7 +2,8 @@
  * Color utility functions for interactive triage mode
  */
 
-import { ChalkColor } from '../utils.ts';
+import { ChalkColor } from '../utils';
+import { ChalkColor } from "@/cli/utils/chalk-utils";
 
 /**
  * Get a color for a status

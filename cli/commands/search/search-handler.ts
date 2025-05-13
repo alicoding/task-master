@@ -1,15 +1,20 @@
 /**
  * Search Command Handler
- * 
+ *
  * Provides modular functionality for the search command,
  * breaking down complex search operations into manageable functions.
+ *
+ * Modified version with terminal session dependencies removed.
  */
 
-import { TaskRepository } from '../../../core/repo.ts';
-import { NlpService } from '../../../core/nlp-service.ts';
-import { SearchFilters, OutputFormat, Task } from '../../../core/types.ts';
-import { ExtractedSearchFilters } from '../../../core/nlp/types.ts';
-import { getColorFunctions } from './color-utils.ts';
+import { ChalkColor, asChalkColor } from '@/cli/utils/chalk-utils';
+import { TaskRepository } from '@/core/repo';
+import { NlpService } from '@/core/nlp-service';
+import { SearchFilters, OutputFormat, Task } from '@/core/types';
+import { ExtractedSearchFilters } from '@/core/nlp/types';
+import { getColorFunctions } from './color-utils';
+
+import { asTaskStatus, asTaskReadiness } from '@/core/utils/type-safety';
 
 /**
  * Interface for search command options
@@ -38,7 +43,7 @@ export async function handleSearchCommand(options: SearchCommandOptions): Promis
     const repo = new TaskRepository();
     const format = options.format as OutputFormat || 'text';
     const nlpService = new NlpService();
-    const useFuzzy = options.fuzzy !== false;
+    const useFuzzy = options.fuzzy !== undefined ? options.fuzzy !== false : true;
     
     try {
       // Check if we're doing a similarity search
@@ -83,7 +88,7 @@ export async function handleSearchCommand(options: SearchCommandOptions): Promis
       repo.close();
     }
   } catch (error) {
-    console.error('Error searching tasks:', error);
+    console?.error('Error searching tasks:', error);
     process.exit(1);
   }
 }
@@ -98,11 +103,11 @@ export function buildSearchFilters(options: SearchCommandOptions): SearchFilters
   
   // Direct filter options
   if (options.status) {
-    filters.status = options.status;
+    filters.status = asTaskStatus(options.status);
   }
   
   if (options.readiness) {
-    filters.readiness = options.readiness;
+    filters.readiness = asTaskReadiness(options.readiness);
   }
   
   if (options.tag && options.tag.length > 0) {
@@ -137,9 +142,9 @@ function parseKeyValueFilters(filters: SearchFilters, filterStrings: string[]): 
       filters.tags = filters.tags || [];
       filters.tags.push(value);
     } else if (key === 'status' && !filters.status) {
-      filters.status = value;
+      filters.status = asTaskStatus(value);
     } else if (key === 'readiness' && !filters.readiness) {
-      filters.readiness = value;
+      filters.readiness = asTaskReadiness(value);
     } else if (key.startsWith('meta.')) {
       filters.metadata = filters.metadata || {};
       const metaKey = key.substring(5);
@@ -159,7 +164,7 @@ function parseMetadataFilter(filters: SearchFilters, metadataJson: string): void
     filters.metadata = filters.metadata || {};
     Object.assign(filters.metadata, metadataObj);
   } catch (e) {
-    console.error('Invalid JSON for metadata:', e);
+    console?.error('Invalid JSON for metadata:', e);
   }
 }
 
@@ -183,27 +188,32 @@ export async function executeSearch(
 ): Promise<{ tasks: Task[], extractedInfo?: ExtractedSearchFilters }> {
   let tasks: Task[] = [];
   let extractedInfo: ExtractedSearchFilters | undefined;
-  
+
   if (query) {
     // Get extracted filter information if explain is enabled
     if (explain) {
       extractedInfo = await nlpService.extractSearchFilters(query);
     }
-    
+
     // If we're using the natural language search
     if (useFuzzy && typeof repo.naturalLanguageSearch === 'function') {
-      // Use the new naturalLanguageSearch method if available
-      tasks = await repo.naturalLanguageSearch(query, true);
+      // Use the naturalLanguageSearch method
+      const searchResults = await repo.naturalLanguageSearch(query, {
+        ...filters
+      });
+      tasks = searchResults || [];
     } else {
       // Use traditional search approach
       filters.query = query;
-      tasks = await repo.searchTasks(filters);
+      const result = await repo.searchTasks(filters);
+      tasks = result?.data || [];
     }
   } else {
     // Standard search with filters
-    tasks = await repo.searchTasks(filters);
+    const result = await repo.searchTasks(filters);
+    tasks = result?.data || [];
   }
-  
+
   return { tasks, extractedInfo };
 }
 
@@ -221,11 +231,20 @@ export function sortSearchResults(tasks: Task[], sortField?: string): Task[] {
   return [...tasks].sort((a, b) => {
     // Handle dates specially
     if (sortField === 'createdAt' || sortField === 'updatedAt') {
-      return new Date(a[sortField]).getTime() - new Date(b[sortField]).getTime();
+      const aDate = sortField === 'createdAt' ? a.createdAt : a.updatedAt;
+      const bDate = sortField === 'createdAt' ? b.createdAt : b.updatedAt;
+      return new Date(aDate).getTime() - new Date(bDate).getTime();
     }
-    // For other fields use string comparison
-    const aVal = String(a[sortField] || '');
-    const bVal = String(b[sortField] || '');
+
+    // Handle specific fields directly
+    if (sortField === 'id') return String(a.id || '').localeCompare(String(b.id || ''));
+    if (sortField === 'title') return String(a.title || '').localeCompare(String(b.title || ''));
+    if (sortField === 'status') return String(a.status || '').localeCompare(String(b.status || ''));
+    if (sortField === 'readiness') return String(a.readiness || '').localeCompare(String(b.readiness || ''));
+
+    // For any other fields, use string comparison with safe access
+    const aVal = String(a[sortField as keyof typeof a] || '');
+    const bVal = String(b[sortField as keyof typeof b] || '');
     return aVal.localeCompare(bVal);
   });
 }
@@ -274,28 +293,28 @@ export function displaySearchResults(
 function displaySearchExplanation(
   extractedInfo: ExtractedSearchFilters,
   query: string,
-  useFuzzy: boolean,
+  useFuzzy: boolean | undefined,
   useColor?: boolean
 ): void {
   const { colorize } = getColorFunctions(!!useColor);
-  
-  console.log(colorize('Search query analysis:', 'blue', 'bold'));
-  console.log(colorize(`Original query: "${query}"`, 'green'));
-  
-  if (extractedInfo.extractedTerms.length > 0) {
-    console.log(colorize('Extracted filters:', 'blue'));
+
+  console.log(colorize('Search query analysis:', asChalkColor((asChalkColor((asChalkColor(('blue' as ChalkColor)))))), asChalkColor('bold')));
+  console.log(colorize(`Original query: "${query}"`, asChalkColor((asChalkColor((asChalkColor(('green' as ChalkColor))))))));
+
+  if (extractedInfo.extractedTerms && extractedInfo.extractedTerms.length > 0) {
+    console.log(colorize('Extracted filters:', asChalkColor((asChalkColor((asChalkColor(('blue' as ChalkColor))))))));
     for (const term of extractedInfo.extractedTerms) {
-      console.log(`  - ${colorize(term, 'magenta')}`);
+      console.log(`  - ${colorize(term, asChalkColor((asChalkColor((asChalkColor(('magenta' as ChalkColor)))))))}`);
     }
   }
-  
+
   if (extractedInfo.query !== query) {
-    console.log(colorize('Cleaned query: ', 'blue') + 
-                colorize(`"${extractedInfo.query}"`, 'green'));
+    console.log(colorize('Cleaned query: ', asChalkColor((asChalkColor((asChalkColor(('blue' as ChalkColor))))))) +
+                colorize(`"${extractedInfo.query}"`, asChalkColor((asChalkColor((asChalkColor(('green' as ChalkColor))))))));
   }
-  
-  console.log(colorize(`Fuzzy matching: ${useFuzzy ? 'enabled' : 'disabled'}`, 'blue'));
-  
+
+  console.log(colorize(`Fuzzy matching: ${useFuzzy ? 'enabled' : 'disabled'}`, asChalkColor((asChalkColor((asChalkColor(('blue' as ChalkColor))))))));
+
   console.log(); // Empty line before results
 }
 
@@ -317,18 +336,18 @@ function displayTaskDetails(task: Task, useColor?: boolean): void {
   if (similarityScore !== undefined) {
     const percentage = Math.round(similarityScore * 100);
     const { colorize } = getColorFunctions(!!useColor);
-    
+
     // Choose color based on score
-    let scoreColor = 'red';
-    if (percentage >= 70) scoreColor = 'green';
-    else if (percentage >= 40) scoreColor = 'yellow';
-    
+    let scoreColor = asChalkColor('red');
+    if (percentage >= 70) scoreColor = asChalkColor('green');
+    else if (percentage >= 40) scoreColor = asChalkColor('yellow');
+
     // Add visual indicator
     scoreDisplay = ` ${colorize(`[${percentage}%]`, scoreColor)}`;
   }
   
   console.log(`${task.id}.${scoreDisplay} ${task.title} [${task.status}]`);
-  console.log(`  Tags: ${task.tags.join(', ') || 'none'}`);
+  console.log(`  Tags: ${task.tags?.join(', ') || 'none'}`);
   console.log(`  Readiness: ${task.readiness}`);
   
   if (metadata && Object.keys(metadata).length > 0) {
@@ -355,8 +374,8 @@ export async function performSimilaritySearch(
   options: SearchCommandOptions
 ): Promise<void> {
   const format = options.format as OutputFormat || 'text';
-  const { colorize } = getColorFunctions(options.color);
-  const useFuzzy = options.fuzzy !== false;
+  const { colorize } = getColorFunctions(!!options.color);
+  const useFuzzy = true; // Default to true if undefined or not explicitly false
   
   if (!options.similar) {
     console.log('Error: similar option is required for similarity search');
@@ -364,7 +383,8 @@ export async function performSimilaritySearch(
   }
   
   // Perform similarity search
-  const similarTasks = await repo.findSimilarTasks(options.similar, useFuzzy);
+  const similarTasksResult = await repo.findSimilarTasks(options.similar);
+  const similarTasks = similarTasksResult?.data || [];
   
   if (similarTasks.length === 0) {
     console.log('No similar tasks found');
@@ -376,31 +396,31 @@ export async function performSimilaritySearch(
     return;
   }
   
-  console.log(colorize(`Tasks similar to "${options.similar}":\n`, 'blue', 'bold'));
-  console.log(colorize(`Fuzzy matching: ${useFuzzy ? 'enabled' : 'disabled'}`, 'blue'));
+  console.log(colorize(`Tasks similar to "${options.similar}":\n`, asChalkColor((asChalkColor((asChalkColor(('blue' as ChalkColor)))))), asChalkColor('bold')));
+  console.log(colorize(`Fuzzy matching: ${useFuzzy ? 'enabled' : 'disabled'}`, asChalkColor((asChalkColor((asChalkColor(('blue' as ChalkColor))))))));
   console.log('');
-  
+
   similarTasks.forEach(task => {
     // Get similarity score from metadata
-    const metadata = typeof task.metadata === 'string' 
-      ? JSON.parse(task.metadata) 
+    const metadata = typeof task.metadata === 'string'
+      ? JSON.parse(task.metadata)
       : task.metadata;
-      
+
     const score = metadata?.similarityScore || 0;
     const percentage = Math.round(score * 100);
-    
+
     // Generate a visual bar based on similarity
     const barLength = Math.round(percentage / 5);
     const bar = '█'.repeat(barLength);
-    
+
     // Color the bar based on similarity
-    let barColor = 'red';
-    if (percentage >= 70) barColor = 'green';
-    else if (percentage >= 40) barColor = 'yellow';
-    
+    let barColor = asChalkColor((asChalkColor((asChalkColor(('red' as ChalkColor))))));
+    if (percentage >= 70) barColor = asChalkColor((asChalkColor((asChalkColor(('green' as ChalkColor))))));
+    else if (percentage >= 40) barColor = asChalkColor((asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
+
     console.log(`${task.id}. ${task.title}`);
-    console.log(`  ${colorize('Similarity: ', 'blue')}${colorize(`${percentage}%`, barColor)} ${colorize(bar, barColor)}`);
-    console.log(`  Tags: ${task.tags.join(', ') || 'none'}`);
+    console.log(`  ${colorize('Similarity: ', asChalkColor((asChalkColor((asChalkColor(('blue' as ChalkColor)))))))}${colorize(`${percentage}%`, barColor)} ${colorize(bar, barColor)}`);
+    console.log(`  Tags: ${task.tags?.join(', ') || 'none'}`);
     console.log(`  Status: ${task.status}, Readiness: ${task.readiness}`);
     console.log('');
   });

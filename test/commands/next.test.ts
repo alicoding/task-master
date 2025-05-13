@@ -1,12 +1,12 @@
 import { test } from 'uvu';
 import * as assert from 'uvu/assert';
-import { TaskRepository } from '../../core/repo.ts';
-import { createNextCommand } from '../../cli/commands/next/index.ts';
+import { TaskRepository } from '../../core/repo';
+import { createNextCommand } from '../../cli/commands/next/index';
 import { 
   captureConsoleOutput, 
   restoreConsole,
   getConsoleOutput
-} from './test-helpers.ts';
+} from './test-helpers';
 
 test('Next Command - single and multiple next tasks', async () => {
   // Create repo with in-memory DB for testing and use legacy mode

@@ -13,9 +13,9 @@ import {
   createNlpService, 
   createMockNlpService,
   createOptimizedNlpService
-} from '../../core/nlp/factory.ts';
-import { MockNlpService } from '../../core/nlp/services/mock-service.ts';
-import { TestSafeNlpService } from '../../core/nlp/testing/nlp-test-utils.ts';
+} from '../../core/nlp/factory';
+import { MockNlpService } from '../../core/nlp/services/mock-service';
+import { TestSafeNlpService } from '../../core/nlp/testing/nlp-test-utils';
 
 describe('NLP Factory ESM Compatibility', () => {
   // Mock dynamic imports

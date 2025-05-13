@@ -6,9 +6,9 @@
 import { test } from 'uvu';
 import * as assert from 'uvu/assert';
 import * as sinon from 'sinon';
-import { TaskRepository } from '../../core/repo.ts';
-import { AddCommandHandler } from '../../cli/commands/add/add-command.ts';
-import { TaskStatus, TaskReadiness } from '../../core/types.ts';
+import { TaskRepository } from '../../core/repo';
+import { AddCommandHandler } from '../../cli/commands/add/add-command';
+import { TaskStatus, TaskReadiness } from '../../core/types';
 
 // Test variables
 let repo: TaskRepository;
@@ -17,7 +17,7 @@ let consoleLogStub: sinon.SinonStub;
 let consoleLogCalls: string[] = [];
 
 // Import test helpers
-import { createTestRepository } from '../core/test-helpers.ts';
+import { createTestRepository } from '../core/test-helpers';
 
 // Setup before tests
 test.before.each(() => {

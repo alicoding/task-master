@@ -6,9 +6,9 @@ import {
   FuzzySearchOptions, 
   SimilarTask, 
   TaskSearchInfo 
-} from '../types.ts';
-import { fuzzyScore } from '../utils/distance.ts';
-import { normalizeText } from '../utils/tokenization.ts';
+} from '../types';
+import { fuzzyScore } from '../utils/distance';
+import { normalizeText } from '../utils/tokenization';
 
 /**
  * Perform fuzzy search across a set of tasks

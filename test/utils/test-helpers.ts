@@ -12,9 +12,9 @@
  */
 
 import { randomUUID } from 'crypto';
-import { TaskRepository } from '../../core/repo.ts';
-import { TaskInsertOptions, Task } from '../../core/types.ts';
-import { createDb } from '../../db/init.ts';
+import { TaskRepository } from '../../core/repo';
+import { TaskInsertOptions, Task } from '../../core/types';
+import { createDb } from '../../db/init';
 import { drizzle } from 'drizzle-orm/better-sqlite3';
 import Database from 'better-sqlite3';
 

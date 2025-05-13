@@ -7,8 +7,8 @@
  */
 
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { TestSafeNlpService } from '../../core/nlp/testing/nlp-test-utils.ts';
-import { TaskRepository } from '../../core/repo.ts';
+import { TestSafeNlpService } from '../../core/nlp/testing/nlp-test-utils';
+import { TaskRepository } from '../../core/repo';
 
 // Using test-safe NLP implementation to avoid dependency issues
 describe('NLP Service', () => {

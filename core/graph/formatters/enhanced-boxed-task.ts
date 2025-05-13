@@ -2,7 +2,7 @@
  * Enhanced boxed task formatter with professional layout and visual elements
  */
 
-import { Task } from '../../types.ts';
+import { Task } from '../../types';
 
 // Dynamic imports for ESM compatibility
 let chalk: any;

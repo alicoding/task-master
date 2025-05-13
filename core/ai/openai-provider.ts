@@ -1,10 +1,10 @@
-import { BaseAiProvider } from './base-provider.ts';
+import { BaseAiProvider } from './base-provider';
 import {
   OpenAiConfig,
   CompletionOptions,
   CompletionResult,
   AiMessage
-} from './types.ts';
+} from './types';
 
 /**
  * OpenAI provider implementation

@@ -2,7 +2,7 @@
  * Simple test for Analysis Engine
  */
 
-import { AnalysisEngine } from '../core/daemon/analysis-engine.ts';
+import { AnalysisEngine } from '../core/daemon/analysis-engine';
 import fs from 'fs/promises';
 import path from 'path';
 

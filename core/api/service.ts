@@ -1,11 +1,12 @@
 /**
  * Legacy API Service implementation maintained for backward compatibility
+ * Modified to remove file tracking dependencies
  * @deprecated Use service-new.ts instead which uses the command architecture
  */
 
-import { TaskRepository } from '../repo.ts';
-import { TaskGraph } from '../graph.ts';
-import { Task, TaskWithChildren } from '../types.ts';
+import { TaskRepository } from '../repo';
+import { TaskGraph } from '../graph';
+import { Task, TaskWithChildren } from '../types';
 import {
   Operation,
   BatchOperations,
@@ -13,9 +14,9 @@ import {
   ExportResult,
   ImportResult,
   OperationResult
-} from './types.ts';
+} from './types';
 
-import { ApiService as NewApiService } from './service-new.ts';
+import { ApiService as NewApiService } from './service-new';
 
 /**
  * ApiService provides a centralized service for accessing Task Master functionality

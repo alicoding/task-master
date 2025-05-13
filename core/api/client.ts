@@ -10,7 +10,7 @@ import {
   BatchResult,
   ExportResult,
   ImportResult
-} from './types.ts';
+} from './types';
 
 /**
  * Enhanced API Client for Task Master

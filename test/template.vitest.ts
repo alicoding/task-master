@@ -17,9 +17,9 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 
 // Import project modules with .ts extensions (TypeScript-only approach)
-import { TaskRepository } from '../core/repo.ts';
-import { TaskInsertOptions } from '../core/types.ts';
-import { createTestRepository, seedTestData } from './utils/test-helpers.ts';
+import { TaskRepository } from '../core/repo';
+import { TaskInsertOptions } from '../core/types';
+import { createTestRepository, seedTestData } from './utils/test-helpers';
 
 // Create a test suite with describe
 describe('TaskRepository', () => {

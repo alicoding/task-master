@@ -10,9 +10,9 @@
  */
 
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { TaskRepository } from '../../core/repo.ts';
-import { TaskInsertOptions, TaskUpdateOptions } from '../../core/types.ts';
-import { createTestRepository } from './test-helpers.ts';
+import { TaskRepository } from '../../core/repo';
+import { TaskInsertOptions, TaskUpdateOptions } from '../../core/types';
+import { createTestRepository } from './test-helpers';
 
 describe('TaskRepository - create and get tasks', () => {
   it('should pass', async () => {

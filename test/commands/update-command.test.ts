@@ -3,14 +3,13 @@
  * Verifies that the update command correctly modifies existing tasks
  */
 
-import { test } from 'uvu';
-import * as assert from 'uvu/assert';
+import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import * as sinon from 'sinon';
-import { TaskRepository } from '../../core/repo.ts';
-import { TaskStatus, TaskReadiness, Task } from '../../core/types.ts';
+import { TaskRepository } from '../../core/repo';
+import { TaskStatus, TaskReadiness, Task } from '../../core/types';
 
 // Import test helpers
-import { createTestRepository, createSampleTasks } from '../core/test-helpers.ts';
+import { createTestRepository, createSampleTasks } from '../core/test-helpers';
 
 // Test variables
 let repo: TaskRepository;
@@ -20,8 +19,10 @@ let consoleErrorStub: sinon.SinonStub;
 let consoleLogCalls: string[] = [];
 let consoleErrorCalls: string[] = [];
 
-// Mock the interactive form
-jest.mock('../../cli/commands/update/interactive-form.ts', () => ({
+// Mock the interactive form - using vi.mock instead of jest.mock
+import { vi } from 'vitest';
+
+vi.mock('../../cli/commands/update/interactive-form.ts', () => ({
   InteractiveUpdateForm: class MockInteractiveForm {
     constructor(private task: Task, private repo: TaskRepository) {}
     
@@ -36,8 +37,17 @@ jest.mock('../../cli/commands/update/interactive-form.ts', () => ({
   }
 }));
 
-// Setup before tests
-test.before.each(async () => {
+describe('Update Command', () => {
+  // Test variables
+  let repo: TaskRepository;
+  let taskIds: string[];
+  let consoleLogStub: sinon.SinonStub;
+  let consoleErrorStub: sinon.SinonStub;
+  let consoleLogCalls: string[] = [];
+  let consoleErrorCalls: string[] = [];
+
+  // Setup before tests
+  beforeEach(async () => {
   // Create in-memory repository
   repo = createTestRepository();
   
@@ -57,8 +67,8 @@ test.before.each(async () => {
   });
 });
 
-// Cleanup after tests
-test.after.each(() => {
+  // Cleanup after tests
+  afterEach(() => {
   // Close repository
   if (repo) {
     repo.close();
@@ -74,13 +84,13 @@ test.after.each(() => {
   }
 });
 
-// Test updating a task's title
-test('updates a task title', async () => {
+  // Test updating a task's title
+  it('updates a task title', async () => {
   const taskId = taskIds[0];
   const newTitle = 'Updated Task Title';
   
   // Create the command handler and implement necessary methods to mimic CLI behavior
-  const { createUpdateCommand } = await import('../../cli/commands/update/index.ts');
+  const { createUpdateCommand } = await import('../../cli/commands/update/index');
   const updateCommand = await createUpdateCommand();
   
   // Execute the command action with options
@@ -95,15 +105,15 @@ test('updates a task title', async () => {
   const updatedTask = await repo.getTask(taskId);
   
   // Verify the task was updated
-  assert.equal(updatedTask.title, newTitle, 'Task title should be updated');
-  
+  expect(updatedTask.title).toEqual(newTitle);
+
   // Verify console output
   const successLine = consoleLogCalls.find(call => call.includes('updated successfully'));
-  assert.ok(successLine, 'Should show success message');
+  expect(successLine).toBeTruthy();
 });
 
-// Test updating multiple fields
-test('updates multiple task fields', async () => {
+  // Test updating multiple fields
+  it('updates multiple task fields', async () => {
   const taskId = taskIds[1];
   const updates = {
     title: 'Multiple Updates Test',
@@ -113,7 +123,7 @@ test('updates multiple task fields', async () => {
   };
   
   // Create the command handler
-  const { createUpdateCommand } = await import('../../cli/commands/update/index.ts');
+  const { createUpdateCommand } = await import('../../cli/commands/update/index');
   const updateCommand = await createUpdateCommand();
   
   // Execute the command action
@@ -128,14 +138,14 @@ test('updates multiple task fields', async () => {
   const updatedTask = await repo.getTask(taskId);
   
   // Verify all fields were updated
-  assert.equal(updatedTask.title, updates.title, 'Task title should be updated');
-  assert.equal(updatedTask.status, updates.status, 'Task status should be updated');
-  assert.equal(updatedTask.readiness, updates.readiness, 'Task readiness should be updated');
-  assert.equal(JSON.stringify(updatedTask.tags), JSON.stringify(updates.tags), 'Task tags should be updated');
+  expect(updatedTask.title).toEqual(updates.title);
+  expect(updatedTask.status).toEqual(updates.status);
+  expect(updatedTask.readiness).toEqual(updates.readiness);
+  expect(JSON.stringify(updatedTask.tags)).toEqual(JSON.stringify(updates.tags));
 });
 
-// Test updating task metadata
-test('updates task metadata', async () => {
+  // Test updating task metadata
+  it('updates task metadata', async () => {
   const taskId = taskIds[2];
   const metadataJson = JSON.stringify({
     priority: 'high',
@@ -144,7 +154,7 @@ test('updates task metadata', async () => {
   });
   
   // Create the command handler
-  const { createUpdateCommand } = await import('../../cli/commands/update/index.ts');
+  const { createUpdateCommand } = await import('../../cli/commands/update/index');
   const updateCommand = await createUpdateCommand();
   
   // Execute the command action
@@ -159,19 +169,19 @@ test('updates task metadata', async () => {
   const updatedTask = await repo.getTask(taskId);
   
   // Verify metadata was updated
-  assert.equal(updatedTask.metadata.priority, 'high', 'Metadata priority should be updated');
-  assert.equal(updatedTask.metadata.complexity, 3, 'Metadata complexity should be updated');
-  assert.equal(updatedTask.metadata.category, 'integration-test', 'Metadata category should be updated');
+  expect(updatedTask.metadata.priority).toEqual('high');
+  expect(updatedTask.metadata.complexity).toEqual(3);
+  expect(updatedTask.metadata.category).toEqual('integration-test');
 });
 
-// Test dry run mode
-test('does not update task in dry run mode', async () => {
+  // Test dry run mode
+  it('does not update task in dry run mode', async () => {
   const taskId = taskIds[0];
   const originalTask = await repo.getTask(taskId);
   const newTitle = 'This Update Should Not Happen';
   
   // Create the command handler
-  const { createUpdateCommand } = await import('../../cli/commands/update/index.ts');
+  const { createUpdateCommand } = await import('../../cli/commands/update/index');
   const updateCommand = await createUpdateCommand();
   
   // Execute the command action in dry run mode
@@ -186,20 +196,20 @@ test('does not update task in dry run mode', async () => {
   const taskAfterDryRun = await repo.getTask(taskId);
   
   // Verify the task was not updated
-  assert.equal(taskAfterDryRun.title, originalTask.title, 'Task title should not change in dry run');
-  
+  expect(taskAfterDryRun.title).toEqual(originalTask.title);
+
   // Verify dry run message
   const dryRunLine = consoleLogCalls.find(call => call.includes('Would update task'));
-  assert.ok(dryRunLine, 'Should show dry run message');
+  expect(dryRunLine).toBeTruthy();
 });
 
-// Test JSON output format
-test('returns JSON output when format is json', async () => {
+  // Test JSON output format
+  it('returns JSON output when format is json', async () => {
   const taskId = taskIds[0];
   const newTitle = 'JSON Output Test';
   
   // Create the command handler
-  const { createUpdateCommand } = await import('../../cli/commands/update/index.ts');
+  const { createUpdateCommand } = await import('../../cli/commands/update/index');
   const updateCommand = await createUpdateCommand();
   
   // Execute the command action with JSON format
@@ -223,15 +233,15 @@ test('returns JSON output when format is json', async () => {
     }
   });
   
-  assert.ok(jsonLine, 'Should output task in JSON format');
+  expect(jsonLine).toBeTruthy();
 });
 
-// Test error handling for invalid task ID
-test('handles error when task ID is invalid', async () => {
+  // Test error handling for invalid task ID
+  it('handles error when task ID is invalid', async () => {
   const invalidTaskId = 'non-existent-task';
   
   // Create the command handler
-  const { createUpdateCommand } = await import('../../cli/commands/update/index.ts');
+  const { createUpdateCommand } = await import('../../cli/commands/update/index');
   const updateCommand = await createUpdateCommand();
   
   // Execute the command action with invalid ID
@@ -244,8 +254,6 @@ test('handles error when task ID is invalid', async () => {
   
   // Verify error message
   const errorLine = consoleErrorCalls.find(call => call.includes('not found'));
-  assert.ok(errorLine, 'Should show error message for invalid task ID');
+  expect(errorLine).toBeTruthy();
+  });
 });
-
-// Run all tests
-test.run();

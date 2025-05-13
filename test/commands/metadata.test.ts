@@ -1,13 +1,13 @@
 import { test } from 'uvu';
 import * as assert from 'uvu/assert';
-import { TaskRepository } from '../../core/repo.ts';
-import { createMetadataCommand } from '../../cli/commands/metadata/index.ts';
+import { TaskRepository } from '../../core/repo';
+import { createMetadataCommand } from '../../cli/commands/metadata/index';
 import { 
   captureConsoleOutput, 
   restoreConsole,
   getConsoleOutput,
   createCommandParent
-} from './test-helpers.ts';
+} from './test-helpers';
 
 test('Metadata Command - get, set, remove operations', async () => {
   // Create repo with in-memory DB for testing and use legacy mode

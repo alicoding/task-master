@@ -3,11 +3,12 @@
  * Handles checking for similar tasks when creating new tasks
  */
 
-import { TaskRepository } from '../../../../../core/repo.ts';
-import { NlpService } from '../../../../../core/nlp-service-mock.ts';
-import { ChalkColor, ProcessingOptions, TriageResults, TriageTask } from '../utils.ts';
-import { createNewTask } from './task-creation.ts';
-import { handleAutoMerge } from './auto-merge.ts';
+import { TaskRepository } from '../../../../../core/repo';
+import { NlpService } from '../../../../../core/nlp-service-mock';
+import { ChalkColor, ProcessingOptions, TriageResults, TriageTask } from '../utils';
+import { createNewTask } from './task-creation';
+import { handleAutoMerge } from './auto-merge';
+import { ChalkColor, asChalkColor } from "@/cli/utils/chalk-utils";
 
 /**
  * Handle creating a new task with duplicate detection
@@ -37,7 +38,7 @@ export async function handleNewTask(
 
   if (filteredTasks.length > 0) {
     if (!jsonOutput) {
-      console.log(colorize(`│    ⚠ Found ${filteredTasks.length} similar tasks`, 'yellow'));
+      console.log(colorize(`│    ⚠ Found ${filteredTasks.length} similar tasks`, asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
       
       // Show top matches
       const topTasks = filteredTasks.slice(0, 3); // Show max 3
@@ -45,15 +46,15 @@ export async function handleNewTask(
         const score = t.metadata?.similarityScore || 0;
         const percentage = Math.round(score * 100);
         
-        let scoreColor: ChalkColor = 'green';
-        if (percentage >= 80) scoreColor = 'red';
-        else if (percentage >= 60) scoreColor = 'yellow';
+        let scoreColor: ChalkColor = (asChalkColor((asChalkColor(('green' as ChalkColor)))));
+        if (percentage >= 80) scoreColor = (asChalkColor((asChalkColor(('red' as ChalkColor)))));
+        else if (percentage >= 60) scoreColor = (asChalkColor((asChalkColor(('yellow' as ChalkColor)))));
         
         console.log(colorize(`│      ${i + 1}. ${t.id}: "${t.title}" (${percentage}% similar)`, scoreColor));
       });
       
       if (filteredTasks.length > 3) {
-        console.log(colorize(`│      + ${filteredTasks.length - 3} more similar tasks...`, 'gray'));
+        console.log(colorize(`│      + ${filteredTasks.length - 3} more similar tasks...`, asChalkColor((asChalkColor(('gray' as ChalkColor))))));
       }
     }
 
@@ -65,7 +66,7 @@ export async function handleNewTask(
 
     // If not forced and not auto-merged, add to skipped
     if (!taskData.force) {
-      results.skipped.push({
+      results?.skipped.push({
         title: taskData.title,
         reason: 'Similar task exists',
         similar_tasks: filteredTasks.map(t => ({
@@ -76,11 +77,11 @@ export async function handleNewTask(
       });
 
       if (!jsonOutput) {
-        console.log(colorize(`│    ⚠ Skipped due to similar existing tasks - use force: true to override`, 'yellow'));
+        console.log(colorize(`│    ⚠ Skipped due to similar existing tasks - use force: true to override`, asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
       }
       return;
     } else if (!jsonOutput) {
-      console.log(colorize(`│    ⚠ Force flag enabled - creating despite similar tasks`, 'yellow'));
+      console.log(colorize(`│    ⚠ Force flag enabled - creating despite similar tasks`, asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
     }
   }
 

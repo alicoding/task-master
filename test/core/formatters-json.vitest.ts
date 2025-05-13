@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest';
-import { formatHierarchyJson } from '../../core/graph/formatters/json.ts';
-import { formatHierarchyDot } from '../../core/graph/formatters/dot.ts';
-import { formatHierarchyMermaid } from '../../core/graph/formatters/mermaid.ts';
-import { HierarchyTask } from '../../core/types.ts';
+import { formatHierarchyJson } from '../../core/graph/formatters/json';
+import { formatHierarchyDot } from '../../core/graph/formatters/dot';
+import { formatHierarchyMermaid } from '../../core/graph/formatters/mermaid';
+import { HierarchyTask } from '../../core/types';
 
 // Sample hierarchy tasks for testing
 const sampleHierarchy: HierarchyTask[] = [

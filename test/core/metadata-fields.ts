@@ -3,8 +3,8 @@
  */
 import { test } from 'uvu';
 import * as assert from 'uvu/assert';
-import { TaskRepository } from '../../core/repo.ts';
-import { TaskOperationResult, Task } from '../../core/types.ts';
+import { TaskRepository } from '../../core/repo';
+import { TaskOperationResult, Task } from '../../core/types';
 
 // Simple test for getMetadataField with dot notation
 test('Test dot notation in metadata field access', async () => {

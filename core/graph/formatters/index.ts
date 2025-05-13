@@ -4,31 +4,31 @@
  */
 
 // Core formatters
-export * from './text.ts';
-export * from './json.ts';
-export * from './dot.ts';
-export * from './simple.ts';
-export * from './tree.ts';
-export * from './detailed.ts';
-export * from './mermaid.ts';
-export * from './enhanced-tree.ts';
+export * from './text';
+export * from './json';
+export * from './dot';
+export * from './simple';
+export * from './tree';
+export * from './detailed';
+export * from './mermaid';
+export * from './enhanced-tree';
 
 // Task view formatters
-export * from './boxed-task.ts';
-export * from './enhanced-boxed-task.ts';
-export * from './polished-task.ts';
-export * from './table-list.ts';
+export * from './boxed-task';
+export * from './enhanced-boxed-task';
+export * from './polished-task';
+export * from './table-list';
 
 // Modular formatter components
-export * from './typography/constants.ts';
-export * from './colors/constants.ts';
-export * from './utils/gradient.ts';
-export * from './utils/text-formatter.ts';
-export * from './sections/title-banner.ts';
-export * from './sections/section-header.ts';
-export * from './sections/progress-bar.ts';
-export * from './sections/readiness-formatter.ts';
-export * from './sections/tags-formatter.ts';
-export * from './sections/dates-formatter.ts';
-export * from './sections/command-block.ts';
-export * from './metadata-formatter.ts';
+export * from './typography/constants';
+export * from './colors/constants';
+export * from './utils/gradient';
+export * from './utils/text-formatter';
+export * from './sections/title-banner';
+export * from './sections/section-header';
+export * from './sections/progress-bar';
+export * from './sections/readiness-formatter';
+export * from './sections/tags-formatter';
+export * from './sections/dates-formatter';
+export * from './sections/command-block';
+export * from './metadata-formatter';

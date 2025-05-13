@@ -1,10 +1,10 @@
 import { Command } from 'commander';
-import { TaskRepository } from '../../../core/repo.ts';
-import { TaskGraph } from '../../../core/graph.ts';
-import { OutputFormat, HierarchyTask } from '../../../core/types.ts';
-import { createShowGraphCommand } from './show-graph.ts';
-import { createDepsCommand } from './deps.ts';
-import { helpFormatter } from '../../helpers/help-formatter.ts';
+import { TaskRepository } from '../../../core/repo';
+import { TaskGraph } from '../../../core/graph';
+import { OutputFormat, HierarchyTask } from '../../../core/types';
+import { createShowGraphCommand } from './show-graph';
+import { createDepsCommand } from './deps';
+import { helpFormatter } from '../../helpers/help-formatter';
 
 export async function createShowCommand() {
   const showCommand = new Command('show')
@@ -116,13 +116,13 @@ export async function createShowCommand() {
           // Show a specific task
           const taskResult = await repo.getTask(id);
 
-          if (!taskResult.success || !taskResult.data) {
-            console.error(`Task with ID ${id} not found: ${taskResult.error?.message || 'Unknown error'}`);
+          if (!taskResult?.success || !taskResult?.data) {
+            console?.error(`Task with ID ${id} not found: ${taskResult?.error?.message || 'Unknown error'}`);
             repo.close();
             return;
           }
 
-          const task = taskResult.data;
+          const task = taskResult?.data;
 
           if (format === 'json') {
             console.log(JSON.stringify(task, null, 2));
@@ -145,14 +145,14 @@ export async function createShowCommand() {
             // Get the task hierarchy
             const hierarchyResult = await repo.buildTaskHierarchy();
 
-            if (!hierarchyResult.success || !hierarchyResult.data) {
-              console.error(`Failed to build task hierarchy: ${hierarchyResult.error?.message || 'Unknown error'}`);
+            if (!hierarchyResult?.success || !hierarchyResult?.data) {
+              console?.error(`Failed to build task hierarchy: ${hierarchyResult?.error?.message || 'Unknown error'}`);
               repo.close();
               return;
             }
 
             // If filter is provided, filter the hierarchy
-            let filteredHierarchy = hierarchyResult.data;
+            let filteredHierarchy = hierarchyResult?.data;
             if (options.filter) {
               // Simple filtering for MVP
               const filterTag = options.filter;
@@ -189,13 +189,13 @@ export async function createShowCommand() {
             // Simple list of all tasks
             const tasksResult = await repo.getAllTasks();
 
-            if (!tasksResult.success || !tasksResult.data) {
-              console.error(`Failed to retrieve tasks: ${tasksResult.error?.message || 'Unknown error'}`);
+            if (!tasksResult?.success || !tasksResult?.data) {
+              console?.error(`Failed to retrieve tasks: ${tasksResult?.error?.message || 'Unknown error'}`);
               repo.close();
               return;
             }
 
-            const tasks = tasksResult.data;
+            const tasks = tasksResult?.data;
 
             if (format === 'json') {
               console.log(JSON.stringify(tasks, null, 2));
@@ -215,7 +215,7 @@ export async function createShowCommand() {
 
         repo.close();
       } catch (error) {
-        console.error('Error showing tasks:', error instanceof Error ? error.message : 'Unknown error');
+        console?.error('Error showing tasks:', error instanceof Error ? error.message : 'Unknown error');
         process.exit(1);
       }
     });

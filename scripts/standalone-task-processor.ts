@@ -8,7 +8,7 @@
  * triggering Commander initialization.
  */
 
-import { createDb } from '../db/init.ts';
+import { createDb } from '../db/init';
 
 // Initialize the database directly with SQLite connection
 const { sqlite } = createDb();

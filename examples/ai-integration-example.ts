@@ -10,8 +10,8 @@ import {
   TaskOperations, 
   MockAiConfig,
   OpenAiConfig 
-} from '../core/ai/index.ts';
-import { Task } from '../core/types.ts';
+} from '../core/ai/index';
+import { Task } from '../core/types';
 
 /**
  * Example tasks for demonstration
@@ -121,7 +121,7 @@ async function runDemo() {
     console.log(`\nTask ${i+1}: ${task.title}`);
     console.log(`Status: ${task.status || 'todo'}`);
     console.log(`Readiness: ${task.readiness || 'draft'}`);
-    console.log(`Tags: ${task.tags ? task.tags.join(', ') : 'none'}`);
+    console.log(`Tags: ${task.tags ? task.tags?.join(', ') : 'none'}`);
     
     if (task.subtasks && task.subtasks.length > 0) {
       console.log('Subtasks:');

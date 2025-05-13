@@ -4,33 +4,33 @@
  */
 
 // Re-export all handlers
-export * from './task-add.ts';
-export * from './task-update.ts';
-export * from './task-remove.ts';
-export * from './task-search.ts';
-export * from './task-show.ts';
-export * from './task-graph.ts';
-export * from './task-deps.ts';
-export * from './batch-handler.ts';
-export * from './task-merge.ts';
-export * from './task-metadata.ts';
+export * from './task-add';
+export * from './task-update';
+export * from './task-remove';
+export * from './task-search';
+export * from './task-show';
+export * from './task-graph';
+export * from './task-deps';
+export * from './batch-handler';
+export * from './task-merge';
+export * from './task-metadata';
 
-import { commandRegistry, CommandHandler } from '../command.ts';
-import { AddTaskHandler } from './task-add.ts';
-import { UpdateTaskHandler } from './task-update.ts';
-import { RemoveTaskHandler } from './task-remove.ts';
-import { SearchTaskHandler } from './task-search.ts';
-import { ShowTaskHandler } from './task-show.ts';
-import { GraphTaskHandler } from './task-graph.ts';
-import { DepsTaskHandler } from './task-deps.ts';
-import { BatchHandler } from './batch-handler.ts';
-import { MergeTaskHandler } from './task-merge.ts';
+import { commandRegistry, CommandHandler } from '../command';
+import { AddTaskHandler } from './task-add';
+import { UpdateTaskHandler } from './task-update';
+import { RemoveTaskHandler } from './task-remove';
+import { SearchTaskHandler } from './task-search';
+import { ShowTaskHandler } from './task-show';
+import { GraphTaskHandler } from './task-graph';
+import { DepsTaskHandler } from './task-deps';
+import { BatchHandler } from './batch-handler';
+import { MergeTaskHandler } from './task-merge';
 import { 
   GetMetadataHandler, 
   SetMetadataHandler, 
   RemoveMetadataHandler, 
   AppendMetadataHandler 
-} from './task-metadata.ts';
+} from './task-metadata';
 
 /**
  * Register all command handlers in the registry

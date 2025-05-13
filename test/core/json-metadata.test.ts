@@ -3,9 +3,9 @@
  */
 
 import { expect } from 'chai';
-import { TaskRepository } from '../../core/repo.ts';
-import { validateMetadata } from '../../core/types.ts';
-import { setupTestDb, cleanupTestDb } from './test-helpers.ts';
+import { TaskRepository } from '../../core/repo';
+import { validateMetadata } from '../../core/types';
+import { setupTestDb, cleanupTestDb } from './test-helpers';
 
 describe('JSON Metadata Handling', () => {
   let repo: TaskRepository;

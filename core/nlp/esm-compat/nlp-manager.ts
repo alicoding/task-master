@@ -5,7 +5,7 @@
  * It implements the same interface but uses ESM-compatible imports and exports.
  */
 
-import { INlpManager, NlpManagerOptions } from '../types.ts';
+import { INlpManager, NlpManagerOptions } from '../types';
 
 // Container class to mimic the container property of NlpManager
 class Container {

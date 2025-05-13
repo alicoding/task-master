@@ -1,9 +1,9 @@
 import { describe, it, expect } from 'vitest';
-import * as uiConfig from '../../core/graph/formatters/ui-config.ts';
-import { createUiConfig, parseCliOptions, getStatusColor, getReadinessColor } from '../../core/graph/formatters/ui-config.ts';
-import { formatBoxedTask } from '../../core/graph/formatters/boxed-task.ts';
-import { formatPolishedTask } from '../../core/graph/formatters/polished-task.ts';
-import { Task } from '../../db/schema.ts';
+import * as uiConfig from '../../core/graph/formatters/ui-config';
+import { createUiConfig, parseCliOptions, getStatusColor, getReadinessColor } from '../../core/graph/formatters/ui-config';
+import { formatBoxedTask } from '../../core/graph/formatters/boxed-task';
+import { formatPolishedTask } from '../../core/graph/formatters/polished-task';
+import { Task } from '../../db/schema';
 
 // Sample task for testing
 const sampleTask: Task = {

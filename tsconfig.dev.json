@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "incremental": true,
+    "composite": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "inlineSourceMap": false,
+    "declarationMap": true,
+    "emitDeclarationOnly": false,
+    "checkJs": false,
+    "allowJs": true
+  }
+}

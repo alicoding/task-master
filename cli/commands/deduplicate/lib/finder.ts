@@ -1,6 +1,6 @@
-import { Task } from '../../../../db/schema.ts';
-import { NlpService } from '../../../../core/nlp-service.ts';
-import { DuplicateGroup } from './utils.ts';
+import { Task } from '@/core/types';
+import { NlpService } from '../../../../core/nlp-service';
+import { DuplicateGroup } from './utils';
 
 /**
  * Find groups of duplicate tasks

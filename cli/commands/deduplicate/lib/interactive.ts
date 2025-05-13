@@ -1,8 +1,10 @@
+import { ChalkColor, asChalkColor } from '@/cli/utils/chalk-utils';
 import readline from 'readline';
-import { TaskRepository } from '../../../../core/repo.ts';
-import { DuplicateGroup, ColorizeFunction } from './utils.ts';
-import { handleMerge } from './merger.ts';
-import { displayDetailedGroupView, displayInteractiveHelp } from './formatter.ts';
+import { TaskRepository } from '../../../../core/repo';
+import { DuplicateGroup, ColorizeFunction } from './utils';
+import { handleMerge } from './merger';
+import { displayDetailedGroupView, displayInteractiveHelp } from './formatter';
+
 
 /**
  * Run interactive mode
@@ -20,7 +22,7 @@ export async function runInteractiveMode(
   });
   
   const answer = await new Promise<string>(resolve => {
-    rl.question(colorize('\nEnter command: ', 'cyan'), resolve);
+    rl.question(colorize('\nEnter command: ', asChalkColor((asChalkColor(('cyan' as ChalkColor))))), resolve);
   });
   
   rl.close();
@@ -28,7 +30,7 @@ export async function runInteractiveMode(
   const command = answer.trim().toLowerCase();
   
   if (command === 'q') {
-    console.log(colorize('Exiting deduplication tool.', 'blue'));
+    console.log(colorize('Exiting deduplication tool.', asChalkColor((asChalkColor(('blue' as ChalkColor))))));
     return;
   }
   
@@ -37,7 +39,7 @@ export async function runInteractiveMode(
     const groupNum = parseInt(command.substring(2));
     
     if (isNaN(groupNum) || groupNum < 1 || groupNum > limitedGroups.length) {
-      console.log(colorize(`Invalid group number. Must be between 1 and ${limitedGroups.length}.`, 'red'));
+      console.log(colorize(`Invalid group number. Must be between 1 and ${limitedGroups.length}.`, asChalkColor((asChalkColor(('red' as ChalkColor))))));
       return;
     }
     
@@ -50,7 +52,7 @@ export async function runInteractiveMode(
     const groupNum = parseInt(command.substring(2));
     
     if (isNaN(groupNum) || groupNum < 1 || groupNum > limitedGroups.length) {
-      console.log(colorize(`Invalid group number. Must be between 1 and ${limitedGroups.length}.`, 'red'));
+      console.log(colorize(`Invalid group number. Must be between 1 and ${limitedGroups.length}.`, asChalkColor((asChalkColor(('red' as ChalkColor))))));
       return;
     }
     

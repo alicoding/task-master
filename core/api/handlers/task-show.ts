@@ -3,9 +3,9 @@
  * Retrieves a task or list of tasks with flexible formatting
  */
 
-import { BaseCommandHandler, CommandParams } from '../command.ts';
-import { CommandContext } from '../context.ts';
-import { Task, TaskWithChildren } from '../../types.ts';
+import { BaseCommandHandler, CommandParams } from '../command';
+import { CommandContext } from '../context';
+import { Task, TaskWithChildren } from '../../types';
 
 /**
  * Parameters for showing tasks

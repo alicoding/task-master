@@ -2,8 +2,8 @@ import { eq, and, like, or, isNull } from 'drizzle-orm';
 import { SQLiteDatabase } from 'drizzle-orm/sqlite-core';
 import { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
 import Database from 'better-sqlite3';
-import { createDb } from '../../db/init.ts';
-import { tasks, dependencies, Task, NewTask } from '../../db/schema.ts';
+import { createDb } from '../../db/init';
+import { tasks, dependencies, Task, NewTask } from '../../db/schema';
 import {
   TaskInsertOptions,
   TaskUpdateOptions,
@@ -12,8 +12,8 @@ import {
   TaskErrorCode,
   TaskOperationResult,
   validateMetadata
-} from '../types.ts';
-import { createLogger } from '../utils/logger.ts';
+} from '../types';
+import { createLogger } from '../utils/logger';
 
 // Create logger for base repository
 const logger = createLogger('Repository:Base');
@@ -25,7 +25,7 @@ let connectionRegistrationFunction: ((connection: { close: () => void }) => void
 async function getRegistrationFunction() {
   if (!connectionRegistrationFunction) {
     try {
-      const { registerConnection } = await import('../../cli/entry.ts');
+      const { registerConnection } = await import('../../cli/entry');
       connectionRegistrationFunction = registerConnection;
     } catch (error) {
       logger.debug('Could not load connection registration function', { error });
@@ -48,7 +48,7 @@ export interface DbConnection {
  * Handles database connection and basic CRUD operations
  */
 // Import RepositoryFactory here to avoid circular deps
-import { RepositoryFactory } from './factory.ts';
+import { RepositoryFactory } from './factory';
 
 export class BaseTaskRepository {
   protected db: BetterSQLite3Database<Record<string, never>>;
@@ -177,7 +177,7 @@ export class BaseTaskRepository {
       }
 
       // Try to select all fields including description and body
-      const result = await this.db.select()
+      const result: any = await this.db.select()
         .from(tasks)
         .where(eq(tasks.id, id))
         .limit(1);

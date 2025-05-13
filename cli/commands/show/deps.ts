@@ -4,10 +4,10 @@
  */
 
 import { Command } from 'commander';
-import { TaskRepository } from '../../../core/repo.ts';
-import { TaskGraph } from '../../../core/graph.ts';
-import { OutputFormat } from '../../../core/types.ts';
-import { TaskWithChildren } from '../../../core/types.ts';
+import { TaskRepository } from '../../../core/repo';
+import { TaskGraph } from '../../../core/graph';
+import { OutputFormat } from '../../../core/types';
+import { TaskWithChildren } from '../../../core/types';
 
 export async function createDepsCommand() {
   const depsCommand = new Command('deps')
@@ -24,7 +24,7 @@ export async function createDepsCommand() {
 
   // Import helpFormatter here to avoid circular dependency
   // Using dynamic import instead of require for ESM compatibility
-  const helpFormatterModule = await import('../../helpers/help-formatter.ts');
+  const helpFormatterModule = await import('../../helpers/help-formatter');
   const helpFormatter = helpFormatterModule.helpFormatter;
 
   // Enhance help with examples and additional information
@@ -114,7 +114,14 @@ export async function createDepsCommand() {
           }
         } else {
           // Get all tasks in the hierarchy
-          tasks = await repo.buildTaskHierarchy();
+          const hierarchyResult = await repo.buildTaskHierarchy();
+          if (hierarchyResult.success && hierarchyResult.data) {
+            tasks = hierarchyResult.data;
+          } else {
+            console.error('Failed to build task hierarchy');
+            process.exit(1);
+            return;
+          }
           
           // Apply depth limit if specified
           if (maxDepth !== undefined) {
@@ -165,7 +172,7 @@ export async function createDepsCommand() {
         
         repo.close();
       } catch (error) {
-        console.error('Error showing task dependencies:', error);
+        console?.error('Error showing task dependencies:', error);
         process.exit(1);
       }
     });
@@ -183,36 +190,50 @@ async function getTaskWithDescendants(
   currentDepth: number = 0
 ): Promise<TaskWithChildren[]> {
   // Get the task
-  const task = await repo.getTask(taskId);
-  if (!task) return [];
-  
+  const taskResult = await repo.getTask(taskId);
+  if (!taskResult.success || !taskResult.data) return [];
+
+  const task = taskResult.data;
+
   // Convert to TaskWithChildren
   const taskWithChildren: TaskWithChildren = {
     ...task,
     children: []
   };
-  
+
   // If we haven't reached the max depth, get children
   if (currentDepth < maxDepth) {
     // Get child tasks
-    const childTasks = await repo.getChildTasks(taskId);
-    
-    // Get descendants for each child recursively
-    for (const childTask of childTasks) {
-      const childDescendants = await getTaskWithDescendants(
-        repo,
-        childTask.id,
-        maxDepth,
-        currentDepth + 1
-      );
-      
-      // Add to children
-      if (childDescendants.length > 0) {
-        taskWithChildren.children.push(childDescendants[0]);
+    try {
+      const childTasks = await repo.getChildTasks(taskId);
+
+      // Ensure we have valid data
+      if (Array.isArray(childTasks) && childTasks.length > 0) {
+        // Get descendants for each child recursively
+        for (const childTask of childTasks) {
+          if (childTask && typeof childTask.id === 'string') {
+            const childDescendants = await getTaskWithDescendants(
+              repo,
+              childTask.id,
+              maxDepth,
+              currentDepth + 1
+            );
+
+            // Add to children
+            if (childDescendants.length > 0) {
+              // Ensure children array exists
+              taskWithChildren.children = taskWithChildren.children || [];
+              taskWithChildren.children.push(childDescendants[0]);
+            }
+          }
+        }
       }
+    } catch (error) {
+      console.error('Error getting child tasks:', error);
+      // Continue with what we have
     }
   }
-  
+
   return [taskWithChildren];
 }
 
@@ -229,19 +250,21 @@ async function getParentTree(
   // Prevent circular references
   if (visited.has(taskId)) return [];
   visited.add(taskId);
-  
+
   // Get the task
-  const task = await repo.getTask(taskId);
-  if (!task) return [];
-  
+  const taskResult = await repo.getTask(taskId);
+  if (!taskResult?.success || !taskResult?.data) return [];
+
+  const task = taskResult.data;
+
   // Build the result
   const result: TaskWithChildren[] = [{
     ...task,
     children: []
   }];
-  
+
   // If we haven't reached the max depth and the task has a parent, get the parent
-  if (currentDepth < maxDepth && task.parentId) {
+  if (currentDepth < maxDepth && task.parentId && typeof task.parentId === 'string') {
     const parentTree = await getParentTree(
       repo,
       task.parentId,
@@ -249,14 +272,17 @@ async function getParentTree(
       currentDepth + 1,
       visited
     );
-    
+
     if (parentTree.length > 0) {
       // Add this task as a child of its parent
-      parentTree[0].children.push(result[0]);
+      const parent = parentTree[0];
+      // Ensure children array exists
+      parent.children = parent.children || [];
+      parent.children.push(result[0]);
       return parentTree;
     }
   }
-  
+
   return result;
 }
 
@@ -268,6 +294,10 @@ function limitHierarchyDepth(
   maxDepth: number,
   currentDepth: number = 0
 ): TaskWithChildren[] {
+  if (!Array.isArray(tasks)) {
+    return [];
+  }
+
   if (currentDepth >= maxDepth) {
     // Strip children at max depth
     return tasks.map(task => ({
@@ -275,11 +305,11 @@ function limitHierarchyDepth(
       children: []
     }));
   }
-  
+
   // Process children recursively
   return tasks.map(task => ({
     ...task,
-    children: task.children 
+    children: Array.isArray(task?.children)
       ? limitHierarchyDepth(task.children, maxDepth, currentDepth + 1)
       : []
   }));

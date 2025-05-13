@@ -2,7 +2,7 @@
  * JSON formatters for task graph visualization
  */
 
-import { TaskWithChildren } from '../../types.ts';
+import { TaskWithChildren } from '../../types';
 
 /**
  * Format tasks for machine-readable JSON

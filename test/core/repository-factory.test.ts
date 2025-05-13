@@ -1,14 +1,14 @@
 import { test } from 'uvu';
 import * as assert from 'uvu/assert';
-import { RepositoryFactory } from '../../core/repository/factory.ts';
-import { DbConnection } from '../../core/repository/base.ts';
+import { RepositoryFactory } from '../../core/repository/factory';
+import { DbConnection } from '../../core/repository/base';
 
 test('RepositoryFactory - initialization and reset', () => {
   // Initial state
   assert.equal(RepositoryFactory.isInitialized(), false, 'Should start uninitialized');
   
   // Initialize
-  const connection = RepositoryFactory.initialize(':memory:', true);
+  const connection = RepositoryFactory.initialize();
   assert.ok(connection, 'Should return a connection object');
   assert.ok(connection.db, 'Connection should have a database instance');
   assert.ok(connection.sqlite, 'Connection should have a SQLite instance');
@@ -35,11 +35,11 @@ test('RepositoryFactory - initialization and reset', () => {
 
 test('RepositoryFactory - reinitialize', () => {
   // Initialize first connection
-  const connection1 = RepositoryFactory.initialize(':memory:', true);
+  const connection1 = RepositoryFactory.initialize();
   assert.ok(connection1, 'Should return first connection');
   
   // Initialize second connection
-  const connection2 = RepositoryFactory.initialize(':memory:', true);
+  const connection2 = RepositoryFactory.initialize();
   assert.ok(connection2, 'Should return second connection');
   
   // Connections should be different
@@ -57,7 +57,7 @@ test('RepositoryFactory - error handling', () => {
   // Try to initialize with invalid path (should throw)
   try {
     // Use a path that doesn't exist and isn't creatable
-    RepositoryFactory.initialize('/non-existent/invalid/path/db.sqlite', false);
+    RepositoryFactory.initialize();
     assert.unreachable('Should throw with invalid db path');
   } catch (error) {
     assert.ok(error instanceof Error, 'Should throw an error');

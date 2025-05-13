@@ -3,9 +3,9 @@
  * Visualizes task dependencies in various formats
  */
 
-import { BaseCommandHandler, CommandParams } from '../command.ts';
-import { CommandContext } from '../context.ts';
-import { TaskWithChildren } from '../../types.ts';
+import { BaseCommandHandler, CommandParams } from '../command';
+import { CommandContext } from '../context';
+import { TaskWithChildren } from '../../types';
 
 /**
  * Parameters for dependency visualization

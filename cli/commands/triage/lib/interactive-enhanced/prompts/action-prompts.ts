@@ -3,7 +3,8 @@
  */
 
 import readline from 'readline';
-import { ChalkColor, ChalkStyle } from '../../utils.ts';
+import { ChalkColor, ChalkStyle } from '../../utils';
+import { ChalkColor, asChalkColor } from "@/cli/utils/chalk-utils";
 
 /**
  * Prompt user for action
@@ -19,7 +20,7 @@ export async function promptForAction(
   });
   
   const action = await new Promise<string>(resolve => {
-    rl.question(colorize('Choose an action: ', 'cyan'), resolve);
+    rl.question(colorize('Choose an action: ', asChalkColor((asChalkColor(('cyan' as ChalkColor))))), resolve);
   });
   
   rl.close();

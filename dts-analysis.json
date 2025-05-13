@@ -1,0 +1,2034 @@
+[
+  {
+    "path": "cli/commands/add/add-command.d.ts",
+    "category": "generated",
+    "usage": 3,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/add/index.d.ts",
+    "category": "generated",
+    "usage": 183,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/add/interactive-form.d.ts",
+    "category": "generated",
+    "usage": 4,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/ai/index.d.ts",
+    "category": "generated",
+    "usage": 183,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/api/commands/batch.d.ts",
+    "category": "generated",
+    "usage": 14,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/api/commands/export.d.ts",
+    "category": "generated",
+    "usage": 13,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/api/commands/import.d.ts",
+    "category": "generated",
+    "usage": 5,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/api/index.d.ts",
+    "category": "generated",
+    "usage": 183,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/deduplicate/index.d.ts",
+    "category": "generated",
+    "usage": 183,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/deduplicate/lib/finder.d.ts",
+    "category": "generated",
+    "usage": 4,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/deduplicate/lib/formatter-enhanced.d.ts",
+    "category": "generated",
+    "usage": 4,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/deduplicate/lib/formatter.d.ts",
+    "category": "generated",
+    "usage": 157,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/deduplicate/lib/interactive-enhanced.d.ts",
+    "category": "generated",
+    "usage": 30,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/deduplicate/lib/interactive.d.ts",
+    "category": "generated",
+    "usage": 34,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/deduplicate/lib/merger-enhanced.d.ts",
+    "category": "generated",
+    "usage": 0,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/deduplicate/lib/merger.d.ts",
+    "category": "generated",
+    "usage": 4,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/deduplicate/lib/processor.d.ts",
+    "category": "generated",
+    "usage": 42,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/deduplicate/lib/utils.d.ts",
+    "category": "generated",
+    "usage": 290,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/dod/index.d.ts",
+    "category": "generated",
+    "usage": 183,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/interactive/index.d.ts",
+    "category": "generated",
+    "usage": 183,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/map/index-enhanced.d.ts",
+    "category": "generated",
+    "usage": 2,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/map/index.d.ts",
+    "category": "generated",
+    "usage": 183,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/metadata/index.d.ts",
+    "category": "generated",
+    "usage": 183,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/metadata/metadata-command.d.ts",
+    "category": "generated",
+    "usage": 4,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/next/index.d.ts",
+    "category": "generated",
+    "usage": 183,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/nlp-profile/index.d.ts",
+    "category": "generated",
+    "usage": 183,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/remove/index.d.ts",
+    "category": "generated",
+    "usage": 183,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/search/color-utils.d.ts",
+    "category": "generated",
+    "usage": 4,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/search/index.d.ts",
+    "category": "generated",
+    "usage": 183,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/search/search-handler-clean.d.ts",
+    "category": "generated",
+    "usage": 0,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/search/search-handler.d.ts",
+    "category": "generated",
+    "usage": 2,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/setup/ai-config.d.ts",
+    "category": "generated",
+    "usage": 2,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/setup/config-export-import.d.ts",
+    "category": "generated",
+    "usage": 0,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/setup/config-validator.d.ts",
+    "category": "generated",
+    "usage": 2,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/setup/connection-tester.d.ts",
+    "category": "generated",
+    "usage": 4,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/setup/db-config.d.ts",
+    "category": "generated",
+    "usage": 2,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/setup/env-manager.d.ts",
+    "category": "generated",
+    "usage": 12,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/setup/index.d.ts",
+    "category": "generated",
+    "usage": 183,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/setup/model-selection.d.ts",
+    "category": "generated",
+    "usage": 0,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/setup/project-init.d.ts",
+    "category": "generated",
+    "usage": 2,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/show/deps.d.ts",
+    "category": "generated",
+    "usage": 6,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/show/index.d.ts",
+    "category": "generated",
+    "usage": 183,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/show/show-graph.d.ts",
+    "category": "generated",
+    "usage": 2,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/subtasks/index.d.ts",
+    "category": "generated",
+    "usage": 183,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/triage/index-enhanced.d.ts",
+    "category": "generated",
+    "usage": 2,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/triage/index.d.ts",
+    "category": "generated",
+    "usage": 183,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/triage/lib/interactive-enhanced.d.ts",
+    "category": "generated",
+    "usage": 30,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/triage/lib/interactive-enhanced/display/action-menu.d.ts",
+    "category": "generated",
+    "usage": 2,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/triage/lib/interactive-enhanced/display/dependencies.d.ts",
+    "category": "generated",
+    "usage": 2,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/triage/lib/interactive-enhanced/display/help-screen.d.ts",
+    "category": "generated",
+    "usage": 2,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/triage/lib/interactive-enhanced/display/index.d.ts",
+    "category": "generated",
+    "usage": 183,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/triage/lib/interactive-enhanced/display/intro.d.ts",
+    "category": "generated",
+    "usage": 2,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/triage/lib/interactive-enhanced/display/similar-tasks.d.ts",
+    "category": "generated",
+    "usage": 2,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/triage/lib/interactive-enhanced/display/task-details.d.ts",
+    "category": "generated",
+    "usage": 2,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/triage/lib/interactive-enhanced/handlers/create-subtask.d.ts",
+    "category": "generated",
+    "usage": 2,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/triage/lib/interactive-enhanced/handlers/index.d.ts",
+    "category": "generated",
+    "usage": 183,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/triage/lib/interactive-enhanced/handlers/mark-done.d.ts",
+    "category": "generated",
+    "usage": 2,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/triage/lib/interactive-enhanced/handlers/merge-task.d.ts",
+    "category": "generated",
+    "usage": 2,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/triage/lib/interactive-enhanced/handlers/toggle-blocked.d.ts",
+    "category": "generated",
+    "usage": 2,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/triage/lib/interactive-enhanced/handlers/update-tags.d.ts",
+    "category": "generated",
+    "usage": 2,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/triage/lib/interactive-enhanced/handlers/update-task.d.ts",
+    "category": "generated",
+    "usage": 2,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/triage/lib/interactive-enhanced/index.d.ts",
+    "category": "generated",
+    "usage": 183,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/triage/lib/interactive-enhanced/prompts/action-prompts.d.ts",
+    "category": "generated",
+    "usage": 2,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/triage/lib/interactive-enhanced/prompts/index.d.ts",
+    "category": "generated",
+    "usage": 183,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/triage/lib/interactive-enhanced/utils/colors.d.ts",
+    "category": "generated",
+    "usage": 32,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/triage/lib/interactive-enhanced/utils/index.d.ts",
+    "category": "generated",
+    "usage": 183,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/triage/lib/interactive-enhanced/utils/sorting.d.ts",
+    "category": "generated",
+    "usage": 4,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/triage/lib/interactive.d.ts",
+    "category": "generated",
+    "usage": 34,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/triage/lib/processor-enhanced.d.ts",
+    "category": "generated",
+    "usage": 4,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/triage/lib/processor.d.ts",
+    "category": "generated",
+    "usage": 42,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/triage/lib/processor/auto-merge.d.ts",
+    "category": "generated",
+    "usage": 6,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/triage/lib/processor/batch.d.ts",
+    "category": "generated",
+    "usage": 14,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/triage/lib/processor/index.d.ts",
+    "category": "generated",
+    "usage": 183,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/triage/lib/processor/similarity.d.ts",
+    "category": "generated",
+    "usage": 5,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/triage/lib/processor/task-creation.d.ts",
+    "category": "generated",
+    "usage": 6,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/triage/lib/processor/task-processor.d.ts",
+    "category": "generated",
+    "usage": 4,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/triage/lib/processor/task-update.d.ts",
+    "category": "generated",
+    "usage": 8,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/triage/lib/utils.d.ts",
+    "category": "generated",
+    "usage": 290,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/update/batch.d.ts",
+    "category": "generated",
+    "usage": 14,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/update/index.d.ts",
+    "category": "generated",
+    "usage": 183,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/update/interactive-form.d.ts",
+    "category": "generated",
+    "usage": 4,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/commands/wizard/index.d.ts",
+    "category": "generated",
+    "usage": 183,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/entry-triage.d.ts",
+    "category": "generated",
+    "usage": 0,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/entry.d.ts",
+    "category": "generated",
+    "usage": 0,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/helpers/help-formatter.d.ts",
+    "category": "generated",
+    "usage": 48,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/ui/constants/screens.d.ts",
+    "category": "generated",
+    "usage": 2,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/ui/constants/shortcuts.d.ts",
+    "category": "generated",
+    "usage": 0,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/ui/constants/theme.d.ts",
+    "category": "generated",
+    "usage": 0,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/ui/context/NavigationContext.d.ts",
+    "category": "generated",
+    "usage": 0,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "cli/utils/chalk-utils.d.ts",
+    "category": "generated",
+    "usage": 70,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/ai/anthropic-provider.d.ts",
+    "category": "generated",
+    "usage": 4,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/ai/base-provider.d.ts",
+    "category": "generated",
+    "usage": 8,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/ai/custom-openai-provider.d.ts",
+    "category": "generated",
+    "usage": 4,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/ai/factory.d.ts",
+    "category": "generated",
+    "usage": 40,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/ai/index.d.ts",
+    "category": "generated",
+    "usage": 183,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/ai/mock-provider.d.ts",
+    "category": "generated",
+    "usage": 4,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/ai/openai-provider.d.ts",
+    "category": "generated",
+    "usage": 10,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/ai/operations.d.ts",
+    "category": "generated",
+    "usage": 6,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/ai/types.d.ts",
+    "category": "generated",
+    "usage": 414,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/api/client.d.ts",
+    "category": "generated",
+    "usage": 2,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/api/command.d.ts",
+    "category": "generated",
+    "usage": 269,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/api/context.d.ts",
+    "category": "generated",
+    "usage": 37,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/api/handlers/batch-handler.d.ts",
+    "category": "generated",
+    "usage": 8,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/api/handlers/index.d.ts",
+    "category": "generated",
+    "usage": 183,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/api/handlers/task-add.d.ts",
+    "category": "generated",
+    "usage": 6,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/api/handlers/task-deps.d.ts",
+    "category": "generated",
+    "usage": 4,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/api/handlers/task-graph.d.ts",
+    "category": "generated",
+    "usage": 4,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/api/handlers/task-merge.d.ts",
+    "category": "generated",
+    "usage": 4,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/api/handlers/task-metadata.d.ts",
+    "category": "generated",
+    "usage": 6,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/api/handlers/task-remove.d.ts",
+    "category": "generated",
+    "usage": 4,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/api/handlers/task-search.d.ts",
+    "category": "generated",
+    "usage": 4,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/api/handlers/task-show.d.ts",
+    "category": "generated",
+    "usage": 4,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/api/handlers/task-update.d.ts",
+    "category": "generated",
+    "usage": 8,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/api/index-new.d.ts",
+    "category": "generated",
+    "usage": 1,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/api/index.d.ts",
+    "category": "generated",
+    "usage": 183,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/api/router-new.d.ts",
+    "category": "generated",
+    "usage": 2,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/api/router.d.ts",
+    "category": "generated",
+    "usage": 4,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/api/service-clean.d.ts",
+    "category": "generated",
+    "usage": 0,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/api/service-new.d.ts",
+    "category": "generated",
+    "usage": 4,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/api/service.d.ts",
+    "category": "generated",
+    "usage": 67,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/api/types.d.ts",
+    "category": "generated",
+    "usage": 414,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/capability-map/enhanced-discovery.d.ts",
+    "category": "generated",
+    "usage": 4,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/capability-map/enhanced-relationships.d.ts",
+    "category": "generated",
+    "usage": 4,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/capability-map/enhanced-visualizer.d.ts",
+    "category": "generated",
+    "usage": 2,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/capability-map/index-clean.d.ts",
+    "category": "generated",
+    "usage": 0,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/capability-map/index.d.ts",
+    "category": "generated",
+    "usage": 183,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/capability-map/visualizer.d.ts",
+    "category": "generated",
+    "usage": 46,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/capability-map/visualizers/enhanced/dot-renderer.d.ts",
+    "category": "generated",
+    "usage": 4,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/capability-map/visualizers/enhanced/index.d.ts",
+    "category": "generated",
+    "usage": 183,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/capability-map/visualizers/enhanced/json-renderer.d.ts",
+    "category": "generated",
+    "usage": 4,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/capability-map/visualizers/enhanced/mermaid-renderer.d.ts",
+    "category": "generated",
+    "usage": 4,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/capability-map/visualizers/enhanced/text-renderer.d.ts",
+    "category": "generated",
+    "usage": 4,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/capability-map/visualizers/index.d.ts",
+    "category": "generated",
+    "usage": 183,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/capability-map/visualizers/options.d.ts",
+    "category": "generated",
+    "usage": 24,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/capability-map/visualizers/renderers/base-renderer.d.ts",
+    "category": "generated",
+    "usage": 10,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/capability-map/visualizers/renderers/dot-renderer.d.ts",
+    "category": "generated",
+    "usage": 4,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/capability-map/visualizers/renderers/index.d.ts",
+    "category": "generated",
+    "usage": 183,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/capability-map/visualizers/renderers/json-renderer.d.ts",
+    "category": "generated",
+    "usage": 4,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/capability-map/visualizers/renderers/mermaid-renderer.d.ts",
+    "category": "generated",
+    "usage": 4,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/capability-map/visualizers/renderers/text-renderer.d.ts",
+    "category": "generated",
+    "usage": 4,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/capability-map/visualizers/utils/colors.d.ts",
+    "category": "generated",
+    "usage": 32,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/capability-map/visualizers/utils/formatting.d.ts",
+    "category": "generated",
+    "usage": 6,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/capability-map/visualizers/utils/grouping.d.ts",
+    "category": "generated",
+    "usage": 0,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/capability-map/visualizers/utils/index.d.ts",
+    "category": "generated",
+    "usage": 183,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/capability-map/visualizers/utils/naming.d.ts",
+    "category": "generated",
+    "usage": 0,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/capability-map/visualizers/utils/progress-bar.d.ts",
+    "category": "generated",
+    "usage": 6,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/capability-map/visualizers/utils/progress.d.ts",
+    "category": "generated",
+    "usage": 6,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/capability-map/visualizers/utils/styles.d.ts",
+    "category": "generated",
+    "usage": 2,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/capability-map/visualizers/utils/wrapping.d.ts",
+    "category": "generated",
+    "usage": 4,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/dod/manager.d.ts",
+    "category": "generated",
+    "usage": 26,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/dod/types.d.ts",
+    "category": "generated",
+    "usage": 414,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/graph.d.ts",
+    "category": "generated",
+    "usage": 131,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/graph/formatters/boxed-task.d.ts",
+    "category": "generated",
+    "usage": 10,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/graph/formatters/colors/constants.d.ts",
+    "category": "generated",
+    "usage": 42,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/graph/formatters/constants.d.ts",
+    "category": "generated",
+    "usage": 42,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/graph/formatters/detailed.d.ts",
+    "category": "generated",
+    "usage": 4,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/graph/formatters/dot.d.ts",
+    "category": "generated",
+    "usage": 21,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/graph/formatters/enhanced-boxed-task.d.ts",
+    "category": "generated",
+    "usage": 4,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/graph/formatters/enhanced-tree.d.ts",
+    "category": "generated",
+    "usage": 4,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/graph/formatters/index.d.ts",
+    "category": "generated",
+    "usage": 183,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/graph/formatters/json.d.ts",
+    "category": "generated",
+    "usage": 9,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/graph/formatters/mermaid.d.ts",
+    "category": "generated",
+    "usage": 9,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/graph/formatters/metadata-formatter.d.ts",
+    "category": "generated",
+    "usage": 5,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/graph/formatters/polished-task.d.ts",
+    "category": "generated",
+    "usage": 5,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/graph/formatters/sections/command-block.d.ts",
+    "category": "generated",
+    "usage": 6,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/graph/formatters/sections/dates-formatter.d.ts",
+    "category": "generated",
+    "usage": 6,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/graph/formatters/sections/dod-formatter.d.ts",
+    "category": "generated",
+    "usage": 3,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/graph/formatters/sections/index.d.ts",
+    "category": "generated",
+    "usage": 183,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/graph/formatters/sections/progress-bar.d.ts",
+    "category": "generated",
+    "usage": 6,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/graph/formatters/sections/readiness-formatter.d.ts",
+    "category": "generated",
+    "usage": 6,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/graph/formatters/sections/section-header.d.ts",
+    "category": "generated",
+    "usage": 6,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/graph/formatters/sections/tags-formatter.d.ts",
+    "category": "generated",
+    "usage": 6,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/graph/formatters/sections/title-banner.d.ts",
+    "category": "generated",
+    "usage": 6,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/graph/formatters/simple.d.ts",
+    "category": "generated",
+    "usage": 4,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/graph/formatters/table-list.d.ts",
+    "category": "generated",
+    "usage": 4,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/graph/formatters/text.d.ts",
+    "category": "generated",
+    "usage": 52,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/graph/formatters/tree.d.ts",
+    "category": "generated",
+    "usage": 12,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/graph/formatters/typography/constants.d.ts",
+    "category": "generated",
+    "usage": 42,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/graph/formatters/ui-config.d.ts",
+    "category": "generated",
+    "usage": 4,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/graph/formatters/utils/gradient.d.ts",
+    "category": "generated",
+    "usage": 4,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/graph/formatters/utils/text-formatter.d.ts",
+    "category": "generated",
+    "usage": 4,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/graph/index.d.ts",
+    "category": "generated",
+    "usage": 183,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/graph/utils.d.ts",
+    "category": "generated",
+    "usage": 290,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/nlp-helpers.d.ts",
+    "category": "generated",
+    "usage": 0,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/nlp-mock/index.d.ts",
+    "category": "generated",
+    "usage": 183,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/nlp-service-mock.d.ts",
+    "category": "generated",
+    "usage": 16,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/nlp-service.d.ts",
+    "category": "generated",
+    "usage": 34,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/nlp/entities.d.ts",
+    "category": "generated",
+    "usage": 14,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/nlp/esm-compat/nlp-manager.d.ts",
+    "category": "generated",
+    "usage": 6,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/nlp/factory.d.ts",
+    "category": "generated",
+    "usage": 40,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/nlp/fuzzy-matcher.d.ts",
+    "category": "generated",
+    "usage": 6,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/nlp/index.d.ts",
+    "category": "generated",
+    "usage": 183,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/nlp/matchers/fuzzy-matcher.d.ts",
+    "category": "generated",
+    "usage": 6,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/nlp/matchers/index.d.ts",
+    "category": "generated",
+    "usage": 183,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/nlp/processing/entities.d.ts",
+    "category": "generated",
+    "usage": 14,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/nlp/processing/index.d.ts",
+    "category": "generated",
+    "usage": 183,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/nlp/processing/optimized-processor.d.ts",
+    "category": "generated",
+    "usage": 2,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/nlp/processing/processor.d.ts",
+    "category": "generated",
+    "usage": 42,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/nlp/processing/trainer.d.ts",
+    "category": "generated",
+    "usage": 6,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/nlp/processor.d.ts",
+    "category": "generated",
+    "usage": 42,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/nlp/services/base-service.d.ts",
+    "category": "generated",
+    "usage": 11,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/nlp/services/index.d.ts",
+    "category": "generated",
+    "usage": 183,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/nlp/services/mock-service.d.ts",
+    "category": "generated",
+    "usage": 8,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/nlp/services/nlp-service.d.ts",
+    "category": "generated",
+    "usage": 34,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/nlp/services/optimized-nlp-service.d.ts",
+    "category": "generated",
+    "usage": 0,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/nlp/testing/nlp-test-utils.d.ts",
+    "category": "generated",
+    "usage": 9,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/nlp/trainer.d.ts",
+    "category": "generated",
+    "usage": 6,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/nlp/types.d.ts",
+    "category": "generated",
+    "usage": 414,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/nlp/utils/index.d.ts",
+    "category": "generated",
+    "usage": 183,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/nlp/utils/profiler.d.ts",
+    "category": "generated",
+    "usage": 4,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/nlp/utils/stemming.d.ts",
+    "category": "generated",
+    "usage": 6,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/nlp/utils/synonyms.d.ts",
+    "category": "generated",
+    "usage": 6,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/nlp/utils/tokenization.d.ts",
+    "category": "generated",
+    "usage": 14,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/repo.d.ts",
+    "category": "generated",
+    "usage": 202,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/repository/base.d.ts",
+    "category": "generated",
+    "usage": 56,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/repository/creation.d.ts",
+    "category": "generated",
+    "usage": 14,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/repository/enhanced.d.ts",
+    "category": "generated",
+    "usage": 68,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/repository/factory.d.ts",
+    "category": "generated",
+    "usage": 40,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/repository/hierarchy.d.ts",
+    "category": "generated",
+    "usage": 7,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/repository/index-clean.d.ts",
+    "category": "generated",
+    "usage": 0,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/repository/index.d.ts",
+    "category": "generated",
+    "usage": 183,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/repository/metadata.d.ts",
+    "category": "generated",
+    "usage": 27,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/repository/optimized-operations.d.ts",
+    "category": "generated",
+    "usage": 2,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/repository/search.d.ts",
+    "category": "generated",
+    "usage": 19,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/types.d.ts",
+    "category": "generated",
+    "usage": 414,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/utils/index.d.ts",
+    "category": "generated",
+    "usage": 183,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/utils/logger.d.ts",
+    "category": "generated",
+    "usage": 19,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "core/utils/test-error-handling.d.ts",
+    "category": "generated",
+    "usage": 0,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "db/schema.d.ts",
+    "category": "generated",
+    "usage": 48,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "scripts/continuous-task-processor.d.ts",
+    "category": "generated",
+    "usage": 0,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "scripts/convert-to-alias-imports.d.ts",
+    "category": "generated",
+    "usage": 0,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "scripts/fix-database.d.ts",
+    "category": "generated",
+    "usage": 0,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "scripts/fix-js-imports.d.ts",
+    "category": "generated",
+    "usage": 0,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "scripts/fix-remaining-ts-imports.d.ts",
+    "category": "generated",
+    "usage": 0,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "scripts/fix-tags.d.ts",
+    "category": "generated",
+    "usage": 0,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "scripts/generate-docs.d.ts",
+    "category": "generated",
+    "usage": 0,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "scripts/remove-import-extensions-with-exceptions.d.ts",
+    "category": "generated",
+    "usage": 0,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "scripts/remove-import-extensions.d.ts",
+    "category": "generated",
+    "usage": 0,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "scripts/run-migration.d.ts",
+    "category": "generated",
+    "usage": 0,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "scripts/standalone-task-processor.d.ts",
+    "category": "generated",
+    "usage": 0,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "scripts/ts-fixers/fixChalkColorTypes.d.ts",
+    "category": "generated",
+    "usage": 0,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "scripts/ts-fixers/fixDrizzleTypes.d.ts",
+    "category": "generated",
+    "usage": 0,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "scripts/ts-fixers/fixMissingExports.d.ts",
+    "category": "generated",
+    "usage": 0,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "scripts/ts-fixers/fixTimeWindowTypes.d.ts",
+    "category": "generated",
+    "usage": 0,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "scripts/ts-fixers/run-all.d.ts",
+    "category": "generated",
+    "usage": 0,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "scripts/ts-fixers/utils.d.ts",
+    "category": "generated",
+    "usage": 290,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "scripts/upgrade-database.d.ts",
+    "category": "generated",
+    "usage": 0,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "scripts/validate-extensionless-imports-with-exceptions.d.ts",
+    "category": "generated",
+    "usage": 0,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "scripts/validate-extensionless-imports.d.ts",
+    "category": "generated",
+    "usage": 0,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "scripts/validate-ts-imports.d.ts",
+    "category": "generated",
+    "usage": 0,
+    "implementationExists": true,
+    "recommendation": "review",
+    "notes": "Has corresponding implementation file"
+  },
+  {
+    "path": "src/core/nlp/fuse.d.ts",
+    "category": "essential",
+    "usage": 2,
+    "implementationExists": false,
+    "recommendation": "keep",
+    "notes": "Used in the codebase without implementation"
+  },
+  {
+    "path": "src/types/chalk-utils.d.ts",
+    "category": "external-dependency",
+    "usage": 70,
+    "implementationExists": false,
+    "recommendation": "keep",
+    "notes": "Types for external dependency"
+  },
+  {
+    "path": "src/types/core-types.d.ts",
+    "category": "external-dependency",
+    "usage": 0,
+    "implementationExists": false,
+    "recommendation": "keep",
+    "notes": "Types for external dependency"
+  },
+  {
+    "path": "src/types/drizzle-orm.d.ts",
+    "category": "external-dependency",
+    "usage": 41,
+    "implementationExists": false,
+    "recommendation": "keep",
+    "notes": "Types for external dependency"
+  }
+]

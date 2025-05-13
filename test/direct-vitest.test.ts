@@ -9,7 +9,7 @@
 process.env.NODE_OPTIONS = '--experimental-specifier-resolution=node';
 
 import { describe, it, expect } from 'vitest';
-import { createTestRepository } from './core/test-helpers.ts';
+import { createTestRepository } from './core/test-helpers';
 
 describe('TaskRepository Basic Test', () => {
   it('creates a task successfully', async () => {

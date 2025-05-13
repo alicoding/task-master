@@ -3,10 +3,10 @@
  * Tests capability map generation with enhanced relationships
  */
 
-import { CapabilityMapGenerator } from '../../core/capability-map/index.ts';
-import { TaskRepository } from '../../core/repo.ts';
-import { AiProviderFactory } from '../../core/ai/factory.ts';
-import { Task, TaskStatus, TaskReadiness } from '../../core/types.ts';
+import { CapabilityMapGenerator } from '../../core/capability-map/index';
+import { TaskRepository } from '../../core/repo';
+import { AiProviderFactory } from '../../core/ai/factory';
+import { Task, TaskStatus, TaskReadiness } from '../../core/types';
 import { describe, it, expect, beforeEach } from 'vitest';
 
 /**
@@ -73,14 +73,11 @@ const createMockRepository = () => {
 
   return {
     getAllTasks: async () => {
-      // Handle both legacy and modern return patterns
+      // Return with success and data fields in the response object
       return {
         success: true,
         data: tasks as unknown as Task[]
       };
-    },
-    getAllTasksLegacy: async () => {
-      return tasks as unknown as Task[];
     },
     searchTasks: async (filters: { status?: TaskStatus | TaskStatus[] }) => {
       let filteredTasks: MockTask[];
@@ -101,15 +98,18 @@ const createMockRepository = () => {
         data: filteredTasks as unknown as Task[]
       };
     },
-    searchTasksLegacy: async (filters: { status?: TaskStatus | TaskStatus[] }) => {
-      if (filters.status) {
-        if (Array.isArray(filters.status)) {
-          return tasks.filter(t => t.status && filters.status.includes(t.status)) as unknown as Task[];
-        } else {
-          return tasks.filter(t => t.status === filters.status) as unknown as Task[];
-        }
-      }
-      return tasks as unknown as Task[];
+    close: () => {
+      // Mock close method
+      return Promise.resolve();
+    },
+    naturalLanguageSearch: (query: string, options: any = {}) => {
+      return Promise.resolve(tasks as unknown as Task[]);
+    },
+    findSimilarTasks: async (title: string) => {
+      return {
+        success: true,
+        data: tasks as unknown as Task[]
+      };
     }
   };
 };

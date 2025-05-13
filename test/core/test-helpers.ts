@@ -6,10 +6,10 @@
 import Database from 'better-sqlite3';
 import { drizzle } from 'drizzle-orm/better-sqlite3';
 import { migrate } from 'drizzle-orm/better-sqlite3/migrator';
-import * as schema from '../../db/schema.ts';
-import { BaseTaskRepository } from '../../core/repository/base.ts';
-import { TaskRepository } from '../../core/repo.ts';
-import { RepositoryFactory } from '../../core/repository/factory.ts';
+import * as schema from '../../db/schema';
+import { BaseTaskRepository } from '../../core/repository/base';
+import { TaskRepository } from '../../core/repo';
+import { RepositoryFactory } from '../../core/repository/factory';
 import {
   TaskInsertOptions,
   TaskError,
@@ -17,7 +17,7 @@ import {
   TaskStatus,
   TaskReadiness,
   Task
-} from '../../core/types.ts';
+} from '../../core/types';
 import { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
 
 /**
@@ -29,7 +29,11 @@ export function createTestDatabase() {
   const sqlite = new Database(':memory:');
   
   // Create Drizzle instance
-  const db = drizzle(sqlite, { schema });
+  // Do not include schema-extensions.ts which contains file tracking tables
+  const db = drizzle(sqlite, { schema: {
+    tasks: schema.tasks,
+    dependencies: schema.dependencies
+  }});
   
   // Run migrations from memory
   // Note: For actual tests, we're not using migrations but directly creating tables

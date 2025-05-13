@@ -4,12 +4,12 @@
  */
 
 import { Command } from 'commander';
-import { AiProviderFactory } from '../../../core/ai/factory.ts';
-import { TaskOperations } from '../../../core/ai/operations.ts';
-import { TaskRepository } from '../../../core/repo.ts';
-import { helpFormatter } from '../../helpers/help-formatter.ts';
-import { TaskOperationResult } from '../../../core/types.ts';
-import { Task } from '../../../db/schema.ts';
+import { AiProviderFactory } from '../../../core/ai/factory';
+import { TaskOperations } from '../../../core/ai/operations';
+import { TaskRepository } from '../../../core/repo';
+import { helpFormatter } from '../../helpers/help-formatter';
+import { TaskOperationResult } from '../../../core/types';
+import { Task } from '@/core/types';
 
 /**
  * Create the AI command
@@ -91,12 +91,12 @@ export function createAiCommand() {
         if (success) {
           console.log(`✅ Successfully connected to ${aiProvider.getName()}`);
         } else {
-          console.error(`❌ Failed to connect to ${aiProvider.getName()}`);
-          console.error('Check your API key and provider configuration');
+          console?.error(`❌ Failed to connect to ${aiProvider.getName()}`);
+          console?.error('Check your API key and provider configuration');
           process.exit(1);
         }
       } catch (error) {
-        console.error(`❌ Error testing connection: ${error instanceof Error ? error.message : String(error)}`);
+        console?.error(`❌ Error testing connection: ${error instanceof Error ? error.message : String(error)}`);
         process.exit(1);
       }
     });
@@ -119,13 +119,13 @@ export function createAiCommand() {
         const repo = new TaskRepository();
         const taskResult = await repo.getTask(options.id);
 
-        if (!taskResult.success || !taskResult.data) {
-          console.error(`Task ${options.id} not found: ${taskResult.error?.message || 'Unknown error'}`);
+        if (!taskResult?.success || !taskResult?.data) {
+          console?.error(`Task ${options.id} not found: ${taskResult?.error?.message || 'Unknown error'}`);
           repo.close();
           process.exit(1);
         }
 
-        const task = taskResult.data;
+        const task = taskResult?.data;
         console.log(`Generating subtasks for: ${task.id} - ${task.title}...`);
 
         // Create the AI provider and operations
@@ -152,18 +152,18 @@ export function createAiCommand() {
             metadata: { generatedBy: 'ai' }
           });
 
-          if (subtaskResult.success && subtaskResult.data) {
-            createdTasks.push(subtaskResult.data);
-            console.log(`- ${subtaskResult.data.id}: ${subtaskResult.data.title}`);
+          if (subtaskResult?.success && subtaskResult?.data) {
+            createdTasks.push(subtaskResult?.data);
+            console.log(`- ${subtaskResult?.data?.id}: ${subtaskResult?.data?.title}`);
           } else {
-            console.error(`  Failed to create subtask "${subtaskTitle}": ${subtaskResult.error?.message || 'Unknown error'}`);
+            console?.error(`  Failed to create subtask "${subtaskTitle}": ${subtaskResult?.error?.message || 'Unknown error'}`);
           }
         }
 
         console.log(`\n✅ Created ${createdTasks.length} subtasks for task ${task.id}`);
         repo.close();
       } catch (error) {
-        console.error(`❌ Error generating subtasks: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        console?.error(`❌ Error generating subtasks: ${error instanceof Error ? error.message : 'Unknown error'}`);
         process.exit(1);
       }
     });
@@ -185,13 +185,13 @@ export function createAiCommand() {
         const repo = new TaskRepository();
         const taskResult = await repo.getTask(options.id);
 
-        if (!taskResult.success || !taskResult.data) {
-          console.error(`Task ${options.id} not found: ${taskResult.error?.message || 'Unknown error'}`);
+        if (!taskResult?.success || !taskResult?.data) {
+          console?.error(`Task ${options.id} not found: ${taskResult?.error?.message || 'Unknown error'}`);
           repo.close();
           process.exit(1);
         }
 
-        const task = taskResult.data;
+        const task = taskResult?.data;
         console.log(`Suggesting tags for: ${task.id} - ${task.title}...`);
 
         // Create the AI provider and operations
@@ -209,7 +209,7 @@ export function createAiCommand() {
         }
 
         // Apply tags if requested
-        if (options.apply && result.tags.length > 0) {
+        if (options.apply && result.tags?.length > 0) {
           // Combine existing and new tags, removing duplicates
           const existingTags = task.tags || [];
           const allTags = [...new Set([...existingTags, ...result.tags])];
@@ -220,16 +220,16 @@ export function createAiCommand() {
             tags: allTags
           });
 
-          if (updateResult.success) {
-            console.log(`\n✅ Applied ${result.tags.length} tags to task ${task.id}`);
+          if (updateResult?.success) {
+            console.log(`\n✅ Applied ${result.tags?.length} tags to task ${task.id}`);
           } else {
-            console.error(`\n❌ Failed to apply tags: ${updateResult.error?.message || 'Unknown error'}`);
+            console?.error(`\n❌ Failed to apply tags: ${updateResult?.error?.message || 'Unknown error'}`);
           }
         }
 
         repo.close();
       } catch (error) {
-        console.error(`❌ Error suggesting tags: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        console?.error(`❌ Error suggesting tags: ${error instanceof Error ? error.message : 'Unknown error'}`);
         process.exit(1);
       }
     });
@@ -250,13 +250,13 @@ export function createAiCommand() {
         const repo = new TaskRepository();
         const taskResult = await repo.getTask(options.id);
 
-        if (!taskResult.success || !taskResult.data) {
-          console.error(`Task ${options.id} not found: ${taskResult.error?.message || 'Unknown error'}`);
+        if (!taskResult?.success || !taskResult?.data) {
+          console?.error(`Task ${options.id} not found: ${taskResult?.error?.message || 'Unknown error'}`);
           repo.close();
           process.exit(1);
         }
 
-        const task = taskResult.data;
+        const task = taskResult?.data;
         console.log(`Analyzing task: ${task.id} - ${task.title}...`);
 
         // Create the AI provider and operations
@@ -271,7 +271,7 @@ export function createAiCommand() {
         console.log('\nAnalysis:');
 
         // Display structured analysis if available
-        if (result.analysis && Object.keys(result.analysis).length > 0) {
+        if (result.analysis && Object.keys(result.analysis)?.length > 0) {
           for (const [key, value] of Object.entries(result.analysis)) {
             // Convert key from camelCase to Title Case
             const formattedKey = key.replace(/([A-Z])/g, ' $1')
@@ -286,7 +286,7 @@ export function createAiCommand() {
 
         repo.close();
       } catch (error) {
-        console.error(`❌ Error analyzing task: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        console?.error(`❌ Error analyzing task: ${error instanceof Error ? error.message : 'Unknown error'}`);
         process.exit(1);
       }
     });
@@ -308,13 +308,13 @@ export function createAiCommand() {
         const repo = new TaskRepository();
         const tasksResult = await repo.getAllTasks();
 
-        if (!tasksResult.success || !tasksResult.data) {
-          console.error(`Failed to retrieve tasks: ${tasksResult.error?.message || 'Unknown error'}`);
+        if (!tasksResult?.success || !tasksResult?.data) {
+          console?.error(`Failed to retrieve tasks: ${tasksResult?.error?.message || 'Unknown error'}`);
           repo.close();
           process.exit(1);
         }
 
-        let tasks = tasksResult.data;
+        let tasks = tasksResult?.data;
 
         // Apply filter if provided
         if (options.filter) {
@@ -373,20 +373,20 @@ export function createAiCommand() {
                 tags: [...filteredTags, priorityTag]
               });
 
-              if (!updateResult.success) {
-                console.error(`  Failed to apply priority tag to task ${task.id}: ${updateResult.error?.message || 'Unknown error'}`);
+              if (!updateResult?.success) {
+                console?.error(`  Failed to apply priority tag to task ${task.id}: ${updateResult?.error?.message || 'Unknown error'}`);
               }
             }
           }
         }
 
         if (options.apply) {
-          console.log(`\n✅ Applied priorities as tags to ${Object.keys(result.priorities).length} tasks`);
+          console.log(`\n✅ Applied priorities as tags to ${Object.keys(result.priorities)?.length} tasks`);
         }
 
         repo.close();
       } catch (error) {
-        console.error(`❌ Error prioritizing tasks: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        console?.error(`❌ Error prioritizing tasks: ${error instanceof Error ? error.message : 'Unknown error'}`);
         process.exit(1);
       }
     });
@@ -437,14 +437,14 @@ export function createAiCommand() {
               }
             });
 
-            if (taskResult.success && taskResult.data) {
-              createdTasks.push(taskResult.data);
-              console.log(`- ${taskResult.data.id}: ${taskResult.data.title}`);
+            if (taskResult?.success && taskResult?.data) {
+              createdTasks.push(taskResult?.data);
+              console.log(`- ${taskResult?.data?.id}: ${taskResult?.data?.title}`);
               if (taskData.description) {
                 console.log(`  Description: ${taskData.description}`);
               }
             } else {
-              console.error(`  Failed to create task "${taskData.title}": ${taskResult.error?.message || 'Unknown error'}`);
+              console?.error(`  Failed to create task "${taskData.title}": ${taskResult?.error?.message || 'Unknown error'}`);
             }
           }
 
@@ -452,18 +452,18 @@ export function createAiCommand() {
           repo.close();
         } else {
           // Just display the generated tasks
-          result.tasks.forEach((task, index) => {
+          result.tasks?.forEach((task, index) => {
             console.log(`- ${index + 1}. ${task.title}`);
             if (task.description) {
               console.log(`  Description: ${task.description}`);
             }
             if (task.tags && task.tags.length > 0) {
-              console.log(`  Tags: ${task.tags.join(', ')}`);
+              console.log(`  Tags: ${task.tags?.join(', ')}`);
             }
           });
         }
       } catch (error) {
-        console.error(`❌ Error generating tasks: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        console?.error(`❌ Error generating tasks: ${error instanceof Error ? error.message : 'Unknown error'}`);
         process.exit(1);
       }
     });

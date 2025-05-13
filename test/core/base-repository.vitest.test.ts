@@ -1,14 +1,12 @@
 /**
  * base-repository.vitest.test.ts - Converted from uvu to Vitest
  * 
- * This file uses the Vitest adapter to run the original test with minimal changes.
+ * This file tests the BaseTaskRepository functionality using Vitest.
  */
 
-import { test, assert } from '../vitest-adapter.ts';
-// assert is imported from vitest-adapter;
-import { BaseTaskRepository } from '../../core/repository/base.ts';
-import { Task } from '../../db/schema.ts';
-import { TaskInsertOptions, TaskUpdateOptions, TaskErrorCode } from '../../core/types.ts';
+import { describe, it, expect } from 'vitest';
+import { BaseTaskRepository } from '../../core/repository/base';
+import { TaskErrorCode } from '../../core/types';
 
 // Helper to create a repository for testing
 function createTestRepository(): BaseTaskRepository {
@@ -16,147 +14,146 @@ function createTestRepository(): BaseTaskRepository {
   return new BaseTaskRepository('./test.db', true);
 }
 
-test('BaseTaskRepository - constructor and close', () => {
-  const repo = createTestRepository();
-  
-  // Check that the repo is properly initialized
-  assert.ok(repo._db, 'Should have a database instance');
-  assert.ok(repo._sqlite, 'Should have a SQLite instance');
-  
-  // Close the repository
-  const closeResult = repo.close();
-  assert.equal(closeResult, true, 'Close should return true');
-});
-
-test('BaseTaskRepository - getTask with non-existent ID', async () => {
-  const repo = createTestRepository();
-  
-  // Get a non-existent task
-  const result = await repo.getTask('non-existent-id');
-  
-  // Check result properties
-  assert.equal(result.success, false, 'Should fail for non-existent task');
-  assert.ok(result.error, 'Should have an error');
-  assert.equal(result.error?.code, TaskErrorCode.NOT_FOUND, 'Should have NOT_FOUND error code');
-  assert.ok(result.error?.message.includes('not found'), 'Should mention task not found');
-  
-  // Legacy method
-  const legacyResult = await repo.getTaskLegacy('non-existent-id');
-  assert.equal(legacyResult, undefined, 'Legacy method should return undefined');
-  
-  repo.close();
-});
-
-test('BaseTaskRepository - getTask with invalid ID', async () => {
-  const repo = createTestRepository();
-  
-  // @ts-ignore - Testing with invalid type
-  const result = await repo.getTask(null);
-  
-  // Check result properties
-  assert.equal(result.success, false, 'Should fail for invalid task ID');
-  assert.ok(result.error, 'Should have an error');
-  assert.equal(result.error?.code, TaskErrorCode.INVALID_INPUT, 'Should have INVALID_INPUT error code');
-  
-  repo.close();
-});
-
-test('BaseTaskRepository - getAllTasks with empty database', async () => {
-  const repo = createTestRepository();
-  
-  // Get all tasks
-  const result = await repo.getAllTasks();
-  
-  // Check result properties
-  assert.equal(result.success, true, 'Should succeed even with empty database');
-  assert.ok(Array.isArray(result.data), 'Should return an array');
-  assert.equal(result.data?.length, 0, 'Should have zero tasks');
-  
-  // Test legacy method
-  const legacyResult = await repo.getAllTasksLegacy();
-  assert.equal(legacyResult.length, 0, 'Legacy method should return empty array');
-  
-  repo.close();
-});
-
-test('BaseTaskRepository - updateTask with invalid ID', async () => {
-  const repo = createTestRepository();
-  
-  // Update with invalid ID
-  const updateResult = await repo.updateTask({
-    id: 'non-existent-id',
-    title: 'Updated Title'
+describe('BaseTaskRepository', () => {
+  it('constructor and close', () => {
+    const repo = createTestRepository();
+    
+    // Check that the repo is properly initialized
+    expect(repo._db).toBeTruthy();
+    expect(repo._sqlite).toBeTruthy();
+    
+    // Close the repository
+    const closeResult = repo.close();
+    expect(closeResult).toBe(true);
   });
-  
-  // Check result properties
-  assert.equal(updateResult.success, false, 'Should fail for non-existent task');
-  assert.ok(updateResult.error, 'Should have an error');
-  assert.equal(updateResult.error?.code, TaskErrorCode.NOT_FOUND, 'Should have NOT_FOUND error code');
-  
-  // Try legacy method
-  const legacyResult = await repo.updateTaskLegacy({
-    id: 'non-existent-id',
-    title: 'Updated Title'
+
+  it('getTask with non-existent ID', async () => {
+    const repo = createTestRepository();
+    
+    // Get a non-existent task
+    const result = await repo.getTask('non-existent-id');
+    
+    // Check result properties
+    expect(result.success).toBe(false);
+    expect(result.error).toBeTruthy();
+    expect(result.error?.code).toBe(TaskErrorCode.NOT_FOUND);
+    expect(result.error?.message).toContain('not found');
+    
+    // Legacy method
+    const legacyResult = await repo.getTaskLegacy('non-existent-id');
+    expect(legacyResult).toBeUndefined();
+    
+    repo.close();
   });
-  assert.equal(legacyResult, undefined, 'Legacy method should return undefined');
-  
-  repo.close();
-});
 
-test('BaseTaskRepository - updateTask with invalid status', async () => {
-  const repo = createTestRepository();
-  
-  // Create a task first
-  // Note: Since our original methods are now wrapped with error handling, 
-  // we need to call a different method on our repo to actually create the task
-  // This is hypothetical as we haven't updated the creation methods yet
-  
-  // Update with invalid status
-  const updateResult = await repo.updateTask({
-    id: '1', // Hypothetical ID
-    // @ts-ignore - intentionally testing invalid status
-    status: 'invalid-status'
+  it('getTask with invalid ID', async () => {
+    const repo = createTestRepository();
+    
+    // @ts-ignore - Testing with invalid type
+    const result = await repo.getTask(null);
+    
+    // Check result properties
+    expect(result.success).toBe(false);
+    expect(result.error).toBeTruthy();
+    expect(result.error?.code).toBe(TaskErrorCode.INVALID_INPUT);
+    
+    repo.close();
   });
-  
-  // Check result properties
-  assert.equal(updateResult.success, false, 'Should fail for invalid status');
-  assert.ok(updateResult.error, 'Should have an error');
-  assert.equal(updateResult.error?.code, TaskErrorCode.INVALID_INPUT, 'Should have INVALID_INPUT error code');
-  
-  repo.close();
-});
 
-test('BaseTaskRepository - removeTask with non-existent ID', async () => {
-  const repo = createTestRepository();
-  
-  // Remove non-existent task
-  const result = await repo.removeTask('non-existent-id');
-  
-  // Check result properties
-  assert.equal(result.success, false, 'Should fail for non-existent task');
-  assert.ok(result.error, 'Should have an error');
-  assert.equal(result.error?.code, TaskErrorCode.NOT_FOUND, 'Should have NOT_FOUND error code');
-  
-  // Legacy method
-  const legacyResult = await repo.removeTaskLegacy('non-existent-id');
-  assert.equal(legacyResult, false, 'Legacy method should return false');
-  
-  repo.close();
-});
+  it('getAllTasks with empty database', async () => {
+    const repo = createTestRepository();
+    
+    // Get all tasks
+    const result = await repo.getAllTasks();
+    
+    // Check result properties
+    expect(result.success).toBe(true);
+    expect(Array.isArray(result.data)).toBe(true);
+    expect(result.data?.length).toBe(0);
+    
+    // Test legacy method
+    const legacyResult = await repo.getAllTasksLegacy();
+    expect(legacyResult.length).toBe(0);
+    
+    repo.close();
+  });
 
-test('BaseTaskRepository - removeTask with invalid ID', async () => {
-  const repo = createTestRepository();
-  
-  // @ts-ignore - Testing with invalid type
-  const result = await repo.removeTask(null);
-  
-  // Check result properties
-  assert.equal(result.success, false, 'Should fail for invalid task ID');
-  assert.ok(result.error, 'Should have an error');
-  assert.equal(result.error?.code, TaskErrorCode.INVALID_INPUT, 'Should have INVALID_INPUT error code');
-  
-  repo.close();
-});
+  it('updateTask with invalid ID', async () => {
+    const repo = createTestRepository();
+    
+    // Update with invalid ID
+    const updateResult = await repo.updateTask({
+      id: 'non-existent-id',
+      title: 'Updated Title'
+    });
+    
+    // Check result properties
+    expect(updateResult.success).toBe(false);
+    expect(updateResult.error).toBeTruthy();
+    expect(updateResult.error?.code).toBe(TaskErrorCode.NOT_FOUND);
+    
+    // Try legacy method
+    const legacyResult = await repo.updateTaskLegacy({
+      id: 'non-existent-id',
+      title: 'Updated Title'
+    });
+    expect(legacyResult).toBeUndefined();
+    
+    repo.close();
+  });
 
-// Run all tests
-test.run();
+  it('updateTask with invalid status', async () => {
+    const repo = createTestRepository();
+    
+    // Create a task first
+    // Note: Since our original methods are now wrapped with error handling, 
+    // we need to call a different method on our repo to actually create the task
+    // This is hypothetical as we haven't updated the creation methods yet
+    
+    // Update with invalid status
+    const updateResult = await repo.updateTask({
+      id: '1', // Hypothetical ID
+      // @ts-ignore - intentionally testing invalid status
+      status: 'invalid-status'
+    });
+    
+    // Check result properties
+    expect(updateResult.success).toBe(false);
+    expect(updateResult.error).toBeTruthy();
+    expect(updateResult.error?.code).toBe(TaskErrorCode.INVALID_INPUT);
+    
+    repo.close();
+  });
+
+  it('removeTask with non-existent ID', async () => {
+    const repo = createTestRepository();
+    
+    // Remove non-existent task
+    const result = await repo.removeTask('non-existent-id');
+    
+    // Check result properties
+    expect(result.success).toBe(false);
+    expect(result.error).toBeTruthy();
+    expect(result.error?.code).toBe(TaskErrorCode.NOT_FOUND);
+    
+    // Legacy method
+    const legacyResult = await repo.removeTaskLegacy('non-existent-id');
+    expect(legacyResult).toBe(false);
+    
+    repo.close();
+  });
+
+  it('removeTask with invalid ID', async () => {
+    const repo = createTestRepository();
+    
+    // @ts-ignore - Testing with invalid type
+    const result = await repo.removeTask(null);
+    
+    // Check result properties
+    expect(result.success).toBe(false);
+    expect(result.error).toBeTruthy();
+    expect(result.error?.code).toBe(TaskErrorCode.INVALID_INPUT);
+    
+    repo.close();
+  });
+});

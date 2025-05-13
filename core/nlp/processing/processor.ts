@@ -2,10 +2,10 @@
  * Processor module for NLP service
  * Handles processing queries and calculating similarity
  */
-import { NlpManager } from '../types.ts';
-import { ProcessedQuery, ExtractedSearchFilters } from '../types.ts';
-import { ENTITY_TERMS_TO_REMOVE } from './entities.ts';
-import { calculateJaccardSimilarity } from '../utils/distance.ts';
+import { NlpManager } from '../types';
+import { ProcessedQuery, ExtractedSearchFilters } from '../types';
+import { ENTITY_TERMS_TO_REMOVE } from './entities';
+import { calculateJaccardSimilarity } from '../utils/distance';
 
 /**
  * Interface for tokenizer

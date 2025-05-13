@@ -11,7 +11,7 @@
  */
 
 import chalk from 'chalk';
-import { CapabilityMap, CapabilityNode, CapabilityEdge } from './index.ts';
+import { CapabilityMap, CapabilityNode, CapabilityEdge } from './index';
 
 // Extend visualization options with new features
 export interface EnhancedVisualizationOptions {

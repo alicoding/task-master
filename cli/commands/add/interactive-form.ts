@@ -1,16 +1,17 @@
+import { ChalkColor, asChalkColor, ChalkStyle } from '@/cli/utils/chalk-utils';
+import { createColorize } from '@/cli/utils/chalk-utils';
 /**
  * Interactive form for task creation
  * Provides a rich form-like UI for creating tasks
  */
 
 import readline from 'readline';
-import { TaskInsertOptions, TaskStatus, TaskReadiness } from '../../../core/types.ts';
-import { ChalkColor, ChalkStyle, createColorize } from '../../utils/chalk-utils.ts';
+import { TaskInsertOptions, TaskStatus, TaskReadiness } from '../../../core/types';
 
 export class InteractiveTaskForm {
   private readline: readline.Interface;
   private taskOptions: Partial<TaskInsertOptions> = {};
-  private colorize: (text: string, color?: ChalkColor, style?: ChalkStyle) => string;
+  protected colorize: (text: string, color?: ChalkColor, style?: ChalkStyle) => string;
 
   constructor(useColors: boolean = true) {
     this.colorize = createColorize(useColors);
@@ -25,12 +26,12 @@ export class InteractiveTaskForm {
    */
   displayBanner(): void {
     console.clear();
-    console.log(this.colorize('─'.repeat(60), 'blue'));
-    console.log(this.colorize('📋 TASK MASTER - Interactive Task Creation', 'blue', 'bold'));
-    console.log(this.colorize('─'.repeat(60), 'blue'));
+    console.log(this.colorize('─'.repeat(60), asChalkColor((asChalkColor(('blue' as ChalkColor))))));
+    console.log(this.colorize('📋 TASK MASTER - Interactive Task Creation', asChalkColor((asChalkColor(('blue' as ChalkColor)))), asChalkColor('bold')));
+    console.log(this.colorize('─'.repeat(60), asChalkColor((asChalkColor(('blue' as ChalkColor))))));
     console.log('');
-    console.log(this.colorize('Fill out the form below to create a new task.', 'yellow'));
-    console.log(this.colorize('Required fields are marked with *', 'red'));
+    console.log(this.colorize('Fill out the form below to create a new task.', asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
+    console.log(this.colorize('Required fields are marked with *', asChalkColor((asChalkColor(('red' as ChalkColor))))));
     console.log('');
   }
 
@@ -38,12 +39,12 @@ export class InteractiveTaskForm {
    * Ask a question and get user input
    */
   private async askQuestion(question: string, required: boolean = false): Promise<string> {
-    const marker = required ? this.colorize('*', 'red', 'bold') + ' ' : '  ';
+    const marker = required ? this.colorize('*', asChalkColor((asChalkColor(('red' as ChalkColor)))), asChalkColor('bold')) + ' ' : '  ';
     
     return new Promise<string>((resolve) => {
       this.readline.question(`${marker}${question}: `, (answer) => {
         if (required && !answer.trim()) {
-          console.log(this.colorize('  This field is required.', 'red'));
+          console.log(this.colorize('  This field is required.', asChalkColor((asChalkColor(('red' as ChalkColor))))));
           resolve(this.askQuestion(question, required));
         } else {
           resolve(answer);
@@ -61,10 +62,10 @@ export class InteractiveTaskForm {
     defaultChoice?: T,
     required: boolean = false
   ): Promise<T | undefined> {
-    const marker = required ? this.colorize('*', 'red', 'bold') + ' ' : '  ';
+    const marker = required ? this.colorize('*', asChalkColor((asChalkColor(('red' as ChalkColor)))), asChalkColor('bold')) + ' ' : '  ';
     const choiceStr = choices.map((choice, i) => {
       const isDefault = choice === defaultChoice;
-      const choiceText = isDefault ? this.colorize(`${choice} (default)`, 'green') : choice;
+      const choiceText = isDefault ? this.colorize(`${choice} (default)`, asChalkColor((asChalkColor(('green' as ChalkColor))))) : choice;
       return `${i + 1}. ${choiceText}`;
     }).join('  ');
     
@@ -79,7 +80,7 @@ export class InteractiveTaskForm {
           } else if (choices.includes(answer as T)) {
             resolve(answer as T);
           } else {
-            console.log(this.colorize('  Invalid choice. Please try again.', 'red'));
+            console.log(this.colorize('  Invalid choice. Please try again.', asChalkColor((asChalkColor(('red' as ChalkColor))))));
             resolve(this.askMultipleChoice(question, choices, defaultChoice, required));
           }
         }
@@ -159,37 +160,37 @@ export class InteractiveTaskForm {
           const metadata = JSON.parse(metadataStr);
           this.taskOptions.metadata = metadata;
         } catch (e) {
-          console.log(this.colorize('  Invalid JSON. Metadata will be ignored.', 'red'));
+          console.log(this.colorize('  Invalid JSON. Metadata will be ignored.', asChalkColor((asChalkColor(('red' as ChalkColor))))));
         }
       }
       
       // Confirm submission
       console.log('');
-      console.log(this.colorize('─'.repeat(60), 'blue'));
-      console.log(this.colorize('Task Summary:', 'blue', 'bold'));
-      console.log(this.colorize('─'.repeat(60), 'blue'));
-      console.log(this.colorize('Title: ', 'yellow') + title);
-      if (description) console.log(this.colorize('Description: ', 'yellow') + description);
+      console.log(this.colorize('─'.repeat(60), asChalkColor((asChalkColor(('blue' as ChalkColor))))));
+      console.log(this.colorize('Task Summary:', asChalkColor((asChalkColor(('blue' as ChalkColor)))), asChalkColor('bold')));
+      console.log(this.colorize('─'.repeat(60), asChalkColor((asChalkColor(('blue' as ChalkColor))))));
+      console.log(this.colorize('Title: ', asChalkColor((asChalkColor(('yellow' as ChalkColor))))) + title);
+      if (description) console.log(this.colorize('Description: ', asChalkColor((asChalkColor(('yellow' as ChalkColor))))) + description);
       if (body) {
-        console.log(this.colorize('Body: ', 'yellow'));
+        console.log(this.colorize('Body: ', asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
         console.log(body.replace(/\\n/g, '\n'));
       }
-      console.log(this.colorize('Status: ', 'yellow') + status);
-      console.log(this.colorize('Readiness: ', 'yellow') + readiness);
-      if (tags.length > 0) console.log(this.colorize('Tags: ', 'yellow') + tags.join(', '));
-      if (childOf) console.log(this.colorize('Child of: ', 'yellow') + childOf);
-      if (after) console.log(this.colorize('After: ', 'yellow') + after);
+      console.log(this.colorize('Status: ', asChalkColor((asChalkColor(('yellow' as ChalkColor))))) + status);
+      console.log(this.colorize('Readiness: ', asChalkColor((asChalkColor(('yellow' as ChalkColor))))) + readiness);
+      if (tags.length > 0) console.log(this.colorize('Tags: ', asChalkColor((asChalkColor(('yellow' as ChalkColor))))) + tags.join(', '));
+      if (childOf) console.log(this.colorize('Child of: ', asChalkColor((asChalkColor(('yellow' as ChalkColor))))) + childOf);
+      if (after) console.log(this.colorize('After: ', asChalkColor((asChalkColor(('yellow' as ChalkColor))))) + after);
       console.log('');
       
       const confirm = await this.askQuestion('Create this task? (y/n)');
       if (confirm.toLowerCase() !== 'y') {
-        console.log(this.colorize('Task creation cancelled.', 'yellow'));
+        console.log(this.colorize('Task creation cancelled.', asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
         return null;
       }
       
       return this.taskOptions as TaskInsertOptions;
     } catch (error) {
-      console.error('Error in interactive form:', error);
+      console?.error('Error in interactive form:', error);
       return null;
     } finally {
       this.close();

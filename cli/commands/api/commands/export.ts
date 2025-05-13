@@ -1,7 +1,7 @@
 import { Command } from 'commander';
 import fs from 'fs/promises';
-import { helpFormatter } from '../../../helpers/help-formatter.ts';
-import { ApiService } from '../../../../core/api/service.ts';
+import { helpFormatter } from '../../../helpers/help-formatter';
+import { ApiService } from '../../../../core/api/service';
 
 /**
  * Create the export command
@@ -73,7 +73,7 @@ export function createExportCommand() {
         
         apiService.close();
       } catch (error) {
-        console.error('Error exporting tasks:', error);
+        console?.error('Error exporting tasks:', error);
         process.exit(1);
       }
     });

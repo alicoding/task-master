@@ -1,7 +1,7 @@
 import { Command } from 'commander';
 import fs from 'fs/promises';
-import { helpFormatter } from '../../../helpers/help-formatter.ts';
-import { ApiService } from '../../../../core/api/service.ts';
+import { helpFormatter } from '../../../helpers/help-formatter';
+import { ApiService } from '../../../../core/api/service';
 
 /**
  * Create the batch command
@@ -55,7 +55,7 @@ export function createBatchCommand() {
         const batchData = JSON.parse(fileContent);
         
         if (!batchData.operations || !Array.isArray(batchData.operations)) {
-          console.error('Invalid batch file format. Expected an "operations" array.');
+          console?.error('Invalid batch file format. Expected an "operations" array.');
           apiService.close();
           return;
         }
@@ -68,7 +68,7 @@ export function createBatchCommand() {
         
         apiService.close();
       } catch (error) {
-        console.error('Error processing batch operations:', error);
+        console?.error('Error processing batch operations:', error);
         process.exit(1);
       }
     });

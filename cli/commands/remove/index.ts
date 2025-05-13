@@ -1,9 +1,9 @@
 import { Command } from 'commander';
-import { TaskRepository } from '../../../core/repo.ts';
-import { TaskGraph } from '../../../core/graph.ts';
-import { OutputFormat } from '../../../core/types.ts';
+import { TaskRepository } from '../../../core/repo';
+import { TaskGraph } from '../../../core/graph';
+import { OutputFormat } from '../../../core/types';
 import readline from 'readline';
-import { helpFormatter } from '../../helpers/help-formatter.ts';
+import { helpFormatter } from '../../helpers/help-formatter';
 
 export function createRemoveCommand() {
   const removeCommand = new Command('remove')
@@ -56,19 +56,23 @@ export function createRemoveCommand() {
         const dryRun = options.dryRun || false;
         
         // Check if task exists
-        const task = await repo.getTask(id);
-        
-        if (!task) {
-          console.error(`Task with ID ${id} not found`);
+        const taskResult = await repo.getTask(id);
+
+        if (!taskResult || !taskResult.success || !taskResult.data) {
+          console?.error(`Task with ID ${id} not found`);
           repo.close();
           return;
         }
+
+        const task = taskResult.data;
         
         // Find children if needed
         let children: string[] = [];
         if (options.withChildren) {
-          const descendants = await graph.getDescendants(id);
-          children = descendants.map(t => t.id);
+          const descendantsResult = await graph.getDescendants(id);
+          if (descendantsResult.success && descendantsResult.data) {
+            children = descendantsResult.data.map(t => t.id);
+          }
         }
         
         // Show what will be removed
@@ -94,9 +98,9 @@ export function createRemoveCommand() {
           if (children.length > 0) {
             console.log(`This will also remove ${children.length} child tasks:`);
             for (const childId of children) {
-              const child = await repo.getTask(childId);
-              if (child) {
-                console.log(`  ${childId}. ${child.title}`);
+              const childResult = await repo.getTask(childId);
+              if (childResult && childResult.success && childResult.data) {
+                console.log(`  ${childId}. ${childResult.data.title}`);
               }
             }
           }
@@ -153,12 +157,12 @@ export function createRemoveCommand() {
             }
           }
         } else {
-          console.error(`Failed to remove task ${id}`);
+          console?.error(`Failed to remove task ${id}`);
         }
         
         repo.close();
       } catch (error) {
-        console.error('Error removing task:', error);
+        console?.error('Error removing task:', error);
         process.exit(1);
       }
     });

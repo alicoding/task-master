@@ -2,13 +2,13 @@
  * Optimized processor module for NLP service
  * Enhanced version of the processor with caching and performance improvements
  */
-import { NlpManager } from '../types.ts';
-import { ProcessedQuery, ExtractedSearchFilters } from '../types.ts';
-import { ENTITY_TERMS_TO_REMOVE } from './entities.ts';
-import { jaccardSimilarity } from '../utils/distance.ts';
-import { tokenizeAndNormalize, normalizeText } from '../utils/tokenization.ts';
-import { stemTokens } from '../utils/stemming.ts';
-import { getNlpProfiler } from '../utils/profiler.ts';
+import { NlpManager } from '../types';
+import { ProcessedQuery, ExtractedSearchFilters } from '../types';
+import { ENTITY_TERMS_TO_REMOVE } from './entities';
+import { jaccardSimilarity } from '../utils/distance';
+import { tokenizeAndNormalize, normalizeText } from '../utils/tokenization';
+import { stemTokens } from '../utils/stemming';
+import { getNlpProfiler } from '../utils/profiler';
 
 // Import the original processor functions for fallback
 import {
@@ -17,7 +17,7 @@ import {
   extractSearchFilters as originalExtractSearchFilters,
   Tokenizer,
   Stemmer
-} from './processor.ts';
+} from './processor';
 
 // Cache for processed queries
 interface QueryCacheEntry {

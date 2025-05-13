@@ -1,18 +1,19 @@
 import { eq, isNull } from 'drizzle-orm';
-import { TaskCreationRepository } from './creation.ts';
-import { tasks, Task } from '../../db/schema.ts';
+import { TaskCreationRepository } from './creation';
+import { tasks } from '../../db/schema';
 import {
+  Task,
   TaskOperationResult,
   TaskError,
   TaskErrorCode
-} from '../types.ts';
+} from '../types';
 
 /**
  * Interface representing a task with children in a hierarchy
+ * @deprecated Use the HierarchyTask from core/types.ts instead
  */
-export interface HierarchyTask extends Task {
-  children: HierarchyTask[];
-}
+import { HierarchyTask as CoreHierarchyTask } from '../types';
+export type HierarchyTask = CoreHierarchyTask;
 
 /**
  * Hierarchy functionality for the TaskRepository
@@ -25,7 +26,7 @@ export class TaskHierarchyRepository extends TaskCreationRepository {
    */
   async getChildTasks(taskId: string): Promise<TaskOperationResult<Task[]>> {
     try {
-      // Query for tasks with matching parent_id
+      // Query for tasks with matching parentId
       const result = await this.db
         .select()
         .from(tasks)
@@ -74,8 +75,8 @@ export class TaskHierarchyRepository extends TaskCreationRepository {
 
       // Then, build the hierarchy
       for (const task of allTasks) {
-        if (task.parent_id && taskMap.has(task.parent_id)) {
-          taskMap.get(task.parent_id)!.children.push(taskMap.get(task.id)!);
+        if (task.parentId && taskMap.has(task.parentId)) {
+          taskMap.get(task.parentId)!.children.push(taskMap.get(task.id)!);
         } else {
           rootTasks.push(taskMap.get(task.id)!);
         }
@@ -140,7 +141,7 @@ export class TaskHierarchyRepository extends TaskCreationRepository {
       // Get all siblings with the same parent
       const siblings = await this.db.select()
         .from(tasks)
-        .where(eq(tasks.parent_id, parentId));
+        .where(eq(tasks.parentId, parentId));
 
       // Extract the last part of the deleted ID
       const deletedParts = deletedTaskId.split('.');
@@ -245,7 +246,7 @@ export class TaskHierarchyRepository extends TaskCreationRepository {
       // Get all root tasks
       const rootTasks = await this.db.select()
         .from(tasks)
-        .where(isNull(tasks.parent_id));
+        .where(isNull(tasks.parentId));
 
       // The deleted ID is just a number for root tasks
       const deletedIndex = parseInt(deletedTaskId, 10);

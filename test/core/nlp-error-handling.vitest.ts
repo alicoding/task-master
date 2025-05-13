@@ -4,11 +4,11 @@
  */
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { NlpService } from '../../core/nlp-service.ts';
-import * as distance from '../../core/nlp/utils/distance.ts';
-import * as stemming from '../../core/nlp/utils/stemming.ts';
-import * as tokenization from '../../core/nlp/utils/tokenization.ts';
-import * as synonyms from '../../core/nlp/utils/synonyms.ts';
+import { NlpService } from '../../core/nlp-service';
+import * as distance from '../../core/nlp/utils/distance';
+import * as stemming from '../../core/nlp/utils/stemming';
+import * as tokenization from '../../core/nlp/utils/tokenization';
+import * as synonyms from '../../core/nlp/utils/synonyms';
 
 describe('NLP Error Handling', () => {
   let nlpService: NlpService;

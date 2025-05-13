@@ -8,20 +8,20 @@
  * @module TaskGraph
  */
 
-import { Task } from '../../db/schema.ts';
-import { TaskRepository } from '../repo.ts';
-import { TaskWithChildren, HierarchyTask, TaskOperationResult, TaskError, TaskErrorCode } from '../types.ts';
+import { Task } from '../../db/schema';
+import { TaskRepository } from '../repo';
+import { TaskWithChildren, HierarchyTask, TaskOperationResult, TaskError, TaskErrorCode } from '../types';
 import {
   formatHierarchyText,
   formatTaskView,
   formatTaskList,
   createUiConfig,
   parseCliOptions
-} from './formatters/text.ts';
-import { formatHierarchyJson } from './formatters/json.ts';
-import { formatHierarchyDot } from './formatters/dot.ts';
-import { formatHierarchyMermaid } from './formatters/mermaid.ts';
-import { isDescendant, findDescendants } from './utils.ts';
+} from './formatters/text';
+import { formatHierarchyJson } from './formatters/json';
+import { formatHierarchyDot } from './formatters/dot';
+import { formatHierarchyMermaid } from './formatters/mermaid';
+import { isDescendant, findDescendants } from './utils';
 
 /**
  * TaskGraph class for managing task hierarchy and visualization

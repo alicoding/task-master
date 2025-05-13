@@ -2,16 +2,16 @@
  * Text formatters for task graph visualization
  */
 
-import { Task, TaskWithChildren } from '../../types.ts';
-import { formatSimpleText } from './simple.ts';
-import { formatTreeText, formatHierarchyWithSymbols } from './tree.ts';
-import { formatDetailedText, formatCompactText } from './detailed.ts';
-import { formatEnhancedTree } from './enhanced-tree.ts';
-import { formatBoxedTask } from './boxed-task.ts';
-import { formatEnhancedTask } from './enhanced-boxed-task.ts';
-import { formatPolishedTask } from './polished-task.ts';
-import { formatTaskTable } from './table-list.ts';
-import { createUiConfig, parseCliOptions, UiConfig } from './ui-config.ts';
+import { Task, TaskWithChildren } from '../../types';
+import { formatSimpleText } from './simple';
+import { formatTreeText, formatHierarchyWithSymbols } from './tree';
+import { formatDetailedText, formatCompactText } from './detailed';
+import { formatEnhancedTree } from './enhanced-tree';
+import { formatBoxedTask } from './boxed-task';
+import { formatEnhancedTask } from './enhanced-boxed-task';
+import { formatPolishedTask } from './polished-task';
+import { formatTaskTable } from './table-list';
+import { createUiConfig, parseCliOptions, UiConfig } from './ui-config';
 
 /**
  * Format tasks for human-readable display

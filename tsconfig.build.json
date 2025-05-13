@@ -1,0 +1,45 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmitOnError": false,
+    "skipLibCheck": true,
+    "declaration": true,
+    "declarationMap": true,
+    "exactOptionalPropertyTypes": false,
+    "isolatedModules": true,
+    "useUnknownInCatchVariables": false,
+    "allowSyntheticDefaultImports": true,
+    "skipDefaultLibCheck": true,
+    "ignoreDeprecations": "5.0",
+    "allowJs": false, // No JavaScript files - TypeScript only
+    "checkJs": false,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "rootDir": ".",
+    "composite": true, // Enable project references
+    "noEmit": false,
+    "noErrorTruncation": true,
+    "emitDeclarationOnly": false,
+    "importHelpers": true, // Import helper functions from tslib
+    "incremental": true, // Enable incremental compilation
+    "inlineSources": true // Include source code in sourcemaps
+  },
+  "include": [
+    "src/**/*.ts",
+    "cli/**/*.ts",
+    "core/**/*.ts",
+    // Only include essential declaration files
+    "src/types/chalk-utils.d.ts",
+    "src/types/core-types.d.ts",
+    "src/types/drizzle-orm.d.ts",
+    "src/core/nlp/fuse.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "test",
+    "scripts",
+    "**/*.test.ts",
+    "**/*.spec.ts"
+  ]
+}

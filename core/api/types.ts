@@ -1,4 +1,4 @@
-import { Task, TaskWithChildren, TaskSearch, TaskCreateInput, TaskUpdateInput } from '../types.ts';
+import { Task, TaskWithChildren, TaskSearch, TaskCreateInput, TaskUpdateInput } from '../types';
 
 /**
  * Types of operations supported by the API

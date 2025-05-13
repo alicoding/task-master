@@ -1,7 +1,7 @@
 import { test } from 'uvu';
 import * as assert from 'uvu/assert';
-import { TaskRepository } from '../../core/repo.ts';
-import { TaskGraph } from '../../core/graph.ts';
+import { TaskRepository } from '../../core/repo';
+import { TaskGraph } from '../../core/graph';
 
 test('TaskGraph - format hierarchy text', async () => {
   // Create repo with in-memory DB for testing

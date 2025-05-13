@@ -1,8 +1,10 @@
-import { TaskRepository } from '../../../../core/repo.ts';
-import { NlpService } from '../../../../core/nlp-service.ts';
-import { Task } from '../../../../db/schema.ts';
-import { ColorizeFunction } from './utils.ts';
-import { findDuplicateGroups } from './finder.ts';
+import { ChalkColor, asChalkColor } from '@/cli/utils/chalk-utils';
+import { TaskRepository } from '../../../../core/repo';
+import { NlpService } from '../../../../core/nlp-service';
+import { Task } from '@/core/types';
+import { ColorizeFunction } from './utils';
+import { findDuplicateGroups } from './finder';
+
 
 /**
  * Process tasks and find duplicates
@@ -19,11 +21,11 @@ export async function processTasks(
   const tasksResult = await repo.getAllTasks();
 
   // Handle the operation result pattern
-  if (!tasksResult.success || !tasksResult.data) {
+  if (!tasksResult?.success || !tasksResult?.data) {
     return [];
   }
 
-  let allTasks = tasksResult.data;
+  let allTasks = tasksResult?.data;
 
   // Apply filters if provided
   if (options.status) {
@@ -32,7 +34,7 @@ export async function processTasks(
 
   if (options.tag && options.tag.length > 0) {
     allTasks = allTasks.filter(task =>
-      options.tag!.some(tag => task.tags.includes(tag))
+      task.tags ? options.tag!.some(tag => task.tags && task.tags.includes(tag)) : false
     );
   }
 
@@ -51,14 +53,14 @@ export async function processAutoMerge(
   const highSimilarityGroups = limitedGroups.filter(group => group.maxSimilarity >= 0.8);
   
   if (highSimilarityGroups.length === 0) {
-    console.log(colorize('No groups with 80%+ similarity found for auto-merge.', 'yellow'));
+    console.log(colorize('No groups with 80%+ similarity found for auto-merge.', asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
     return;
   }
   
-  console.log(colorize(`\nAuto-merge suggestions for ${highSimilarityGroups.length} groups:\n`, 'blue', 'bold'));
+  console.log(colorize(`\nAuto-merge suggestions for ${highSimilarityGroups.length} groups:\n`, asChalkColor((asChalkColor(('blue' as ChalkColor)))), asChalkColor('bold')));
   
   // Import here to avoid circular dependencies
-  const { suggestMerge } = await import('./merger.ts');
+  const { suggestMerge } = await import('./merger');
   
   for (let i = 0; i < highSimilarityGroups.length; i++) {
     const group = highSimilarityGroups[i];

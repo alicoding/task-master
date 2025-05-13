@@ -4,9 +4,9 @@
  */
 
 import { Command } from 'commander';
-import { TaskRepository } from '../../../core/repo.ts';
-import { TaskGraph } from '../../../core/graph.ts';
-import { OutputFormat, HierarchyTask } from '../../../core/types.ts';
+import { TaskRepository } from '../../../core/repo';
+import { TaskGraph } from '../../../core/graph';
+import { OutputFormat, HierarchyTask } from '../../../core/types';
 
 export async function createShowGraphCommand() {
   const showGraphCommand = new Command('graph')
@@ -34,7 +34,7 @@ export async function createShowGraphCommand() {
 
   // Import helpFormatter here to avoid circular dependency
   // Using dynamic import instead of require for ESM compatibility
-  const helpFormatterModule = await import('../../helpers/help-formatter.ts');
+  const helpFormatterModule = await import('../../helpers/help-formatter');
   const helpFormatter = helpFormatterModule.helpFormatter;
 
   // Enhance help with examples and additional information
@@ -115,15 +115,15 @@ export async function createShowGraphCommand() {
         // Get the complete task hierarchy
         const hierarchyResult = await repo.buildTaskHierarchy();
 
-        if (!hierarchyResult.success || !hierarchyResult.data) {
-          console.error(`Failed to build task hierarchy: ${hierarchyResult.error?.message || 'Unknown error'}`);
+        if (!hierarchyResult?.success || !hierarchyResult?.data) {
+          console?.error(`Failed to build task hierarchy: ${hierarchyResult?.error?.message || 'Unknown error'}`);
           repo.close();
           process.exit(1);
           return;
         }
 
         // Apply filters if provided
-        let filteredHierarchy = hierarchyResult.data;
+        let filteredHierarchy = hierarchyResult?.data;
 
         if (options.filter || options.status || options.readiness) {
           filteredHierarchy = filterTasks(
@@ -189,7 +189,7 @@ export async function createShowGraphCommand() {
 
         repo.close();
       } catch (error) {
-        console.error('Error showing task graph:', error instanceof Error ? error.message : 'Unknown error');
+        console?.error('Error showing task graph:', error instanceof Error ? error.message : 'Unknown error');
         process.exit(1);
       }
     });

@@ -1,8 +1,9 @@
-import { TaskRepository } from '../../../../core/repo.ts';
-import { NlpService } from '../../../../core/nlp-service.ts';
+import { TaskRepository } from '../../../../core/repo';
+import { NlpService } from '../../../../core/nlp-service';
 import readline from 'readline';
-import { ProcessingOptions, TriageResults, colorizeStatus, colorizeReadiness, ChalkColor, ChalkStyle } from './utils.ts';
-import { TaskReadiness, TaskStatus } from '../../../../core/types.ts';
+import { ProcessingOptions, TriageResults, colorizeStatus, colorizeReadiness, ChalkColor, ChalkStyle } from './utils';
+import { TaskReadiness, TaskStatus } from '../../../../core/types';
+import { ChalkColor, asChalkColor } from "@/cli/utils/chalk-utils";
 
 /**
  * Run interactive triage mode
@@ -31,14 +32,14 @@ export async function runInteractiveMode(
     if (jsonOutput) {
       console.log(JSON.stringify({ message: 'No open tasks to triage' }));
     } else {
-      console.log(colorize('No open tasks to triage.', 'yellow'));
+      console.log(colorize('No open tasks to triage.', asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
     }
     return;
   }
 
   if (!jsonOutput) {
-    console.log(colorize(`Found ${openTasks.length} open tasks to triage.`, 'green'));
-    console.log(colorize('Processing tasks one by one. Press Ctrl+C to exit at any time.\n', 'gray'));
+    console.log(colorize(`Found ${openTasks.length} open tasks to triage.`, asChalkColor((asChalkColor(('green' as ChalkColor))))));
+    console.log(colorize('Processing tasks one by one. Press Ctrl+C to exit at any time.\n', asChalkColor((asChalkColor(('gray' as ChalkColor))))));
   }
 
   // Sort tasks by ID (which prioritizes parent tasks before children)
@@ -81,13 +82,13 @@ export async function runInteractiveMode(
 
       // Handle user actions
       if (action === 'q') {
-        console.log(colorize('Exiting interactive mode.', 'yellow'));
+        console.log(colorize('Exiting interactive mode.', asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
         break;
       }
 
       if (action === 's') {
-        console.log(colorize('Skipping this task.', 'gray'));
-        results.skipped.push({
+        console.log(colorize('Skipping this task.', asChalkColor((asChalkColor(('gray' as ChalkColor))))));
+        results?.skipped.push({
           id: task.id,
           title: task.title,
           reason: 'Manual skip in interactive mode'
@@ -141,27 +142,27 @@ async function displayTaskDetails(
   allTasks: any[],
   colorize: (text: string, color?: ChalkColor, style?: ChalkStyle) => string
 ) {
-  console.log(colorize(`\nTask ${index+1}/${total}:`, 'blue', 'bold'));
-  console.log(colorize(`ID: ${task.id}`, 'blue'));
+  console.log(colorize(`\nTask ${index+1}/${total}:`, asChalkColor((asChalkColor(('blue' as ChalkColor)))), asChalkColor('bold')));
+  console.log(colorize(`ID: ${task.id}`, asChalkColor((asChalkColor(('blue' as ChalkColor))))));
   console.log(`Title: ${task.title}`);
   console.log(`Status: ${colorizeStatus(task.status, colorize)}`);
   console.log(`Readiness: ${colorizeReadiness(task.readiness, colorize)}`);
-  console.log(`Tags: ${task.tags.join(', ') || 'none'}`);
+  console.log(`Tags: ${task.tags?.join(', ') || 'none'}`);
 
   // Show parent task if it exists
   if (task.parentId) {
     const parentTask = allTasks.find(t => t.id === task.parentId);
     if (parentTask) {
-      console.log(`Parent: ${colorize(parentTask.id, 'yellow')}: ${parentTask.title}`);
+      console.log(`Parent: ${colorize(parentTask.id, asChalkColor((asChalkColor(('yellow' as ChalkColor)))))}: ${parentTask.title}`);
     }
   }
 
   // Find child tasks
   const childTasks = allTasks.filter(t => t.parentId === task.id);
   if (childTasks.length > 0) {
-    console.log(colorize(`\nChild Tasks (${childTasks.length}):`, 'magenta'));
+    console.log(colorize(`\nChild Tasks (${childTasks.length}):`, asChalkColor((asChalkColor(('magenta' as ChalkColor))))));
     childTasks.forEach(child => {
-      console.log(`  ${colorize(child.id, 'gray')}: ${child.title} [${child.status}]`);
+      console.log(`  ${colorize(child.id, asChalkColor((asChalkColor(('gray' as ChalkColor)))))}: ${child.title} [${child.status}]`);
     });
   }
 }
@@ -175,16 +176,16 @@ async function displaySimilarTasks(
   filteredTasks: any[],
   colorize: (text: string, color?: ChalkColor, style?: ChalkStyle) => string
 ) {
-  console.log(colorize(`\nSimilar Tasks Found (${filteredTasks.length}):`, 'yellow'));
+  console.log(colorize(`\nSimilar Tasks Found (${filteredTasks.length}):`, asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
 
   filteredTasks.forEach((t, idx) => {
     const score = t.metadata?.similarityScore || 0;
     const percentage = Math.round(score * 100);
-    let scoreColor: ChalkColor = 'green';
-    if (percentage >= 80) scoreColor = 'red';
-    else if (percentage >= 60) scoreColor = 'yellow';
+    let scoreColor: ChalkColor = (asChalkColor((asChalkColor(('green' as ChalkColor)))));
+    if (percentage >= 80) scoreColor = (asChalkColor((asChalkColor(('red' as ChalkColor)))));
+    else if (percentage >= 60) scoreColor = (asChalkColor((asChalkColor(('yellow' as ChalkColor)))));
 
-    console.log(`  ${colorize(`[${idx + 1}]`, 'blue')} ${t.id}: ${t.title}`);
+    console.log(`  ${colorize(`[${idx + 1}]`, asChalkColor((asChalkColor(('blue' as ChalkColor)))))} ${t.id}: ${t.title}`);
     console.log(`     ${colorize(`Similarity: ${percentage}%`, scoreColor)}`);
   });
 }
@@ -200,17 +201,17 @@ async function promptForAction(
   colorize: (text: string, color?: ChalkColor, style?: ChalkStyle) => string
 ): Promise<string> {
   // Show action menu
-  console.log(colorize('\nActions:', 'cyan', 'bold'));
-  console.log(colorize('  u', 'yellow') + ') ' + colorize('Update', 'white') + ' - Update task status/readiness');
-  console.log(colorize('  d', 'red') + ') ' + colorize('Done', 'white') + ' - Mark task as completed');
-  console.log(colorize('  t', 'green') + ') ' + colorize('Tags', 'white') + ' - Add/remove tags');
+  console.log(colorize('\nActions:', asChalkColor((asChalkColor(('cyan' as ChalkColor)))), asChalkColor('bold')));
+  console.log(colorize('  u', asChalkColor((asChalkColor(('yellow' as ChalkColor))))) + ') ' + colorize('Update', asChalkColor((asChalkColor(('white' as ChalkColor))))) + ' - Update task status/readiness');
+  console.log(colorize('  d', asChalkColor((asChalkColor(('red' as ChalkColor))))) + ') ' + colorize('Done', asChalkColor((asChalkColor(('white' as ChalkColor))))) + ' - Mark task as completed');
+  console.log(colorize('  t', asChalkColor((asChalkColor(('green' as ChalkColor))))) + ') ' + colorize('Tags', asChalkColor((asChalkColor(('white' as ChalkColor))))) + ' - Add/remove tags');
 
   if (filteredTasks.length > 0) {
-    console.log(colorize('  m', 'magenta') + ') ' + colorize('Merge', 'white') + ' - Merge with a similar task');
+    console.log(colorize('  m', asChalkColor((asChalkColor(('magenta' as ChalkColor))))) + ') ' + colorize('Merge', asChalkColor((asChalkColor(('white' as ChalkColor))))) + ' - Merge with a similar task');
   }
 
-  console.log(colorize('  s', 'gray') + ') ' + colorize('Skip', 'white') + ' - Skip this task');
-  console.log(colorize('  q', 'red') + ') ' + colorize('Quit', 'white') + ' - Exit interactive mode');
+  console.log(colorize('  s', asChalkColor((asChalkColor(('gray' as ChalkColor))))) + ') ' + colorize('Skip', asChalkColor((asChalkColor(('white' as ChalkColor))))) + ' - Skip this task');
+  console.log(colorize('  q', asChalkColor((asChalkColor(('red' as ChalkColor))))) + ') ' + colorize('Quit', asChalkColor((asChalkColor(('white' as ChalkColor))))) + ' - Exit interactive mode');
 
   const rl = readline.createInterface({
     input: process.stdin,
@@ -219,7 +220,7 @@ async function promptForAction(
 
   // Get user action
   const action = await new Promise<string>(resolve => {
-    rl.question(colorize('\nChoose an action: ', 'cyan'), resolve);
+    rl.question(colorize('\nChoose an action: ', asChalkColor((asChalkColor(('cyan' as ChalkColor))))), resolve);
   });
 
   rl.close();
@@ -243,8 +244,8 @@ async function handleUpdateAction(
   const { dryRun, colorize } = options;
 
   if (dryRun) {
-    console.log(colorize('Would update task (dry run).', 'yellow'));
-    results.updated.push({
+    console.log(colorize('Would update task (dry run).', asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
+    results?.updated.push({
       id: task.id,
       title: task.title,
       dry_run: true
@@ -258,9 +259,9 @@ async function handleUpdateAction(
     output: process.stdout
   });
 
-  console.log(colorize('\nCurrent status: ', 'blue') + colorizeStatus(task.status, colorize));
+  console.log(colorize('\nCurrent status: ', asChalkColor((asChalkColor(('blue' as ChalkColor))))) + colorizeStatus(task.status, colorize));
   const newStatusInput = await new Promise<string>(resolve => {
-    rl2.question(colorize('New status [todo, in-progress, done] (leave empty to keep current): ', 'cyan'), resolve);
+    rl2.question(colorize('New status [todo, in-progress, done] (leave empty to keep current): ', asChalkColor((asChalkColor(('cyan' as ChalkColor))))), resolve);
   });
 
   rl2.close();
@@ -272,7 +273,7 @@ async function handleUpdateAction(
     if (['todo', 'in-progress', 'done'].includes(newStatusInput)) {
       newStatus = newStatusInput as TaskStatus;
     } else {
-      console.log(colorize('Invalid status. Using current value.', 'red'));
+      console.log(colorize('Invalid status. Using current value.', asChalkColor((asChalkColor(('red' as ChalkColor))))));
     }
   }
 
@@ -282,9 +283,9 @@ async function handleUpdateAction(
     output: process.stdout
   });
 
-  console.log(colorize('Current readiness: ', 'blue') + colorizeReadiness(task.readiness, colorize));
+  console.log(colorize('Current readiness: ', asChalkColor((asChalkColor(('blue' as ChalkColor))))) + colorizeReadiness(task.readiness, colorize));
   const newReadinessInput = await new Promise<string>(resolve => {
-    rl3.question(colorize('New readiness [draft, ready, blocked] (leave empty to keep current): ', 'cyan'), resolve);
+    rl3.question(colorize('New readiness [draft, ready, blocked] (leave empty to keep current): ', asChalkColor((asChalkColor(('cyan' as ChalkColor))))), resolve);
   });
 
   rl3.close();
@@ -296,7 +297,7 @@ async function handleUpdateAction(
     if (['draft', 'ready', 'blocked'].includes(newReadinessInput)) {
       newReadiness = newReadinessInput as TaskReadiness;
     } else {
-      console.log(colorize('Invalid readiness. Using current value.', 'red'));
+      console.log(colorize('Invalid readiness. Using current value.', asChalkColor((asChalkColor(('red' as ChalkColor))))));
     }
   }
 
@@ -307,8 +308,8 @@ async function handleUpdateAction(
     readiness: newReadiness
   });
 
-  results.updated.push(updatedTask);
-  console.log(colorize('✓ Task updated successfully.', 'green'));
+  results?.updated.push(updatedTask);
+  console.log(colorize('✓ Task updated successfully.', asChalkColor((asChalkColor(('green' as ChalkColor))))));
 }
 
 /**
@@ -327,8 +328,8 @@ async function handleDoneAction(
   const { dryRun, colorize } = options;
 
   if (dryRun) {
-    console.log(colorize('Would mark task as done (dry run).', 'yellow'));
-    results.updated.push({
+    console.log(colorize('Would mark task as done (dry run).', asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
+    results?.updated.push({
       id: task.id,
       title: task.title,
       status: 'done',
@@ -343,8 +344,8 @@ async function handleDoneAction(
     status: 'done'
   });
 
-  results.updated.push(updatedTask);
-  console.log(colorize('✓ Task marked as done.', 'green'));
+  results?.updated.push(updatedTask);
+  console.log(colorize('✓ Task marked as done.', asChalkColor((asChalkColor(('green' as ChalkColor))))));
 }
 
 /**
@@ -363,8 +364,8 @@ async function handleTagsAction(
   const { dryRun, colorize } = options;
 
   if (dryRun) {
-    console.log(colorize('Would update tags (dry run).', 'yellow'));
-    results.updated.push({
+    console.log(colorize('Would update tags (dry run).', asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
+    results?.updated.push({
       id: task.id,
       title: task.title,
       dry_run: true
@@ -378,9 +379,9 @@ async function handleTagsAction(
     output: process.stdout
   });
 
-  console.log(colorize('\nCurrent tags: ', 'blue') + (task.tags.join(', ') || 'none'));
+  console.log(colorize('\nCurrent tags: ', asChalkColor((asChalkColor(('blue' as ChalkColor))))) + (task.tags?.join(', ') || 'none'));
   const tagsInput = await new Promise<string>(resolve => {
-    rl2.question(colorize('New tags (comma-separated, leave empty to keep current): ', 'cyan'), resolve);
+    rl2.question(colorize('New tags (comma-separated, leave empty to keep current): ', asChalkColor((asChalkColor(('cyan' as ChalkColor))))), resolve);
   });
 
   rl2.close();
@@ -394,10 +395,10 @@ async function handleTagsAction(
       tags: newTags
     });
 
-    results.updated.push(updatedTask);
-    console.log(colorize('✓ Tags updated successfully.', 'green'));
+    results?.updated.push(updatedTask);
+    console.log(colorize('✓ Tags updated successfully.', asChalkColor((asChalkColor(('green' as ChalkColor))))));
   } else {
-    console.log(colorize('Tags unchanged.', 'gray'));
+    console.log(colorize('Tags unchanged.', asChalkColor((asChalkColor(('gray' as ChalkColor))))));
   }
 }
 
@@ -419,8 +420,8 @@ async function handleMergeAction(
   const { dryRun, colorize } = options;
 
   if (dryRun) {
-    console.log(colorize('Would merge tasks (dry run).', 'yellow'));
-    results.merged.push({
+    console.log(colorize('Would merge tasks (dry run).', asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
+    results?.merged.push({
       id: task.id,
       title: task.title,
       dry_run: true
@@ -435,7 +436,7 @@ async function handleMergeAction(
   });
 
   const mergeTarget = await new Promise<string>(resolve => {
-    rl2.question(colorize(`Enter task number to merge with [1-${filteredTasks.length}]: `, 'cyan'), resolve);
+    rl2.question(colorize(`Enter task number to merge with [1-${filteredTasks.length}]: `, asChalkColor((asChalkColor(('cyan' as ChalkColor))))), resolve);
   });
 
   rl2.close();
@@ -443,7 +444,7 @@ async function handleMergeAction(
   const targetIndex = parseInt(mergeTarget) - 1;
 
   if (isNaN(targetIndex) || targetIndex < 0 || targetIndex >= filteredTasks.length) {
-    console.log(colorize('Invalid selection. Merge cancelled.', 'red'));
+    console.log(colorize('Invalid selection. Merge cancelled.', asChalkColor((asChalkColor(('red' as ChalkColor))))));
     return;
   }
 
@@ -456,17 +457,17 @@ async function handleMergeAction(
   });
 
   console.log(colorize(`\nMerging:`));
-  console.log(colorize(`Source: `, 'yellow') + `${task.id}: ${task.title}`);
-  console.log(colorize(`Target: `, 'green') + `${targetTask.id}: ${targetTask.title}`);
+  console.log(colorize(`Source: `, asChalkColor((asChalkColor(('yellow' as ChalkColor))))) + `${task.id}: ${task.title}`);
+  console.log(colorize(`Target: `, asChalkColor((asChalkColor(('green' as ChalkColor))))) + `${targetTask.id}: ${targetTask.title}`);
 
   const confirmMerge = await new Promise<string>(resolve => {
-    rl3.question(colorize('Proceed with merge? [y/n]: ', 'cyan'), resolve);
+    rl3.question(colorize('Proceed with merge? [y/n]: ', asChalkColor((asChalkColor(('cyan' as ChalkColor))))), resolve);
   });
 
   rl3.close();
 
   if (confirmMerge.toLowerCase() !== 'y') {
-    console.log(colorize('Merge cancelled.', 'yellow'));
+    console.log(colorize('Merge cancelled.', asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
     return;
   }
 
@@ -507,10 +508,10 @@ async function handleMergeAction(
     }
   });
 
-  results.merged.push({
+  results?.merged.push({
     source: updatedSource,
     target: updatedTarget
   });
 
-  console.log(colorize('✓ Tasks merged successfully.', 'green'));
+  console.log(colorize('✓ Tasks merged successfully.', asChalkColor((asChalkColor(('green' as ChalkColor))))));
 }

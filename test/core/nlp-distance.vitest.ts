@@ -15,7 +15,7 @@ import {
   fuzzyScore, 
   calculateJaccardSimilarity,
   jaccardSimilarity
-} from '../../core/nlp/utils/distance.ts';
+} from '../../core/nlp/utils/distance';
 
 describe('NLP Distance Utilities', () => {
   describe('levenshteinDistance', () => {

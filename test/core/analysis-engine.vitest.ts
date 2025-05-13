@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { AnalysisEngine } from '../../core/daemon/analysis-engine.ts';
-import { FileTrackingRepository } from '../../core/repository/file-tracking.ts';
+import { AnalysisEngine } from '../../core/daemon/analysis-engine';
+import { FileTrackingRepository } from '../../core/repository/file-tracking';
 import fs from 'fs/promises';
 import path from 'path';
 import os from 'os';

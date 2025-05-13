@@ -5,8 +5,8 @@
  * generating enhanced descriptions, and selecting appropriate icons.
  */
 
-import { CapabilityNode } from '../../index.ts';
-import { getTypeLabel } from './formatting.ts';
+import { CapabilityNode } from '../../index';
+import { getTypeLabel } from './formatting';
 
 /**
  * Normalize capability names to ensure consistency

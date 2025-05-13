@@ -11,7 +11,7 @@ import {
   AnthropicProvider,
   CustomOpenAiProvider,
   MockAiProvider
-} from '../core/ai/index.ts';
+} from '../core/ai/index';
 
 // Create a simple task for demo purposes
 const demoTask = {
@@ -121,7 +121,7 @@ async function claudeExample() {
         console.log(`   Description: ${task.description}`);
       }
       if (task.tags && task.tags.length > 0) {
-        console.log(`   Tags: ${task.tags.join(', ')}`);
+        console.log(`   Tags: ${task.tags?.join(', ')}`);
       }
     });
   } catch (error) {

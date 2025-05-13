@@ -1,7 +1,7 @@
 import { test } from 'uvu';
 import * as assert from 'uvu/assert';
-import { TaskRepository } from '../../core/repo.ts';
-import { createApiCommand } from '../../cli/commands/api/index.ts';
+import { TaskRepository } from '../../core/repo';
+import { createApiCommand } from '../../cli/commands/api/index';
 import fs from 'fs/promises';
 import path from 'path';
 import { 
@@ -11,7 +11,7 @@ import {
   setupTestTempDir,
   cleanupTestTempDir,
   createTestApiFiles
-} from './test-helpers.ts';
+} from './test-helpers';
 
 test('API Command - export functionality', async () => {
   try {

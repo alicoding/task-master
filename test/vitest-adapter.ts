@@ -60,6 +60,7 @@ export function test(name: string) {
       // No-op run since tests are registered immediately
       run(): void {
         // Tests are already registered by the it() calls
+        console.log('test.run() called - tests are already registered, this is a no-op in Vitest');
       }
     }
   );

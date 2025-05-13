@@ -1,19 +1,18 @@
-import { BaseTaskRepository } from './base.ts';
-import { TaskCreationRepository } from './creation.ts';
-import { TaskSearchRepository } from './search.ts';
-import { TaskMetadataRepository } from './metadata.ts';
-import { TaskHierarchyRepository } from './hierarchy.ts';
-import { FileTrackingRepository } from './file-tracking.ts';
-import { RepositoryFactory, createRepository } from './factory.ts';
-import { createDb } from '../../db/init.ts';
-import { Task } from '../../db/schema.ts';
+import { BaseTaskRepository } from './base';
+import { TaskCreationRepository } from './creation';
+import { TaskSearchRepository } from './search';
+import { TaskMetadataRepository } from './metadata';
+import { TaskHierarchyRepository } from './hierarchy';
+import { RepositoryFactory, createRepository } from './factory';
+import { createDb } from '../../db/init';
+import { Task } from '../../db/schema';
 import {
   TaskInsertOptions,
   TaskUpdateOptions,
   SearchFilters,
   TaskOperationResult
-} from '../types.ts';
-import { EnhancedTaskRepository } from './enhanced.ts';
+} from '../types';
+import { EnhancedTaskRepository } from './enhanced';
 
 /**
  * Main TaskRepository class that combines all functionality
@@ -24,15 +23,13 @@ export class TaskRepository implements
   Omit<TaskCreationRepository, 'db' | 'sqlite'>,
   Omit<TaskSearchRepository, 'db' | 'sqlite'>,
   Omit<TaskMetadataRepository, 'db' | 'sqlite'>,
-  Omit<TaskHierarchyRepository, 'db' | 'sqlite'>,
-  Omit<FileTrackingRepository, 'db' | 'sqlite'> {
+  Omit<TaskHierarchyRepository, 'db' | 'sqlite'> {
 
   private baseRepo: BaseTaskRepository;
   private creationRepo: TaskCreationRepository;
   private searchRepo: TaskSearchRepository;
   private metadataRepo: TaskMetadataRepository;
   private hierarchyRepo: TaskHierarchyRepository;
-  private fileTrackingRepo: FileTrackingRepository;
   private legacyMode: boolean;
 
   constructor(dbPath: string = './db/taskmaster.db', inMemory: boolean = false, legacyMode: boolean = false) {
@@ -70,10 +67,9 @@ export class TaskRepository implements
       this.searchRepo = new TaskSearchRepository(db, sqlite);
       this.metadataRepo = new TaskMetadataRepository(db, sqlite);
       this.hierarchyRepo = new TaskHierarchyRepository(db, sqlite);
-      this.fileTrackingRepo = new FileTrackingRepository(db, sqlite);
     } else {
       // In modern mode, initialize the factory and share connections
-      const { db, sqlite } = RepositoryFactory.initialize(dbPath, inMemory);
+      const { db, sqlite } = RepositoryFactory.initialize();
 
       // Use the enhanced repository if optimizations are enabled
       if (useOptimizations) {
@@ -87,7 +83,6 @@ export class TaskRepository implements
       this.searchRepo = new TaskSearchRepository(db, sqlite);
       this.metadataRepo = new TaskMetadataRepository(db, sqlite);
       this.hierarchyRepo = new TaskHierarchyRepository(db, sqlite);
-      this.fileTrackingRepo = new FileTrackingRepository(db, sqlite);
     }
   }
   
@@ -136,18 +131,12 @@ export class TaskRepository implements
     const result = await this.hierarchyRepo.getChildTasks(taskId);
     return result.success && result.data ? result.data : [];
   }
-  
-  // File tracking repository methods
-  trackFile(filePath: string) { return this.fileTrackingRepo.trackFile(filePath); }
-  associateFileWithTask(
-    taskId: string,
-    filePath: string,
-    relationshipType: 'implements' | 'tests' | 'documents' | 'related' = 'related',
-    confidence: number = 100
-  ) { 
-    return this.fileTrackingRepo.associateFileWithTask(taskId, filePath, relationshipType, confidence); 
+
+  // Natural language search
+  naturalLanguageSearch(query: string, options: any = {}) {
+    return this.searchRepo.searchTasks({
+      query,
+      ...options
+    }).then(result => result.data || []);
   }
-  getFilesForTask(taskId: string) { return this.fileTrackingRepo.getFilesForTask(taskId); }
-  getTasksForFile(filePath: string) { return this.fileTrackingRepo.getTasksForFile(filePath); }
-  getFileChangeHistory(filePath: string) { return this.fileTrackingRepo.getFileChangeHistory(filePath); }
 }

@@ -3,8 +3,10 @@
  * Handles updating existing tasks
  */
 
-import { TaskRepository } from '../../../../../core/repo.ts';
-import { ProcessingOptions, TriageResults, TriageTask } from '../utils.ts';
+import { ChalkColor, asChalkColor } from '@/cli/utils/chalk-utils';
+import { TaskRepository } from '../../../../../core/repo';
+import { ProcessingOptions, TriageResults, TriageTask } from '../utils';
+
 
 /**
  * Handle updating an existing task
@@ -23,10 +25,10 @@ export async function handleTaskUpdate(
 
   if (!taskData.id) {
     const errorMsg = 'Cannot update task: missing id';
-    results.errors.push(errorMsg);
+    results?.errors?.push(errorMsg);
     
     if (!jsonOutput) {
-      console.log(colorize(`│    ✘ ERROR: ${errorMsg}`, 'red'));
+      console.log(colorize(`│    ✘ ERROR: ${errorMsg}`, asChalkColor((asChalkColor(('red' as ChalkColor))))));
     }
     return;
   }
@@ -35,10 +37,10 @@ export async function handleTaskUpdate(
   const existingTask = await repo.getTask(taskData.id);
   if (!existingTask) {
     const errorMsg = `Task with ID ${taskData.id} not found. Cannot update.`;
-    results.errors.push(errorMsg);
+    results?.errors?.push(errorMsg);
     
     if (!jsonOutput) {
-      console.log(colorize(`│    ✘ ERROR: ${errorMsg}`, 'red'));
+      console.log(colorize(`│    ✘ ERROR: ${errorMsg}`, asChalkColor((asChalkColor(('red' as ChalkColor))))));
     }
     return;
   }
@@ -54,7 +56,7 @@ export async function handleTaskUpdate(
       metadata: taskData.metadata
     });
 
-    results.updated.push(updatedTask);
+    results?.updated.push(updatedTask);
 
     if (!jsonOutput) {
       // Show changes
@@ -64,10 +66,10 @@ export async function handleTaskUpdate(
       if (taskData.readiness && taskData.readiness !== existingTask.readiness) changes.push(`readiness: ${taskData.readiness}`);
       if (taskData.tags) changes.push(`tags: [${taskData.tags.join(', ')}]`);
       
-      console.log(colorize(`│    ✓ Updated task ${updatedTask.id}`, 'yellow'));
+      console.log(colorize(`│    ✓ Updated task ${updatedTask.id}`, asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
       
       if (changes.length > 0) {
-        console.log(colorize(`│      Changed: ${changes.join(', ')}`, 'gray'));
+        console.log(colorize(`│      Changed: ${changes.join(', ')}`, asChalkColor((asChalkColor(('gray' as ChalkColor))))));
       }
     }
   } else {
@@ -80,10 +82,10 @@ export async function handleTaskUpdate(
       dry_run: true
     };
 
-    results.updated.push(simTask);
+    results?.updated.push(simTask);
 
     if (!jsonOutput) {
-      console.log(colorize(`│    ✓ Would update task ${simTask.id}`, 'yellow'));
+      console.log(colorize(`│    ✓ Would update task ${simTask.id}`, asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
     }
   }
 }

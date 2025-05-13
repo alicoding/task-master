@@ -2,8 +2,8 @@
  * Base renderer class for capability map visualizations
  */
 
-import { CapabilityMap, CapabilityNode, CapabilityEdge } from '../../index.ts';
-import { VisualizationOptions } from '../options.ts';
+import { CapabilityMap, CapabilityNode, CapabilityEdge } from '../../index';
+import { VisualizationOptions } from '../options';
 
 /**
  * Abstract base class for capability map renderers

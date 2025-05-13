@@ -1,0 +1,4 @@
+cli/commands/deduplicate/lib/merger-enhanced.ts(103,53): error TS1005: ',' expected.
+cli/commands/deduplicate/lib/merger-enhanced.ts(103,56): error TS1005: ',' expected.
+src/cli/commands/deduplicate/lib/merger-enhanced.ts(101,53): error TS1005: ',' expected.
+src/cli/commands/deduplicate/lib/merger-enhanced.ts(101,56): error TS1005: ',' expected.

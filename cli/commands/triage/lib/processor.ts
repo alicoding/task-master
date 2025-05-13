@@ -5,9 +5,9 @@
  * implementation of the task processor.
  */
 
-import { TaskRepository } from '../../../../core/repo.ts';
-import { NlpService } from '../../../../core/nlp-service.ts';
-import { ProcessingOptions, TriageResults, TriageTask } from './utils.ts';
+import { TaskRepository } from '../../../../core/repo';
+import { NlpService } from '../../../../core/nlp-service';
+import { ProcessingOptions, TriageResults, TriageTask } from './utils';
 
 // Import from the modularized implementation
 import {
@@ -16,7 +16,7 @@ import {
   handleNewTask,
   handleAutoMerge,
   createNewTask
-} from './processor/index.ts';
+} from './processor/index';
 
 /**
  * Process a task from a plan file

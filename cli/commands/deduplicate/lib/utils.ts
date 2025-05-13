@@ -1,5 +1,5 @@
-import { Task } from '../../../../db/schema.ts';
-import { ChalkColor, ChalkStyle, colorize } from '../../../utils/chalk-utils.ts';
+import { Task } from '@/core/types';
+import { ChalkColor, ChalkStyle, colorize } from '../../../utils/chalk-utils';
 
 /**
  * Type for colorize function

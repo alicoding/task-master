@@ -1,0 +1,4 @@
+src/core/nlp/fuse.d.ts
+src/types/chalk-utils.d.ts
+src/types/core-types.d.ts
+src/types/drizzle-orm.d.ts

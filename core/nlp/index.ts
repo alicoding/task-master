@@ -7,23 +7,23 @@
  */
 
 // Export base services for extensibility
-export { BaseNlpService } from './services/base-service.ts';
-export { MockNlpService } from './services/mock-service.ts';
+export { BaseNlpService } from './services/base-service';
+export { MockNlpService } from './services/mock-service';
 
 // Export factory pattern for creating NLP services
-export { createNlpService } from './factory.ts';
+export { createNlpService } from './factory';
 
 // Export testing utilities
-export { TestSafeNlpService } from './testing/nlp-test-utils.ts';
+export { TestSafeNlpService } from './testing/nlp-test-utils';
 
 // Export types
-export * from './types.ts';
+export * from './types';
 
 // Export utility functions
-export * from './utils/index.ts';
+export * from './utils/index';
 
 // Export processing functions
-export * from './processing/index.ts';
+export * from './processing/index';
 
 // Export matchers
-export * from './matchers/index.ts';
+export * from './matchers/index';

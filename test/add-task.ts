@@ -3,8 +3,8 @@
  * This standalone script tests adding a task using the TaskRepository
  */
 
-import { TaskRepository } from '../core/repo.ts';
-import { TaskInsertOptions } from '../core/types.ts';
+import { TaskRepository } from '../core/repo';
+import { TaskInsertOptions } from '../core/types';
 
 // Main test function
 async function testAddTask(): Promise<void> {

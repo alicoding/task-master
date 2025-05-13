@@ -2,7 +2,7 @@
  * Metadata command index - Exports the metadata command
  */
 
-import { createMetadataCommand } from './metadata-command.ts';
+import { createMetadataCommand } from './metadata-command';
 
 /**
  * Create and export the metadata command

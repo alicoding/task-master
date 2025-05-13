@@ -1,29 +1,60 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictBindCallApply": true,
+    "strictPropertyInitialization": false, // Enable after initial fixes
     "skipLibCheck": true,
     "outDir": "dist",
+    "rootDir": ".",
     "sourceMap": true,
     "declaration": true,
-    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "allowImportingTsExtensions": false,
     "emitDeclarationOnly": false,
-    "noEmit": true,
-    // Add support for .ts extensions in imports
+    "noEmit": false,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": false, // Enable after initial fixes
+    "noUnusedParameters": false, // Enable after initial fixes
+    "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
     "paths": {
-      "*": ["*"]
-    }
+      "*": ["*"],
+      "@/*": ["src/*"],
+      "@/core/*": ["core/*", "src/core/*"],
+      "@/cli/*": ["cli/*", "src/cli/*"],
+      "@/db/*": ["src/db/*"]
+    },
+    // TypeScript-only optimization settings:
+    "allowJs": false, // No JavaScript files should be compiled
+    "checkJs": false, // Don't check JavaScript files
+    "composite": true, // Enable project references
+    "importHelpers": true, // Import helper functions from tslib
+    "incremental": true, // Enable incremental compilation
+    "removeComments": false, // Keep comments in output
+    "inlineSources": true // Include source code in sourcemaps
   },
   "ts-node": {
     "transpileOnly": true,
     "esm": true,
     "experimentalSpecifierResolution": "node"
   },
-  "include": ["**/*.ts"],
-  "exclude": ["node_modules", "dist"]
+  "include": [
+    "src/**/*.ts",
+    "cli/**/*.ts",
+    "core/**/*.ts",
+    // Only include essential declaration files
+    "src/types/chalk-utils.d.ts",
+    "src/types/core-types.d.ts",
+    "src/types/drizzle-orm.d.ts",
+    "src/core/nlp/fuse.d.ts"
+  ],
+  "exclude": ["node_modules", "dist", "test", "scripts"]
 }

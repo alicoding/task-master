@@ -11,15 +11,15 @@
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { BaseNlpService } from '../../core/nlp/services/base-service.ts';
-import { MockNlpService } from '../../core/nlp/services/mock-service.ts';
-import { TestSafeNlpService } from '../../core/nlp/testing/nlp-test-utils.ts';
+import { BaseNlpService } from '../../core/nlp/services/base-service';
+import { MockNlpService } from '../../core/nlp/services/mock-service';
+import { TestSafeNlpService } from '../../core/nlp/testing/nlp-test-utils';
 import { 
   createNlpService, 
   createMockNlpService,
   createOptimizedNlpService
-} from '../../core/nlp/factory.ts';
-import { TaskSearchInfo, SimilarTask } from '../../core/nlp/types.ts';
+} from '../../core/nlp/factory';
+import { TaskSearchInfo, SimilarTask } from '../../core/nlp/types';
 
 describe('NLP Services', () => {
   describe('MockNlpService', () => {

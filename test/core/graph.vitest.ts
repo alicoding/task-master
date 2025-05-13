@@ -11,8 +11,8 @@
  */
 
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { TaskRepository } from '../../core/repo.ts';
-import { TaskGraph } from '../../core/graph.ts';
+import { TaskRepository } from '../../core/repo';
+import { TaskGraph } from '../../core/graph';
 
 describe('TaskGraph', () => {
   let repo: TaskRepository;

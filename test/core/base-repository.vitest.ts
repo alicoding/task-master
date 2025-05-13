@@ -6,10 +6,10 @@
  */
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { BaseTaskRepository } from '../../core/repository/base.ts';
-import { RepositoryFactory } from '../../core/repository/factory.ts';
-import { tasks } from '../../db/schema.ts';
-import { TaskErrorCode } from '../../core/types.ts';
+import { BaseTaskRepository } from '../../core/repository/base';
+import { RepositoryFactory } from '../../core/repository/factory';
+import { tasks } from '../../db/schema';
+import { TaskErrorCode } from '../../core/types';
 
 // Helper to get a test database path
 const getTestDbPath = () => `./test-${Date.now()}.db`;

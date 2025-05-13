@@ -3,15 +3,15 @@
  * This is a simplified version of NlpService that doesn't rely on external dependencies
  */
 
-import { BaseNlpService } from './base-service.ts';
+import { BaseNlpService } from './base-service';
 import { 
   ProcessedQuery, 
   TaskSearchInfo, 
   SimilarTask, 
   ExtractedSearchFilters 
-} from '../types.ts';
-import { tokenize, normalizeText } from '../utils/tokenization.ts';
-import { calculateJaccardSimilarity } from '../utils/distance.ts';
+} from '../types';
+import { tokenize, normalizeText } from '../utils/tokenization';
+import { calculateJaccardSimilarity } from '../utils/distance';
 
 /**
  * Mock NLP Service for Task Master

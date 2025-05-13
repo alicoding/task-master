@@ -1,24 +1,30 @@
 #!/usr/bin/env node
 import { Command } from 'commander';
-import { createAddCommand } from './commands/add/index.ts';
-import { createShowCommand } from './commands/show/index.ts';
-import { createUpdateCommand } from './commands/update/index.ts';
-import { createSearchCommand } from './commands/search/index.ts';
-import { createNextCommand } from './commands/next/index.ts';
-import { createRemoveCommand } from './commands/remove/index.ts';
-import { createMetadataCommand } from './commands/metadata/index.ts';
-import { createApiCommand } from './commands/api/index.ts';
-import { createTriageCommand } from './commands/triage/index.ts';
-import { createDeduplicateCommand } from './commands/deduplicate/index.ts';
-import { createAiCommand } from './commands/ai/index.ts';
-import { createEnhancedMapCommand } from './commands/map/index-enhanced.ts';
-import { createNlpProfileCommand } from './commands/nlp-profile/index.ts';
-import registerDaemonCommand from './commands/daemon/index.ts';
-import createDoDCommand from './commands/dod/index.ts';
-import { createTerminalCommand } from './commands/terminal/index.ts';
-import { createSubtasksCommand } from './commands/subtasks/index.ts';
-import { helpFormatter } from './helpers/help-formatter.ts';
-import { RepositoryFactory } from '../core/repository/factory.ts';
+import * as dotenv from 'dotenv';
+import { createAddCommand } from './commands/add/index';
+import { createShowCommand } from './commands/show/index';
+import { createUpdateCommand } from './commands/update/index';
+import { createSearchCommand } from './commands/search/index';
+import { createNextCommand } from './commands/next/index';
+import { createRemoveCommand } from './commands/remove/index';
+import { createMetadataCommand } from './commands/metadata/index';
+import { createApiCommand } from './commands/api/index';
+import { createTriageCommand } from './commands/triage/index';
+import { createDeduplicateCommand } from './commands/deduplicate/index';
+import { createAiCommand } from './commands/ai/index';
+import { createEnhancedMapCommand } from './commands/map/index-enhanced';
+import { createNlpProfileCommand } from './commands/nlp-profile/index';
+import createDoDCommand from './commands/dod/index';
+import { createSubtasksCommand } from './commands/subtasks/index';
+import { createSetupCommand } from './commands/setup/index';
+import { createWizardCommand } from './commands/wizard/index';
+import { helpFormatter } from './helpers/help-formatter';
+import { RepositoryFactory } from '../core/repository/factory';
+import * as fs from 'fs';
+import * as path from 'path';
+
+// Load environment variables from .env file
+dotenv.config();
 
 // Global registry of open connections to ensure cleanup on exit
 const openConnections: Set<{ close: () => void }> = new Set();
@@ -105,6 +111,10 @@ async function main() {
         description: 'Find and merge duplicate tasks'
       },
       {
+        command: 'tm setup --ai',
+        description: 'Configure AI providers interactively'
+      },
+      {
         command: 'tm ai generate-subtasks --id 5',
         description: 'Use AI to generate subtasks'
       },
@@ -113,20 +123,12 @@ async function main() {
         description: 'Discover and visualize task capabilities with progress tracking'
       },
       {
-        command: 'tm daemon start',
-        description: 'Start the file tracking daemon for automatic task-code tracking'
-      },
-      {
         command: 'tm dod check 5',
         description: 'Check Definition of Done requirements for a task'
       },
       {
-        command: 'tm terminal status',
-        description: 'Show terminal integration status and session information'
-      },
-      {
-        command: 'tm terminal task 5',
-        description: 'Set current task for terminal session'
+        command: 'tm interactive',
+        description: 'Launch rich, interactive terminal UI'
       }
     ],
     notes: [
@@ -137,9 +139,10 @@ async function main() {
       'All commands support detailed help with --help flag',
       'Advanced features include metadata management, batch operations, and AI integration',
       'For integration with scripts or AI agents, use the "api" command family',
-      'Use the AI commands for task generation, prioritization, and analysis'
+      'Use the AI commands for task generation, prioritization, and analysis',
+      'For a rich, interactive user experience, use the "interactive" or "ui" command'
     ],
-    seeAlso: ['add', 'show', 'update', 'search', 'next', 'metadata', 'api', 'deduplicate', 'ai', 'map', 'daemon', 'dod', 'terminal', 'subtasks', 'nlp-profile']
+    seeAlso: ['add', 'show', 'update', 'search', 'next', 'metadata', 'api', 'deduplicate', 'setup', 'ai', 'map', 'dod', 'subtasks', 'nlp-profile', 'interactive', 'ui']
   });
 
   // Add commands
@@ -158,14 +161,26 @@ async function main() {
   program.addCommand(createNlpProfileCommand());
   // Add DoD command - will be accessible as 'tm dod'
   program.addCommand(createDoDCommand());
-  // Add terminal command - will be accessible as 'tm terminal' or 'tm term'
-  program.addCommand(createTerminalCommand());
   // Add subtasks command - will be accessible as 'tm subtasks'
   program.addCommand(createSubtasksCommand());
-  registerDaemonCommand(program);
+  // Add setup command - will be accessible as 'tm setup'
+  program.addCommand(createSetupCommand());
+  // Add wizard command - this is the default command when no args are provided
+  program.addCommand(createWizardCommand());
 
   try {
-    await program.parseAsync(process.argv);
+    // Check if a command was provided
+    const hasCommand = process.argv.length > 2 && !process.argv[2].startsWith('-');
+
+    if (!hasCommand) {
+      // No command provided, run the wizard
+      console.log('Welcome to Task Master!');
+      await program.parseAsync(['node', 'tm', 'wizard']);
+    } else {
+      // Parse normal command
+      await program.parseAsync(process.argv);
+    }
+
     // Ensure we exit cleanly after command execution
     // Give a small timeout to allow any async operations to complete
     setTimeout(() => {

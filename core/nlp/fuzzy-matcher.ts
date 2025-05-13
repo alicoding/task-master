@@ -2,8 +2,8 @@
  * Fuzzy matching module for NLP service
  * Provides enhanced fuzzy searching capabilities using Fuse.js
  */
-import Fuse from 'fuse.ts';
-import { TaskSearchInfo, SimilarTask, FuzzySearchOptions } from './types.ts';
+import Fuse from 'fuse';
+import { TaskSearchInfo, SimilarTask, FuzzySearchOptions } from './types';
 
 /**
  * Default options for fuzzy search

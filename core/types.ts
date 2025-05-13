@@ -1,4 +1,9 @@
-import { Task, Dependency } from '../db/schema.ts';
+import { Task as SchemaTask, Dependency } from '../db/schema';
+
+/**
+ * Task interface re-exported from schema
+ */
+export type Task = SchemaTask;
 
 /**
  * Valid task status values
@@ -79,7 +84,15 @@ export interface TaskUpdateOptions {
 /**
  * Output format for commands
  */
-export type OutputFormat = 'text' | 'json';
+export type OutputFormat = 'text' | 'json' | 'dot' | 'mermaid';
+
+/**
+ * Task object with hierarchy information
+ */
+export interface HierarchyTask extends Task {
+  children?: HierarchyTask[];
+  depth?: number;
+}
 
 /**
  * Global configuration for TaskMaster

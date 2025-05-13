@@ -6,7 +6,7 @@
  */
 
 import chalk from 'chalk';
-import { getProgressColoredText } from './styles.ts';
+import { getProgressColoredText } from './styles';
 
 /**
  * Render a progress bar with color gradients

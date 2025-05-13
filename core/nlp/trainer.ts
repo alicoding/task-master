@@ -2,7 +2,7 @@
  * Trainer module for NLP service
  * Handles training the NLP model with task-specific examples
  */
-import { NlpManager } from '../nlp-mock/index.ts';
+import { NlpManager } from '../nlp-mock/index';
 import fs from 'fs/promises';
 
 /**

@@ -86,6 +86,16 @@ export interface FuzzySearchOptions {
 }
 
 /**
+ * Cache statistics for NLP operations
+ */
+export interface NlpCacheStats {
+  query?: number;
+  similarity?: number;
+  filters?: number;
+  [key: string]: number | undefined;
+}
+
+/**
  * Base interface for NLP service implementations
  */
 export interface NlpServiceInterface {
@@ -99,6 +109,15 @@ export interface NlpServiceInterface {
     useFuzzy?: boolean
   ): Promise<SimilarTask[]>;
   extractSearchFilters(query: string): Promise<ExtractedSearchFilters>;
+}
+
+/**
+ * Extended interface for NLP service with profiling capabilities
+ */
+export interface ProfilableNlpService extends NlpServiceInterface {
+  clearCache(): void;
+  printProfilingResults(): void;
+  getCacheStats(): NlpCacheStats;
 }
 
 /**

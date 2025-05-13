@@ -5,7 +5,7 @@
  * for consistent log messages across the codebase.
  */
 
-import { createLogger, configureLogger, LogLevel } from '../core/utils/logger.ts';
+import { createLogger, configureLogger, LogLevel } from '../core/utils/logger';
 
 // Example usage in a repository or service class
 class ExampleService {

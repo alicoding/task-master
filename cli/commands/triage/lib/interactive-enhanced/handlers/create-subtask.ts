@@ -2,10 +2,12 @@
  * Create subtask handler
  */
 
+import { ChalkColor, asChalkColor } from '@/cli/utils/chalk-utils';
 import readline from 'readline';
-import { TaskRepository } from '../../../../../core/repo.ts';
-import { TaskStatus } from '../../../../../core/types.ts';
-import { ProcessingOptions, TriageResults, TriageTask } from '../../utils.ts';
+import { TaskRepository } from '../../../../../core/repo';
+import { TaskStatus } from '../../../../../core/types';
+import { ProcessingOptions, TriageResults, TriageTask } from '../../utils';
+
 
 /**
  * Handle creating a subtask for the current task
@@ -23,8 +25,8 @@ export async function handleCreateSubtaskAction(
   const { dryRun, colorize } = options;
   
   if (dryRun) {
-    console.log(colorize('Would create subtask (dry run).', 'yellow'));
-    results.added.push({
+    console.log(colorize('Would create subtask (dry run).', asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
+    results?.added.push({
       title: '[Subtask]',
       parentId: task.id,
       dry_run: true
@@ -32,10 +34,10 @@ export async function handleCreateSubtaskAction(
     return;
   }
   
-  console.log(colorize('\n┌─ Create Subtask', 'green', 'bold'));
-  console.log(colorize('│', 'green'));
-  console.log(colorize('├─ Parent Task: ', 'green') + 
-              colorize(task.id || '', 'green') + ': ' + task.title);
+  console.log(colorize('\n┌─ Create Subtask', asChalkColor((asChalkColor(('green' as ChalkColor)))), asChalkColor('bold')));
+  console.log(colorize('│', asChalkColor((asChalkColor(('green' as ChalkColor))))));
+  console.log(colorize('├─ Parent Task: ', asChalkColor((asChalkColor(('green' as ChalkColor))))) + 
+              colorize(task.id || '', asChalkColor((asChalkColor(('green' as ChalkColor))))) + ': ' + task.title);
   
   // Get subtask details
   const rl1 = readline.createInterface({
@@ -44,13 +46,13 @@ export async function handleCreateSubtaskAction(
   });
   
   const titleInput = await new Promise<string>(resolve => {
-    rl1.question(colorize('├─ Subtask Title: ', 'green'), resolve);
+    rl1.question(colorize('├─ Subtask Title: ', asChalkColor((asChalkColor(('green' as ChalkColor))))), resolve);
   });
   
   rl1.close();
   
   if (!titleInput.trim()) {
-    console.log(colorize('└─ Cancelled - title is required', 'yellow'));
+    console.log(colorize('└─ Cancelled - title is required', asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
     return;
   }
   
@@ -61,18 +63,18 @@ export async function handleCreateSubtaskAction(
   });
   
   const statusMenu = `
-${colorize('1', 'blue')} - todo
-${colorize('2', 'yellow')} - in-progress
-${colorize('3', 'green')} - done
-${colorize('0', 'gray')} - default (todo)
+${colorize('1', asChalkColor((asChalkColor(('blue' as ChalkColor)))))} - todo
+${colorize('2', asChalkColor((asChalkColor(('yellow' as ChalkColor)))))} - in-progress
+${colorize('3', asChalkColor((asChalkColor(('green' as ChalkColor)))))} - done
+${colorize('0', asChalkColor((asChalkColor(('gray' as ChalkColor)))))} - default (todo)
 `;
   
-  console.log(colorize('│', 'green'));
-  console.log(colorize('├─ Status Options:', 'green'));
+  console.log(colorize('│', asChalkColor((asChalkColor(('green' as ChalkColor))))));
+  console.log(colorize('├─ Status Options:', asChalkColor((asChalkColor(('green' as ChalkColor))))));
   console.log(statusMenu);
   
   const statusInput = await new Promise<string>(resolve => {
-    rl2.question(colorize('├─ Select status [0-3]: ', 'green'), resolve);
+    rl2.question(colorize('├─ Select status [0-3]: ', asChalkColor((asChalkColor(('green' as ChalkColor))))), resolve);
   });
   
   rl2.close();
@@ -91,11 +93,11 @@ ${colorize('0', 'gray')} - default (todo)
     output: process.stdout
   });
   
-  console.log(colorize('│', 'green'));
-  console.log(colorize('├─ Enter tags (comma-separated) or leave empty:', 'green'));
+  console.log(colorize('│', asChalkColor((asChalkColor(('green' as ChalkColor))))));
+  console.log(colorize('├─ Enter tags (comma-separated) or leave empty:', asChalkColor((asChalkColor(('green' as ChalkColor))))));
   
   const tagsInput = await new Promise<string>(resolve => {
-    rl3.question(colorize('├─ Tags: ', 'green'), resolve);
+    rl3.question(colorize('├─ Tags: ', asChalkColor((asChalkColor(('green' as ChalkColor))))), resolve);
   });
   
   rl3.close();
@@ -106,8 +108,8 @@ ${colorize('0', 'gray')} - default (todo)
     [];
   
   // Create the subtask
-  console.log(colorize('│', 'green'));
-  console.log(colorize('├─ Creating subtask...', 'green'));
+  console.log(colorize('│', asChalkColor((asChalkColor(('green' as ChalkColor))))));
+  console.log(colorize('├─ Creating subtask...', asChalkColor((asChalkColor(('green' as ChalkColor))))));
   
   const newTask = await repo.createTask({
     title: titleInput.trim(),
@@ -117,6 +119,6 @@ ${colorize('0', 'gray')} - default (todo)
     childOf: task.id
   });
   
-  results.added.push(newTask);
-  console.log(colorize('└─ ✓ Subtask created with ID: ' + newTask.id, 'green', 'bold'));
+  results?.added.push(newTask);
+  console.log(colorize('└─ ✓ Subtask created with ID: ' + newTask.id, asChalkColor((asChalkColor(('green' as ChalkColor)))), asChalkColor('bold')));
 }

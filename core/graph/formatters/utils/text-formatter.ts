@@ -3,8 +3,8 @@
  * Provides functionality for wrapping, styling and truncating text
  */
 
-import { COLORS } from '../colors/constants.ts';
-import { TYPOGRAPHY } from '../typography/constants.ts';
+import { COLORS } from '../colors/constants';
+import { TYPOGRAPHY } from '../typography/constants';
 
 // Dynamic imports
 let chalk: any;

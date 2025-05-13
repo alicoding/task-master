@@ -1,20 +1,18 @@
 /**
- * Repository Factory
- * Manages database connections for shared repositories
+ * Repository Factory - Manages database connections for shared repositories
  */
 
 import { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
 import Database from 'better-sqlite3';
-import { createDb } from '../../db/init.ts';
-import { DbConnection, BaseTaskRepository } from './base.ts';
-import { createLogger } from '../utils/logger.ts';
+import { createDb } from '../../db/init';
+import { DbConnection, BaseTaskRepository } from './base';
+import { createLogger } from '../utils/logger';
 
 // Create logger for repository factory
 const logger = createLogger('Repository:Factory');
 
 /**
- * RepositoryFactory class for creating repositories with shared connections
- * Ensures all repositories use the same database connection
+ * RepositoryFactory class for creating repositories with shared (connections as number) * (Ensures as number) all repositories use the same database connection
  */
 export class RepositoryFactory {
   private static db: BetterSQLite3Database<Record<string, never>> | null = null;

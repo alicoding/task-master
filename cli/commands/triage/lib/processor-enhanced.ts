@@ -5,15 +5,16 @@
  * implementation of the enhanced task processor.
  */
 
-import { TaskRepository } from '../../../../core/repo.ts';
-import { NlpService } from '../../../../core/nlp-service-mock.ts';
-import { ProcessingOptions, TriageResults, TriageTask, ChalkColor } from './utils.ts';
+import { TaskRepository } from '../../../../core/repo';
+import { NlpService } from '../../../../core/nlp-service-mock';
+import { ProcessingOptions, TriageResults, TriageTask, ChalkColor } from './utils';
 
 // Import from the modularized implementation
 import {
   processPlanTask as processPlanTaskModular,
   processPlanWithEnhancedUI as processPlanWithEnhancedUIModular
-} from './processor/index.ts';
+} from './processor/index';
+import { ChalkColor } from "@/cli/utils/chalk-utils";
 
 /**
  * Process a plan with enhanced visual output

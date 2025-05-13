@@ -4,13 +4,13 @@
  */
 
 import { Command } from 'commander';
-import fs from 'fs/promises';
-import path from 'path';
+import * as fs from 'fs/promises';
+import * as path from 'path';
 import chalk from 'chalk';
-import { TaskRepository } from '../../../core/repo.ts';
-import { helpFormatter } from '../../helpers/help-formatter.ts';
-import { DoDManager } from '../../../core/dod/manager.ts';
-import { DoDItem, DoD } from '../../../core/dod/types.ts';
+import { TaskRepository } from '../../../core/repo';
+import { helpFormatter } from '../../helpers/help-formatter';
+import { DoDManager } from '../../../core/dod/manager';
+import { DoDItem, TaskDoD } from '../../../core/dod/types';
 
 /**
  * Register all DoD commands
@@ -31,28 +31,30 @@ export function createDoDCommand(): Command {
         const manager = new DoDManager();
         const result = await manager.initConfig(options.force);
         
-        if (result.success) {
+        if (result?.success) {
           console.log(chalk.green('✅ DoD configuration initialized successfully'));
-          console.log(chalk.blue('Configuration file created at:'), result.data.configPath);
+          console.log(chalk.blue('Configuration file created at:'), result?.data?.configPath);
           console.log(chalk.blue('Default DoD items:'));
-          
-          result.data.defaultItems.forEach(item => {
-            console.log(`  • ${chalk.yellow(item.description)}`);
-          });
-          
-          const tagCount = Object.keys(result.data.tagItems || {}).length;
+
+          if (result?.data?.defaultItems) {
+            result?.data?.defaultItems?.forEach(item => {
+              console.log(`  • ${chalk.yellow(item.description)}`);
+            });
+          }
+
+          const tagCount = Object.keys(result?.data?.tagItems || {}).length;
           if (tagCount > 0) {
             console.log(chalk.blue(`Tag-specific DoD items for ${tagCount} tags also configured.`));
           }
         } else {
-          console.error(chalk.red(`❌ ${result.error?.message || 'Unknown error'}`));
+          console?.error(chalk.red(`❌ ${result?.error?.message || 'Unknown error'}`));
           
-          if (result.error?.code === 'CONFIG_EXISTS' && !options.force) {
+          if (result?.error?.code === 'CONFIG_EXISTS' && !options.force) {
             console.log(chalk.yellow('Use --force to overwrite existing configuration'));
           }
         }
       } catch (error) {
-        console.error(chalk.red('Error initializing DoD config:'), error instanceof Error ? error.message : error);
+        console?.error(chalk.red('Error initializing DoD config:'), error instanceof Error ? error.message : error);
       }
     });
 
@@ -72,11 +74,11 @@ export function createDoDCommand(): Command {
           const repo = new TaskRepository();
           const result = await manager.addTaskDoDItem(options.task, item);
           
-          if (result.success) {
+          if (result?.success) {
             console.log(chalk.green(`✅ Added DoD item to task ${options.task}`));
             console.log(`  • ${chalk.yellow(item)}`);
           } else {
-            console.error(chalk.red(`❌ ${result.error?.message || 'Unknown error'}`));
+            console?.error(chalk.red(`❌ ${result?.error?.message || 'Unknown error'}`));
           }
           
           repo.close();
@@ -84,7 +86,7 @@ export function createDoDCommand(): Command {
           // Add DoD item to project configuration
           const result = await manager.addProjectDoDItem(item, options.tag);
           
-          if (result.success) {
+          if (result?.success) {
             if (options.tag) {
               console.log(chalk.green(`✅ Added DoD item to tag "${options.tag}" configuration`));
             } else {
@@ -92,11 +94,11 @@ export function createDoDCommand(): Command {
             }
             console.log(`  • ${chalk.yellow(item)}`);
           } else {
-            console.error(chalk.red(`❌ ${result.error?.message || 'Unknown error'}`));
+            console?.error(chalk.red(`❌ ${result?.error?.message || 'Unknown error'}`));
           }
         }
       } catch (error) {
-        console.error(chalk.red('Error adding DoD item:'), error instanceof Error ? error.message : error);
+        console?.error(chalk.red('Error adding DoD item:'), error instanceof Error ? error.message : error);
       }
     });
 
@@ -116,11 +118,11 @@ export function createDoDCommand(): Command {
           const repo = new TaskRepository();
           const result = await manager.removeTaskDoDItem(options.task, item);
           
-          if (result.success) {
+          if (result?.success) {
             console.log(chalk.green(`✅ Removed DoD item from task ${options.task}`));
-            console.log(`  • ${chalk.yellow(result.data.description || item)}`);
+            console.log(`  • ${chalk.yellow(result?.data?.description || item)}`);
           } else {
-            console.error(chalk.red(`❌ ${result.error?.message || 'Unknown error'}`));
+            console?.error(chalk.red(`❌ ${result?.error?.message || 'Unknown error'}`));
           }
           
           repo.close();
@@ -128,19 +130,19 @@ export function createDoDCommand(): Command {
           // Remove DoD item from project configuration
           const result = await manager.removeProjectDoDItem(item, options.tag);
           
-          if (result.success) {
+          if (result?.success) {
             if (options.tag) {
               console.log(chalk.green(`✅ Removed DoD item from tag "${options.tag}" configuration`));
             } else {
               console.log(chalk.green('✅ Removed DoD item from default project configuration'));
             }
-            console.log(`  • ${chalk.yellow(result.data.description || item)}`);
+            console.log(`  • ${chalk.yellow(result?.data?.description || item)}`);
           } else {
-            console.error(chalk.red(`❌ ${result.error?.message || 'Unknown error'}`));
+            console?.error(chalk.red(`❌ ${result?.error?.message || 'Unknown error'}`));
           }
         }
       } catch (error) {
-        console.error(chalk.red('Error removing DoD item:'), error instanceof Error ? error.message : error);
+        console?.error(chalk.red('Error removing DoD item:'), error instanceof Error ? error.message : error);
       }
     });
 
@@ -165,21 +167,22 @@ export function createDoDCommand(): Command {
         } else {
           // If neither flag is provided, toggle the current state
           const taskResult = await repo.getTask(taskId);
-          if (taskResult.success && taskResult.data) {
-            const metadata = taskResult.data.metadata || {};
-            enable = !((metadata.dod?.enabled) === true);
+          if (taskResult?.success && taskResult?.data) {
+            const metadata = taskResult?.data?.metadata || {};
+            const metadataObj = typeof metadata === 'string' ? JSON.parse(metadata) : metadata;
+            enable = !((metadataObj?.dod?.enabled) === true);
           }
         }
         
         const result = await manager.setTaskDoDEnabled(taskId, enable);
         
-        if (result.success) {
+        if (result?.success) {
           if (enable) {
             console.log(chalk.green(`✅ Enabled DoD for task ${taskId}`));
             
-            if (result.data.items && result.data.items.length > 0) {
+            if (result?.data?.items && result?.data?.items?.length > 0) {
               console.log(chalk.blue('Current DoD items:'));
-              result.data.items.forEach(item => {
+              result?.data?.items.forEach(item => {
                 const status = item.completed ? 
                   chalk.green('✓') : 
                   chalk.yellow('☐');
@@ -193,12 +196,12 @@ export function createDoDCommand(): Command {
             console.log(chalk.yellow(`⚠️ Disabled DoD for task ${taskId}`));
           }
         } else {
-          console.error(chalk.red(`❌ ${result.error?.message || 'Unknown error'}`));
+          console?.error(chalk.red(`❌ ${result?.error?.message || 'Unknown error'}`));
         }
         
         repo.close();
       } catch (error) {
-        console.error(chalk.red('Error toggling DoD:'), error instanceof Error ? error.message : error);
+        console?.error(chalk.red('Error toggling DoD:'), error instanceof Error ? error.message : error);
       }
     });
 
@@ -216,44 +219,44 @@ export function createDoDCommand(): Command {
           // List DoD items for specific task
           const result = await manager.getTaskDoD(options.task);
           
-          if (result.success) {
+          if (result?.success) {
             console.log(chalk.blue(`Definition of Done for task ${options.task}:`));
             
-            if (result.data.enabled === false) {
+            if (result?.data?.enabled === false) {
               console.log(chalk.yellow('⚠️ DoD is disabled for this task'));
               return;
             }
             
-            if (!result.data.items || result.data.items.length === 0) {
+            if (!result?.data?.items || result?.data?.items.length === 0) {
               console.log(chalk.yellow('No DoD items defined for this task.'));
               return;
             }
             
-            result.data.items.forEach(item => {
+            result?.data?.items?.forEach(item => {
               const status = item.completed ? 
                 chalk.green('✓') : 
                 chalk.yellow('☐');
               console.log(`  ${status} ${item.description}`);
             });
           } else {
-            console.error(chalk.red(`❌ ${result.error?.message || 'Unknown error'}`));
+            console?.error(chalk.red(`❌ ${result?.error?.message || 'Unknown error'}`));
           }
         } else {
           // List project-level DoD items
           const result = await manager.getProjectDoD();
           
-          if (result.success) {
-            if (options.tag && result.data.tagItems && result.data.tagItems[options.tag]) {
+          if (result?.success) {
+            if (options.tag && result?.data?.tagItems && result?.data?.tagItems[options.tag]) {
               // Show tag-specific DoD items
               console.log(chalk.blue(`Definition of Done for tag "${options.tag}":`));
-              
-              const tagItems = result.data.tagItems[options.tag];
-              if (tagItems.length === 0) {
+
+              const tagItems = result?.data?.tagItems[options.tag];
+              if (tagItems?.length === 0) {
                 console.log(chalk.yellow(`No DoD items defined for tag "${options.tag}".`));
                 return;
               }
-              
-              tagItems.forEach(item => {
+
+              tagItems?.forEach(item => {
                 console.log(`  • ${chalk.yellow(item.description)}`);
               });
             } else if (options.tag) {
@@ -261,21 +264,21 @@ export function createDoDCommand(): Command {
             } else {
               // Show default DoD items
               console.log(chalk.blue('Default Definition of Done:'));
-              
-              if (!result.data.defaultItems || result.data.defaultItems.length === 0) {
+
+              if (!result?.data?.defaultItems || result?.data?.defaultItems.length === 0) {
                 console.log(chalk.yellow('No default DoD items defined.'));
               } else {
-                result.data.defaultItems.forEach(item => {
+                result?.data?.defaultItems.forEach(item => {
                   console.log(`  • ${chalk.yellow(item.description)}`);
                 });
               }
               
               // Show all tag-specific items
-              if (result.data.tagItems && Object.keys(result.data.tagItems).length > 0) {
+              if (result?.data?.tagItems && Object.keys(result?.data?.tagItems).length > 0) {
                 console.log('');
                 console.log(chalk.blue('Tag-specific Definitions of Done:'));
-                
-                for (const [tag, items] of Object.entries(result.data.tagItems)) {
+
+                for (const [tag, items] of Object.entries(result?.data?.tagItems)) {
                   console.log(chalk.cyan(`  ${tag}:`));
                   items.forEach(item => {
                     console.log(`    • ${chalk.yellow(item.description)}`);
@@ -284,11 +287,11 @@ export function createDoDCommand(): Command {
               }
             }
           } else {
-            console.error(chalk.red(`❌ ${result.error?.message || 'Unknown error'}`));
+            console?.error(chalk.red(`❌ ${result?.error?.message || 'Unknown error'}`));
           }
         }
       } catch (error) {
-        console.error(chalk.red('Error listing DoD items:'), error instanceof Error ? error.message : error);
+        console?.error(chalk.red('Error listing DoD items:'), error instanceof Error ? error.message : error);
       }
     });
 
@@ -302,26 +305,26 @@ export function createDoDCommand(): Command {
         const manager = new DoDManager();
         const result = await manager.getTaskDoD(taskId);
         
-        if (result.success) {
-          if (result.data.enabled === false) {
+        if (result?.success) {
+          if (result?.data?.enabled === false) {
             console.log(chalk.yellow(`⚠️ DoD is disabled for task ${taskId}`));
             return;
           }
           
           console.log(chalk.blue(`DoD completion status for task ${taskId}:`));
           
-          if (!result.data.items || result.data.items.length === 0) {
+          if (!result?.data?.items || result?.data?.items.length === 0) {
             console.log(chalk.yellow('No DoD items defined for this task.'));
             return;
           }
-          
-          const completed = result.data.items.filter(item => item.completed).length;
-          const total = result.data.items.length;
+
+          const completed = result?.data?.items.filter(item => item.completed).length;
+          const total = result?.data?.items.length;
           const percentage = Math.round((completed / total) * 100);
           
           console.log(chalk.blue(`Progress: ${completed}/${total} items (${percentage}%)`));
           
-          result.data.items.forEach(item => {
+          result?.data?.items?.forEach(item => {
             const status = item.completed ? 
               chalk.green('✓') : 
               chalk.yellow('☐');
@@ -334,10 +337,10 @@ export function createDoDCommand(): Command {
             console.log(chalk.yellow(`⚠️ ${total - completed} items remaining to be completed.`));
           }
         } else {
-          console.error(chalk.red(`❌ ${result.error?.message || 'Unknown error'}`));
+          console?.error(chalk.red(`❌ ${result?.error?.message || 'Unknown error'}`));
         }
       } catch (error) {
-        console.error(chalk.red('Error checking DoD status:'), error instanceof Error ? error.message : error);
+        console?.error(chalk.red('Error checking DoD status:'), error instanceof Error ? error.message : error);
       }
     });
 
@@ -356,15 +359,15 @@ export function createDoDCommand(): Command {
         
         const result = await manager.markTaskDoDItem(taskId, itemId, completed);
         
-        if (result.success) {
+        if (result?.success) {
           const status = completed ? 'completed' : 'not completed';
           console.log(chalk.green(`✅ Marked DoD item as ${status} for task ${taskId}`));
-          console.log(`  • ${chalk.yellow(result.data.description || itemId)}`);
+          console.log(`  • ${chalk.yellow(result?.data?.description || itemId)}`);
         } else {
-          console.error(chalk.red(`❌ ${result.error?.message || 'Unknown error'}`));
+          console?.error(chalk.red(`❌ ${result?.error?.message || 'Unknown error'}`));
         }
       } catch (error) {
-        console.error(chalk.red('Error marking DoD item:'), error instanceof Error ? error.message : error);
+        console?.error(chalk.red('Error marking DoD item:'), error instanceof Error ? error.message : error);
       }
     });
 

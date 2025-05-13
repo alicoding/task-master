@@ -6,10 +6,10 @@
 import { test } from 'uvu';
 import * as assert from 'uvu/assert';
 import * as sinon from 'sinon';
-import { TaskRepository } from '../../core/repo.ts';
+import { TaskRepository } from '../../core/repo';
 
 // Import test helpers
-import { createTestRepository, createSampleTasks } from '../core/test-helpers.ts';
+import { createTestRepository, createSampleTasks } from '../core/test-helpers';
 
 // Test variables
 let repo: TaskRepository;
@@ -60,7 +60,7 @@ test.after.each(() => {
 // Test basic next command functionality
 test('finds a single next task by default', async () => {
   // Create the command handler
-  const { createNextCommand } = await import('../../cli/commands/next/index.ts');
+  const { createNextCommand } = await import('../../cli/commands/next/index');
   const nextCommand = createNextCommand();
   
   // Execute the command action
@@ -87,7 +87,7 @@ test('finds a single next task by default', async () => {
 // Test finding multiple next tasks
 test('finds multiple next tasks when count is greater than 1', async () => {
   // Create the command handler
-  const { createNextCommand } = await import('../../cli/commands/next/index.ts');
+  const { createNextCommand } = await import('../../cli/commands/next/index');
   const nextCommand = createNextCommand();
   
   // Execute the command action
@@ -108,7 +108,7 @@ test('finds multiple next tasks when count is greater than 1', async () => {
 // Test filtering next tasks by tag
 test('filters next tasks by tag', async () => {
   // Create the command handler
-  const { createNextCommand } = await import('../../cli/commands/next/index.ts');
+  const { createNextCommand } = await import('../../cli/commands/next/index');
   const nextCommand = createNextCommand();
   
   // Execute the command action with tag filter
@@ -143,7 +143,7 @@ test('filters next tasks by tag', async () => {
 // Test filtering next tasks by status
 test('filters next tasks by status', async () => {
   // Create the command handler
-  const { createNextCommand } = await import('../../cli/commands/next/index.ts');
+  const { createNextCommand } = await import('../../cli/commands/next/index');
   const nextCommand = createNextCommand();
   
   // Execute the command action with status filter
@@ -170,7 +170,7 @@ test('filters next tasks by status', async () => {
 // Test filtering next tasks by readiness
 test('filters next tasks by readiness', async () => {
   // Create the command handler
-  const { createNextCommand } = await import('../../cli/commands/next/index.ts');
+  const { createNextCommand } = await import('../../cli/commands/next/index');
   const nextCommand = createNextCommand();
   
   // Execute the command action with readiness filter
@@ -197,7 +197,7 @@ test('filters next tasks by readiness', async () => {
 // Test JSON output format
 test('returns JSON output when format is json', async () => {
   // Create the command handler
-  const { createNextCommand } = await import('../../cli/commands/next/index.ts');
+  const { createNextCommand } = await import('../../cli/commands/next/index');
   const nextCommand = createNextCommand();
   
   // Execute the command action
@@ -233,7 +233,7 @@ test('returns JSON output when format is json', async () => {
 // Test handling of empty result set
 test('handles case when no tasks match criteria', async () => {
   // Create the command handler
-  const { createNextCommand } = await import('../../cli/commands/next/index.ts');
+  const { createNextCommand } = await import('../../cli/commands/next/index');
   const nextCommand = createNextCommand();
   
   // Execute the command action with criteria unlikely to match any tasks
@@ -269,7 +269,7 @@ test('prioritizes ready tasks over draft tasks', async () => {
   consoleLogCalls = [];
   
   // Create the command handler
-  const { createNextCommand } = await import('../../cli/commands/next/index.ts');
+  const { createNextCommand } = await import('../../cli/commands/next/index');
   const nextCommand = createNextCommand();
   
   // Execute the command action to get a single next task

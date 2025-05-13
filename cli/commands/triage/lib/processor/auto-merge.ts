@@ -3,9 +3,10 @@
  * Handles merging similar tasks automatically
  */
 
-import { TaskRepository } from '../../../../../core/repo.ts';
-import { ChalkColor, ProcessingOptions, TriageResults, TriageTask } from '../utils.ts';
-import { createNewTask } from './task-creation.ts';
+import { TaskRepository } from '../../../../../core/repo';
+import { ChalkColor, ProcessingOptions, TriageResults, TriageTask } from '../utils';
+import { createNewTask } from './task-creation';
+import { ChalkColor, asChalkColor } from "@/cli/utils/chalk-utils";
 
 /**
  * Task with similarity metadata
@@ -52,7 +53,7 @@ export async function handleAutoMerge(
   // For very high similarity, do the merge
   if (score >= 0.8) {
     if (!jsonOutput) {
-      console.log(colorize(`│    🔄 Auto-merging with ${bestMatch.id} (${percentage}% similarity)`, 'magenta'));
+      console.log(colorize(`│    🔄 Auto-merging with ${bestMatch.id} (${percentage}% similarity)`, asChalkColor((asChalkColor(('magenta' as ChalkColor))))));
     }
     
     if (!dryRun) {
@@ -82,36 +83,36 @@ export async function handleAutoMerge(
         readiness: (taskData.readiness || bestMatch.readiness) as any
       });
 
-      results.merged.push({
+      results?.merged.push({
         original: bestMatch,
         merged: mergeResult,
         source: taskData
       });
 
       if (!jsonOutput) {
-        console.log(colorize(`│    ✓ Merged successfully with task ${bestMatch.id}`, 'green'));
+        console.log(colorize(`│    ✓ Merged successfully with task ${bestMatch.id}`, asChalkColor((asChalkColor(('green' as ChalkColor))))));
         
         // Show what was merged
         if (combinedTags.length > bestMatch.tags.length) {
           const newTags = combinedTags.filter(t => !bestMatch.tags.includes(t));
-          console.log(colorize(`│      Added tags: ${newTags.join(', ')}`, 'cyan'));
+          console.log(colorize(`│      Added tags: ${newTags.join(', ')}`, asChalkColor((asChalkColor(('cyan' as ChalkColor))))));
         }
       }
     } else {
-      results.merged.push({
+      results?.merged.push({
         original: bestMatch,
         source: taskData,
         dry_run: true
       });
 
       if (!jsonOutput) {
-        console.log(colorize(`│    ✓ Would auto-merge with task ${bestMatch.id}`, 'magenta'));
+        console.log(colorize(`│    ✓ Would auto-merge with task ${bestMatch.id}`, asChalkColor((asChalkColor(('magenta' as ChalkColor))))));
       }
     }
   } else {
     // Similarity not high enough for auto-merge, create new task
     if (!jsonOutput) {
-      console.log(colorize(`│    ℹ Similarity below threshold for auto-merge (${percentage}% < 80%)`, 'blue'));
+      console.log(colorize(`│    ℹ Similarity below threshold for auto-merge (${percentage}% < 80%)`, asChalkColor((asChalkColor(('blue' as ChalkColor))))));
     }
     await createNewTask(taskData, repo, results, options);
   }

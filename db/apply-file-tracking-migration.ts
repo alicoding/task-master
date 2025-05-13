@@ -2,7 +2,7 @@
  * Apply the file tracking migration manually
  */
 
-import { createDb } from './init.ts';
+import { createDb } from './init';
 import fs from 'fs/promises';
 import path from 'path';
 
@@ -35,7 +35,7 @@ async function applyMigration() {
         sqlite.exec(statement);
         console.log(`✅ Statement ${index + 1} executed successfully`);
       } catch (error) {
-        console.error(`❌ Error executing statement ${index + 1}:`, error);
+        console?.error(`❌ Error executing statement ${index + 1}:`, error);
         throw error;
       }
     }
@@ -64,14 +64,14 @@ async function applyMigration() {
     try {
       sqlite.exec('ROLLBACK;');
     } catch (rollbackError) {
-      console.error('Error during rollback:', rollbackError);
+      console?.error('Error during rollback:', rollbackError);
     }
     
-    console.error('Error applying migration:', error);
+    console?.error('Error applying migration:', error);
   } finally {
     sqlite.close();
   }
 }
 
 // Run the migration
-applyMigration().catch(console.error);
+applyMigration().catch(console?.error);

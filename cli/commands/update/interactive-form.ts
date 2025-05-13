@@ -3,10 +3,12 @@
  * Provides a rich form-like UI for updating tasks
  */
 
+import { ChalkColor, asChalkColor } from '@/cli/utils/chalk-utils';
 import readline from 'readline';
 import chalk from 'chalk';
-import { TaskUpdateOptions, TaskStatus, TaskReadiness, Task } from '../../../core/types.ts';
-import { TaskRepository } from '../../../core/repo.ts';
+import { TaskUpdateOptions, TaskStatus, TaskReadiness, Task } from '@/core/types';
+import { TaskRepository } from '../../../core/repo';
+
 
 export class InteractiveUpdateForm {
   private readline: readline.Interface;
@@ -48,11 +50,11 @@ export class InteractiveUpdateForm {
    */
   displayBanner(): void {
     console.clear();
-    console.log(this.colorize('─'.repeat(60), 'blue'));
-    console.log(this.colorize(`📋 TASK MASTER - Update Task ${this.task.id}`, 'blue', 'bold'));
-    console.log(this.colorize('─'.repeat(60), 'blue'));
+    console.log(this.colorize('─'.repeat(60), asChalkColor((asChalkColor(('blue' as ChalkColor))))));
+    console.log(this.colorize(`📋 TASK MASTER - Update Task ${this.task.id}`, asChalkColor((asChalkColor(('blue' as ChalkColor)))), asChalkColor('bold')));
+    console.log(this.colorize('─'.repeat(60), asChalkColor((asChalkColor(('blue' as ChalkColor))))));
     console.log('');
-    console.log(this.colorize('Update the fields below (leave empty to keep current value)', 'yellow'));
+    console.log(this.colorize('Update the fields below (leave empty to keep current value)', asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
     console.log('');
   }
 
@@ -80,7 +82,7 @@ export class InteractiveUpdateForm {
   ): Promise<T> {
     const choiceStr = choices.map((choice, i) => {
       const isDefault = choice === defaultChoice;
-      const choiceText = isDefault ? this.colorize(`${choice} (current)`, 'green') : choice;
+      const choiceText = isDefault ? this.colorize(`${choice} (current)`, asChalkColor((asChalkColor(('green' as ChalkColor))))) : choice;
       return `${i + 1}. ${choiceText}`;
     }).join('  ');
     
@@ -95,7 +97,7 @@ export class InteractiveUpdateForm {
           } else if (choices.includes(answer as T)) {
             resolve(answer as T);
           } else {
-            console.log(this.colorize('  Invalid choice. Using current value.', 'red'));
+            console.log(this.colorize('  Invalid choice. Using current value.', asChalkColor((asChalkColor(('red' as ChalkColor))))));
             resolve(defaultChoice);
           }
         }
@@ -131,19 +133,19 @@ export class InteractiveUpdateForm {
       this.displayBanner();
       
       // Display current task info before editing
-      console.log(this.colorize('Current Task Information:', 'cyan', 'bold'));
-      console.log(`${this.colorize('Title:', 'gray')} ${this.task.title}`);
+      console.log(this.colorize('Current Task Information:', asChalkColor((asChalkColor(('cyan' as ChalkColor)))), asChalkColor('bold')));
+      console.log(`${this.colorize('Title:', asChalkColor((asChalkColor(('gray' as ChalkColor)))))} ${this.task.title}`);
       if (this.task.description !== undefined && this.task.description !== null) {
-        console.log(`${this.colorize('Description:', 'gray')} ${this.task.description}`);
+        console.log(`${this.colorize('Description:', asChalkColor((asChalkColor(('gray' as ChalkColor)))))} ${this.task.description}`);
       }
       if (this.task.body !== undefined && this.task.body !== null) {
-        console.log(`${this.colorize('Body:', 'gray')} ${this.task.body.length > 60 ?
+        console.log(`${this.colorize('Body:', asChalkColor((asChalkColor(('gray' as ChalkColor)))))} ${this.task.body.length > 60 ?
           this.task.body.substring(0, 60) + '...' : this.task.body}`);
       }
-      console.log(`${this.colorize('Status:', 'gray')} ${this.task.status}`);
-      console.log(`${this.colorize('Readiness:', 'gray')} ${this.task.readiness}`);
-      console.log(`${this.colorize('Tags:', 'gray')} ${this.task.tags.join(', ') || 'none'}`);
-      console.log(this.colorize('\nUpdate Fields (press Enter to keep current value):', 'yellow', 'bold'));
+      console.log(`${this.colorize('Status:', asChalkColor((asChalkColor(('gray' as ChalkColor)))))} ${this.task.status}`);
+      console.log(`${this.colorize('Readiness:', asChalkColor((asChalkColor(('gray' as ChalkColor)))))} ${this.task.readiness}`);
+      console.log(`${this.colorize('Tags:', asChalkColor((asChalkColor(('gray' as ChalkColor)))))} ${this.task.tags?.join(', ') || 'none'}`);
+      console.log(this.colorize('\nUpdate Fields (press Enter to keep current value):', asChalkColor((asChalkColor(('yellow' as ChalkColor)))), asChalkColor('bold')));
       console.log('');
       
       // Get new title (or keep current)
@@ -195,7 +197,7 @@ export class InteractiveUpdateForm {
         try {
           this.updateOptions.metadata = JSON.parse(metadataStr);
         } catch (e) {
-          console.log(this.colorize('  Invalid JSON. Metadata will not be updated.', 'red'));
+          console.log(this.colorize('  Invalid JSON. Metadata will not be updated.', asChalkColor((asChalkColor(('red' as ChalkColor))))));
         }
       }
       
@@ -203,20 +205,20 @@ export class InteractiveUpdateForm {
       const hasChanges = Object.keys(this.updateOptions).length > 1; // More than just ID
       
       if (!hasChanges) {
-        console.log(this.colorize('\nNo changes were made to the task.', 'yellow'));
+        console.log(this.colorize('\nNo changes were made to the task.', asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
         return null;
       }
       
       // Confirm submission
       console.log('');
-      console.log(this.colorize('─'.repeat(60), 'blue'));
-      console.log(this.colorize('Task Update Summary:', 'blue', 'bold'));
-      console.log(this.colorize('─'.repeat(60), 'blue'));
+      console.log(this.colorize('─'.repeat(60), asChalkColor((asChalkColor(('blue' as ChalkColor))))));
+      console.log(this.colorize('Task Update Summary:', asChalkColor((asChalkColor(('blue' as ChalkColor)))), asChalkColor('bold')));
+      console.log(this.colorize('─'.repeat(60), asChalkColor((asChalkColor(('blue' as ChalkColor))))));
       
       // Show what will be updated
       Object.entries(this.updateOptions).forEach(([key, value]) => {
         if (key !== 'id') {
-          console.log(`${this.colorize(key + ':', 'yellow')} ${
+          console.log(`${this.colorize(key + ':', asChalkColor((asChalkColor(('yellow' as ChalkColor)))))} ${
             typeof value === 'object' ? JSON.stringify(value) : value
           }`);
         }
@@ -225,13 +227,13 @@ export class InteractiveUpdateForm {
       
       const confirm = await this.askQuestion('Save these changes? (y/n)');
       if (confirm.toLowerCase() !== 'y') {
-        console.log(this.colorize('Task update cancelled.', 'yellow'));
+        console.log(this.colorize('Task update cancelled.', asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
         return null;
       }
       
       return this.updateOptions;
     } catch (error) {
-      console.error('Error in interactive form:', error);
+      console?.error('Error in interactive form:', error);
       return null;
     } finally {
       this.close();

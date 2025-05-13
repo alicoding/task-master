@@ -5,7 +5,7 @@
  * This script finds and replaces all .js extensions in import statements with .ts
  * It handles:
  * - Static imports: import { X } from './path.js'
- * - Dynamic imports: await import('./path.ts')
+ * - Dynamic imports: await import('./path')
  * - Re-exports: export * from './path.js'
  * - Named exports: export { X } from './path.js'
  */
@@ -142,7 +142,7 @@ function processFile(sourceFile: SourceFile): boolean {
     }
   }
 
-  // 3. Handle dynamic imports: import('./path.ts') using string manipulation
+  // 3. Handle dynamic imports: import('./path') using string manipulation
   //    ts-morph doesn't have direct API for these, so we need to find them manually
   const fileText = sourceFile.getFullText();
   let newFileText = fileText;
@@ -212,8 +212,10 @@ function verifyNoJsImports(sourceFile: SourceFile): boolean {
   // Check content with regex
   const fileContent = sourceFile.getFullText();
   
-  // Skip this file itself to avoid detecting examples
-  if (filePath.endsWith('fix-js-imports.ts')) {
+  // Skip these files which need .js references for demonstration purposes
+  if (filePath.endsWith('fix-js-imports.ts') ||
+      filePath.endsWith('fix-js-to-ts-imports.ts') ||
+      filePath.endsWith('fix-ts-to-js-imports.ts')) {
     return false;
   }
 

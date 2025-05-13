@@ -3,9 +3,9 @@
  * Creates visual indicators for task status and completion
  */
 
-import { Task } from '../../../types.ts';
-import { TYPOGRAPHY } from '../typography/constants.ts';
-import { COLORS } from '../colors/constants.ts';
+import { Task } from '../../../types';
+import { TYPOGRAPHY } from '../typography/constants';
+import { COLORS } from '../colors/constants';
 
 // Dynamic imports
 let chalk: any;

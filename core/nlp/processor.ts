@@ -2,9 +2,9 @@
  * Processor module for NLP service
  * Handles processing queries and calculating similarity
  */
-import { NlpManager } from '../nlp-mock/index.ts';
-import { ProcessedQuery, ExtractedSearchFilters } from './types.ts';
-import { ENTITY_TERMS_TO_REMOVE } from './entities.ts';
+import { NlpManager } from '../nlp-mock/index';
+import { ProcessedQuery, ExtractedSearchFilters } from './types';
+import { ENTITY_TERMS_TO_REMOVE } from './entities';
 
 /**
  * Process a search query to extract intents and entities

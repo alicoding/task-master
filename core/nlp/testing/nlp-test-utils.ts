@@ -12,10 +12,10 @@ import {
   SimilarTask,
   NlpServiceInterface,
   Intent
-} from '../types.ts';
-import { tokenize } from '../utils/tokenization.ts';
-import { calculateJaccardSimilarity } from '../utils/distance.ts';
-import { Tokenizer, Stemmer } from '../processing/processor.ts';
+} from '../types';
+import { tokenize } from '../utils/tokenization';
+import { calculateJaccardSimilarity } from '../utils/distance';
+import { Tokenizer, Stemmer } from '../processing/processor';
 
 /**
  * Create mock processed query result

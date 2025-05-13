@@ -2,6 +2,6 @@
  * NLP processing functionality for text analysis
  */
 
-export * from './entities.ts';
-export * from './processor.ts';
-export * from './trainer.ts';
+export * from './entities';
+export * from './processor';
+export * from './trainer';

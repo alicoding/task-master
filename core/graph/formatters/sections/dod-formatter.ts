@@ -3,8 +3,8 @@
  * Formats DoD items as a checklist
  */
 
-import { DoDManager } from '../../../dod/manager.ts';
-import { DoDItem } from '../../../dod/types.ts';
+import { DoDManager } from '../../../dod/manager';
+import { DoDItem } from '../../../dod/types';
 
 // Dynamic imports for ESM compatibility
 let chalk: any;

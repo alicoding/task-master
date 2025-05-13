@@ -10,7 +10,7 @@
  */
 
 import { describe, it, expect, vi } from 'vitest';
-import { TASK_ENTITIES, addTaskEntities } from '../../core/nlp/entities.ts';
+import { TASK_ENTITIES, addTaskEntities } from '../../core/nlp/entities';
 
 describe('NLP Entities', () => {
   describe('TASK_ENTITIES', () => {

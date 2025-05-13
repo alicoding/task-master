@@ -1,12 +1,14 @@
+import { ChalkColor, asChalkColor } from '@/cli/utils/chalk-utils';
 import { Command } from 'commander';
-import { TaskRepository } from '../../../core/repo.ts';
-import { NlpService } from '../../../core/nlp-service.ts';
-import { helpFormatter } from '../../helpers/help-formatter.ts';
-import { createColorize, getEmptyResultsMessage, getNoTasksMessage, formatJsonOutput } from './lib/utils.ts';
-import { findDuplicateGroups } from './lib/finder.ts';
-import { displayDuplicateGroups } from './lib/formatter-enhanced.ts';
-import { runInteractiveMode, runAutoMergeSuggestions } from './lib/interactive-enhanced.ts';
-import { processTasks } from './lib/processor.ts';
+import { TaskRepository } from '../../../core/repo';
+import { NlpService } from '../../../core/nlp-service';
+import { helpFormatter } from '../../helpers/help-formatter';
+import { createColorize, getEmptyResultsMessage, getNoTasksMessage, formatJsonOutput } from './lib/utils';
+import { findDuplicateGroups } from './lib/finder';
+import { displayDuplicateGroups } from './lib/formatter-enhanced';
+import { runInteractiveMode, runAutoMergeSuggestions } from './lib/interactive-enhanced';
+import { processTasks } from './lib/processor';
+
 
 /**
  * Define the deduplicate command options
@@ -107,7 +109,7 @@ async function handleDeduplicateCommand(options: DeduplicateCommandOptions) {
     const colorize = createColorize(useColors, jsonOutput);
     
     if (!jsonOutput) {
-      console.log(colorize('\n🔍 Scanning for duplicate tasks...', 'blue', 'bold'));
+      console.log(colorize('\n🔍 Scanning for duplicate tasks...', asChalkColor((asChalkColor(('blue' as ChalkColor)))), asChalkColor('bold')));
     }
     
     // Get filtered tasks
@@ -117,7 +119,7 @@ async function handleDeduplicateCommand(options: DeduplicateCommandOptions) {
     });
     
     if (allTasks.length === 0) {
-      console.log(colorize(getNoTasksMessage(jsonOutput), 'yellow'));
+      console.log(colorize(getNoTasksMessage(jsonOutput), asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
       repo.close();
       return;
     }
@@ -135,7 +137,7 @@ async function handleDeduplicateCommand(options: DeduplicateCommandOptions) {
     const limitedGroups = duplicateGroups.slice(0, limit);
     
     if (limitedGroups.length === 0) {
-      console.log(colorize(getEmptyResultsMessage(minSimilarity, jsonOutput), 'green'));
+      console.log(colorize(getEmptyResultsMessage(minSimilarity, jsonOutput), asChalkColor((asChalkColor(('green' as ChalkColor))))));
       repo.close();
       return;
     }
@@ -152,7 +154,7 @@ async function handleDeduplicateCommand(options: DeduplicateCommandOptions) {
     
     // Exit if dry run
     if (dryRun) {
-      console.log(colorize('\n✅ Dry run complete. No changes made.', 'blue'));
+      console.log(colorize('\n✅ Dry run complete. No changes made.', asChalkColor((asChalkColor(('blue' as ChalkColor))))));
       repo.close();
       return;
     }
@@ -163,7 +165,7 @@ async function handleDeduplicateCommand(options: DeduplicateCommandOptions) {
       const highSimilarityGroups = limitedGroups.filter(group => group.maxSimilarity >= 0.8);
       
       if (highSimilarityGroups.length === 0) {
-        console.log(colorize('\nNo groups with 80%+ similarity found for auto-merge.', 'yellow'));
+        console.log(colorize('\nNo groups with 80%+ similarity found for auto-merge.', asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
         
         // If in interactive mode, run that instead
         if (interactive) {
@@ -186,12 +188,12 @@ async function handleDeduplicateCommand(options: DeduplicateCommandOptions) {
     }
     
     // Display basic prompt for non-interactive mode
-    console.log(colorize('\nTip: Run with --interactive for an enhanced deduplication experience!', 'blue'));
-    console.log(colorize('     Use --auto-merge to automatically handle high-similarity duplicates.', 'blue'));
+    console.log(colorize('\nTip: Run with --interactive for an enhanced deduplication experience!', asChalkColor((asChalkColor(('blue' as ChalkColor))))));
+    console.log(colorize('     Use --auto-merge to automatically handle high-similarity duplicates.', asChalkColor((asChalkColor(('blue' as ChalkColor))))));
     
     repo.close();
   } catch (error) {
-    console.error('Error in deduplicate command:', error);
+    console?.error('Error in deduplicate command:', error);
     process.exit(1);
   }
 }

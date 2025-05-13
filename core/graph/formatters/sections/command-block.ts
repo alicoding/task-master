@@ -3,8 +3,8 @@
  * Provides utilities for creating styled command blocks and placeholders
  */
 
-import { TYPOGRAPHY } from '../typography/constants.ts';
-import { COLORS } from '../colors/constants.ts';
+import { TYPOGRAPHY } from '../typography/constants';
+import { COLORS } from '../colors/constants';
 
 // Dynamic imports
 let chalk: any;

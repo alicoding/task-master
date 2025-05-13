@@ -16,8 +16,8 @@ import {
   calculateSimilarity, 
   extractSearchFilters, 
   removeExtractedTerms 
-} from '../../core/nlp/processor.ts';
-import { ENTITY_TERMS_TO_REMOVE } from '../../core/nlp/entities.ts';
+} from '../../core/nlp/processor';
+import { ENTITY_TERMS_TO_REMOVE } from '../../core/nlp/entities';
 
 describe('NLP Processor Module', () => {
   // Mock dependencies

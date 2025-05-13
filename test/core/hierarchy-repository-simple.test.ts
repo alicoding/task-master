@@ -1,10 +1,10 @@
 import { test } from 'uvu';
 import * as assert from 'uvu/assert';
-import { TaskHierarchyRepository } from '../../core/repository/hierarchy.ts';
+import { TaskHierarchyRepository } from '../../core/repository/hierarchy';
 import { 
   TaskOperationResult,
   TaskErrorCode
-} from '../../core/types.ts';
+} from '../../core/types';
 
 // Create a proper mock for the repository
 class MockHierarchyRepository {

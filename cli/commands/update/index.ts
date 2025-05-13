@@ -1,10 +1,10 @@
 import { Command } from 'commander';
-import { TaskRepository } from '../../../core/repo.ts';
-import { TaskUpdateOptions, OutputFormat } from '../../../core/types.ts';
+import { TaskRepository } from '../../../core/repo';
+import { TaskUpdateOptions, OutputFormat } from '../../../core/types';
 import fs from 'fs/promises';
-import { createBatchUpdateCommand } from './batch.ts';
-import { helpFormatter } from '../../helpers/help-formatter.ts';
-import { InteractiveUpdateForm } from './interactive-form.ts';
+import { createBatchUpdateCommand } from './batch';
+import { helpFormatter } from '../../helpers/help-formatter';
+import { InteractiveUpdateForm } from './interactive-form';
 
 export async function createUpdateCommand() {
   const updateCommand = new Command('update')
@@ -86,7 +86,7 @@ export async function createUpdateCommand() {
           // Get the current task for updating
           const originalTask = await repo.getTask(options.id);
           if (!originalTask) {
-            console.error(`Task with ID ${options.id} not found`);
+            console?.error(`Task with ID ${options.id} not found`);
             repo.close();
             return;
           }
@@ -124,7 +124,7 @@ export async function createUpdateCommand() {
               try {
                 updateOptions.metadata = JSON.parse(options.metadata);
               } catch (e) {
-                console.error('Invalid JSON for metadata:', e);
+                console?.error('Invalid JSON for metadata:', e);
                 repo.close();
                 return;
               }
@@ -144,13 +144,13 @@ export async function createUpdateCommand() {
 
           const result = await repo.updateTask(updateOptions);
 
-          if (!result.success || !result.data) {
-            console.error(`Failed to update task: ${result.error?.message || 'Unknown error'}`);
+          if (!result?.success || !result?.data) {
+            console?.error(`Failed to update task: ${result?.error?.message || 'Unknown error'}`);
             repo.close();
             return;
           }
 
-          const task = result.data;
+          const task = result?.data;
 
           if (format === 'json') {
             console.log(JSON.stringify(task, null, 2));
@@ -184,12 +184,12 @@ export async function createUpdateCommand() {
             }
           }
         } else {
-          console.error('Either --id or --input must be provided');
+          console?.error('Either --id or --input must be provided');
         }
         
         repo.close();
       } catch (error) {
-        console.error('Error updating task:', error);
+        console?.error('Error updating task:', error);
         process.exit(1);
       }
     });

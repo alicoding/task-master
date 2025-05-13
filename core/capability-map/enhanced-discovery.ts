@@ -3,9 +3,9 @@
  * Provides more sophisticated capability discovery without requiring AI
  */
 
-import { Task } from '../types.ts';
+import { Task } from '../types';
 import { v4 as uuidv4 } from 'uuid';
-import { CapabilityNode } from './index.ts';
+import { CapabilityNode } from './index';
 
 // Enhanced stopwords list for better keyword extraction
 const STOP_WORDS = new Set([
@@ -102,6 +102,11 @@ export async function discoverCapabilitiesEnhanced(tasks: Task[]): Promise<Capab
  * @returns Enriched tasks with additional data
  */
 function enrichTasks(tasks: Task[]): EnrichedTask[] {
+  // Handle case where tasks might not be an array
+  if (!Array.isArray(tasks)) {
+    return [];
+  }
+
   return tasks.map(task => {
     // Combine all text from the task
     const allText = [

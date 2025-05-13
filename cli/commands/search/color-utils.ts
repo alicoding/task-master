@@ -1,16 +1,12 @@
 /**
  * Color Utilities for Search Output
- * 
+ *
  * Provides utilities for colorizing console output in the search command.
  */
 
+import { ChalkColor, asChalkColor } from '@/cli/utils/chalk-utils';
 import chalk from 'chalk';
 
-/**
- * Type for chalk color names
- */
-export type ChalkColor = 'black' | 'red' | 'green' | 'yellow' | 'blue' | 'magenta' | 'cyan' | 'white'
-  | 'blackBright' | 'redBright' | 'greenBright' | 'yellowBright' | 'blueBright' | 'magentaBright' | 'cyanBright' | 'whiteBright';
 
 /**
  * Type for chalk style modifiers
@@ -52,14 +48,14 @@ export function getColorFunctions(colorEnabled: boolean): { colorize: ColorizeFu
  */
 export function colorizeStatus(status: string, colorEnabled: boolean): string {
   const { colorize } = getColorFunctions(colorEnabled);
-  
+
   switch (status) {
     case 'todo':
-      return colorize(status, 'blue');
+      return colorize(status, asChalkColor((asChalkColor((asChalkColor(('blue' as ChalkColor)))))));
     case 'in-progress':
-      return colorize(status, 'yellow');
+      return colorize(status, asChalkColor((asChalkColor((asChalkColor(('yellow' as ChalkColor)))))));
     case 'done':
-      return colorize(status, 'green');
+      return colorize(status, asChalkColor((asChalkColor((asChalkColor(('green' as ChalkColor)))))));
     default:
       return status;
   }
@@ -73,14 +69,14 @@ export function colorizeStatus(status: string, colorEnabled: boolean): string {
  */
 export function colorizeReadiness(readiness: string, colorEnabled: boolean): string {
   const { colorize } = getColorFunctions(colorEnabled);
-  
+
   switch (readiness) {
     case 'draft':
-      return colorize(readiness, 'gray');
+      return colorize(readiness, asChalkColor((asChalkColor((asChalkColor(('gray' as ChalkColor)))))));
     case 'ready':
-      return colorize(readiness, 'green');
+      return colorize(readiness, asChalkColor((asChalkColor((asChalkColor(('green' as ChalkColor)))))));
     case 'blocked':
-      return colorize(readiness, 'red');
+      return colorize(readiness, asChalkColor((asChalkColor((asChalkColor(('red' as ChalkColor)))))));
     default:
       return readiness;
   }

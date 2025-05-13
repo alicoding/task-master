@@ -13,11 +13,11 @@
  */
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { TaskRepository } from '../../core/repo.ts';
-import { TaskGraph } from '../../core/graph.ts';
-import { compareTaskIds, generateNewId, isDescendant, findDescendants } from '../../core/graph/utils.ts';
-import { Task } from '../../db/schema.ts';
-import { TaskOperationResult, TaskError, TaskErrorCode } from '../../core/types.ts';
+import { TaskRepository } from '../../core/repo';
+import { TaskGraph } from '../../core/graph';
+import { compareTaskIds, generateNewId, isDescendant, findDescendants } from '../../core/graph/utils';
+import { Task } from '../../db/schema';
+import { TaskOperationResult, TaskError, TaskErrorCode } from '../../core/types';
 
 describe('TaskGraph Extended Tests', () => {
   let repo: TaskRepository;

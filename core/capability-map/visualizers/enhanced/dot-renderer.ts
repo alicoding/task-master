@@ -5,8 +5,8 @@
  * for use with GraphViz to create rich visual representations.
  */
 
-import { CapabilityMap } from '../../index.ts';
-import { EnhancedVisualizationOptions } from '../options.ts';
+import { CapabilityMap } from '../../index';
+import { EnhancedVisualizationOptions } from '../options';
 import {
   getCapabilityProgress,
   normalizeCapabilityNames,
@@ -15,7 +15,7 @@ import {
   createHierarchicalGroups,
   getProgressColor,
   getEdgeStyle
-} from '../utils/index.ts';
+} from '../utils/index';
 
 /**
  * Render an enhanced DOT diagram for Graphviz

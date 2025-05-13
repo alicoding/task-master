@@ -6,8 +6,8 @@
 import { test } from 'uvu';
 import * as assert from 'uvu/assert';
 import { stub } from 'sinon';
-import { TaskRepository } from '../../core/repo.ts';
-import { MetadataCommandHandler } from '../../cli/commands/metadata/metadata-command.ts';
+import { TaskRepository } from '../../core/repo';
+import { MetadataCommandHandler } from '../../cli/commands/metadata/metadata-command';
 
 // Setup variables
 let repo;

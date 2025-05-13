@@ -2,7 +2,7 @@
  * Enhanced tree formatter with advanced visual elements and relationship display
  */
 
-import { TaskWithChildren, DependencyType } from '../../types.ts';
+import { TaskWithChildren, DependencyType } from '../../types';
 
 // Import chalk dynamically but without top-level await
 let chalk: any;

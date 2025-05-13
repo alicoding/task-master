@@ -3,11 +3,13 @@
  * Handles processing of individual task entries from a plan
  */
 
-import { TaskRepository } from '../../../../../core/repo.ts';
-import { NlpService } from '../../../../../core/nlp-service-mock.ts';
-import { ProcessingOptions, TriageResults, TriageTask } from '../utils.ts';
-import { handleTaskUpdate } from './task-update.ts';
-import { handleNewTask } from './similarity.ts';
+import { ChalkColor, asChalkColor } from '@/cli/utils/chalk-utils';
+import { TaskRepository } from '../../../../../core/repo';
+import { NlpService } from '../../../../../core/nlp-service-mock';
+import { ProcessingOptions, TriageResults, TriageTask } from '../utils';
+import { handleTaskUpdate } from './task-update';
+import { handleNewTask } from './similarity';
+
 
 /**
  * Process a task from a plan file
@@ -33,9 +35,9 @@ export async function processPlanTask(
     if (!jsonOutput) {
       // Show task being processed
       if (isUpdate) {
-        console.log(colorize(`│  → Updating task ${taskData.id}: "${taskData.title || '[No title update]'}"`, 'yellow'));
+        console.log(colorize(`│  → Updating task ${taskData.id}: "${taskData.title || '[No title update]'}"`, asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
       } else {
-        console.log(colorize(`│  → Creating task: "${taskData.title}"`, 'green'));
+        console.log(colorize(`│  → Creating task: "${taskData.title}"`, asChalkColor((asChalkColor(('green' as ChalkColor))))));
       }
     }
 
@@ -45,10 +47,10 @@ export async function processPlanTask(
       // For new tasks, we need a title
       if (!taskData.title) {
         const errorMsg = 'Task is missing required title field';
-        results.errors.push(errorMsg);
+        results?.errors?.push(errorMsg);
         
         if (!jsonOutput) {
-          console.log(colorize(`│    ✘ ERROR: ${errorMsg}`, 'red'));
+          console.log(colorize(`│    ✘ ERROR: ${errorMsg}`, asChalkColor((asChalkColor(('red' as ChalkColor))))));
         }
         return;
       }
@@ -57,10 +59,10 @@ export async function processPlanTask(
     }
   } catch (error: unknown) {
     const errorMessage = error instanceof Error ? error.message : String(error);
-    results.errors.push(`Error processing task: ${errorMessage}`);
+    results?.errors?.push(`Error processing task: ${errorMessage}`);
     
     if (!jsonOutput) {
-      console.log(colorize(`│    ✘ ERROR: ${errorMessage}`, 'red'));
+      console.log(colorize(`│    ✘ ERROR: ${errorMessage}`, asChalkColor((asChalkColor(('red' as ChalkColor))))));
     }
   }
 }

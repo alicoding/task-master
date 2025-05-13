@@ -2,4 +2,4 @@
  * Core utility functions for Task Master
  */
 
-export * from './logger.ts';
+export * from './logger';

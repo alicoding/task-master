@@ -9,7 +9,7 @@
  */
 
 // Re-export the factory function for creating NLP services
-import { createNlpService, TestSafeNlpService } from './nlp/index.ts';
+import { createNlpService, TestSafeNlpService } from './nlp/index';
 
 // For backward compatibility, create a class with the same name
 // that internally uses our test-safe implementation

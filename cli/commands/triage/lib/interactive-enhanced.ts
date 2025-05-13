@@ -6,15 +6,15 @@
  * to maintain backward compatibility
  */
 
-import { TaskRepository } from '../../../../core/repo.ts';
-import { NlpService } from '../../../../core/nlp-service-mock.ts';
+import { TaskRepository } from '../../../../core/repo';
+import { NlpService } from '../../../../core/nlp-service-mock';
 import { 
   ProcessingOptions, 
   TriageResults 
-} from './utils.ts';
+} from './utils';
 
 // Import the modularized implementation
-import { runInteractiveMode as runModularizedInteractiveMode } from './interactive-enhanced/index.ts';
+import { runInteractiveMode as runModularizedInteractiveMode } from './interactive-enhanced/index';
 
 /**
  * Run enhanced interactive triage mode

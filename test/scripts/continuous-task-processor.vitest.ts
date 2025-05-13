@@ -9,8 +9,8 @@
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { TaskRepository } from '../../core/repo.ts';
-import { Task } from '../../db/schema.ts';
+import { TaskRepository } from '../../core/repo';
+import { Task } from '../../db/schema';
 
 // Mock the repository and task graph
 vi.mock('../../core/repo.ts');
@@ -115,7 +115,7 @@ describe('Continuous Task Processor', () => {
   
   it('should be able to import the module', async () => {
     // This is a dynamic import to avoid issues with the module execution
-    const module = await import('../../scripts/continuous-task-processor.ts');
+    const module = await import('../../scripts/continuous-task-processor');
     expect(module).toBeDefined();
   });
   
@@ -124,7 +124,7 @@ describe('Continuous Task Processor', () => {
   
   it('should search for in-progress tasks', async () => {
     // Import dynamically to avoid executing the script
-    await import('../../scripts/continuous-task-processor.ts');
+    await import('../../scripts/continuous-task-processor');
     
     // Verify that the repository was created
     expect(TaskRepository).toHaveBeenCalled();

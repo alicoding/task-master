@@ -1,8 +1,8 @@
 import { Command } from 'commander';
-import { createExportCommand } from './commands/export.ts';
-import { createImportCommand } from './commands/import.ts';
-import { createBatchCommand } from './commands/batch.ts';
-import { helpFormatter } from '../../helpers/help-formatter.ts';
+import { createExportCommand } from './commands/export';
+import { createImportCommand } from './commands/import';
+import { createBatchCommand } from './commands/batch';
+import { helpFormatter } from '../../helpers/help-formatter';
 
 /**
  * Create the API command
@@ -49,7 +49,7 @@ export function createApiCommand() {
         // Api command without subcommand should show help
         apiCommand.help();
       } catch (error) {
-        console.error('Error in API command:', error);
+        console?.error('Error in API command:', error);
         process.exit(1);
       }
     });

@@ -3,9 +3,9 @@
  * Handles HTTP API requests using the command architecture
  */
 
-import { commandRegistry } from './command.ts';
-import { initCommandRegistry } from './handlers/index.ts';
-import { CommandContext, InputSource, OutputMode } from './context.ts';
+import { commandRegistry } from './command';
+import { initCommandRegistry } from './handlers/index';
+import { CommandContext, InputSource, OutputMode } from './context';
 
 /**
  * HTTP request method types

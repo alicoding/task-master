@@ -5,7 +5,7 @@ import {
   CompletionResult,
   TaskOperationType,
   AiMessage
-} from './types.ts';
+} from './types';
 
 /**
  * Abstract base class for AI providers

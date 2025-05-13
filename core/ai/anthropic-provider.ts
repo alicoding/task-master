@@ -1,10 +1,10 @@
-import { BaseAiProvider } from './base-provider.ts';
+import { BaseAiProvider } from './base-provider';
 import {
   AnthropicConfig,
   CompletionOptions,
   CompletionResult,
   AiMessage
-} from './types.ts';
+} from './types';
 
 /**
  * Anthropic/Claude provider implementation

@@ -15,7 +15,7 @@ const express = () => console.log('Express would be initialized here');
 const cors = () => console.log('CORS middleware would be initialized here');
 const bodyParser = { json: () => console.log('JSON body parser would be initialized here') };
 
-import { ApiRouter } from '../core/api/index.ts';
+import { ApiRouter } from '../core/api/index';
 
 /**
  * Example implementation of a REST API server for Task Master

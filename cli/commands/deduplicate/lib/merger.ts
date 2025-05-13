@@ -1,6 +1,8 @@
-import { TaskRepository } from '../../../../core/repo.ts';
-import { DuplicateGroup, ColorizeFunction } from './utils.ts';
+import { ChalkColor, asChalkColor } from '@/cli/utils/chalk-utils';
+import { TaskRepository } from '../../../../core/repo';
+import { DuplicateGroup, ColorizeFunction } from './utils';
 import readline from 'readline';
+
 
 /**
  * Handle merging tasks in a group
@@ -13,13 +15,13 @@ export async function handleMerge(
   repo: TaskRepository,
   colorize: ColorizeFunction
 ) {
-  console.log(colorize('\nMerging tasks in group:', 'blue', 'bold'));
+  console.log(colorize('\nMerging tasks in group:', asChalkColor((asChalkColor(('blue' as ChalkColor)))), asChalkColor('bold')));
   
   // Display tasks
   for (let i = 0; i < group.tasks.length; i++) {
     const task = group.tasks[i];
-    console.log(colorize(`[${i + 1}] `, 'blue', 'bold') + `${task.id}: ${task.title}`);
-    console.log(`    Status: ${task.status}, Tags: ${task.tags.join(', ') || 'none'}`);
+    console.log(colorize(`[${i + 1}] `, asChalkColor((asChalkColor(('blue' as ChalkColor)))), asChalkColor('bold')) + `${task.id}: ${task.title}`);
+    console.log(`    Status: ${task.status}, Tags: ${formatTags(task.tags)}`);
   }
   
   // Get primary task
@@ -29,7 +31,7 @@ export async function handleMerge(
   });
   
   const primaryTaskInput = await new Promise<string>(resolve => {
-    rl1.question(colorize('\nSelect the PRIMARY task to keep [1-' + group.tasks.length + ']: ', 'cyan'), resolve);
+    rl1.question(colorize('\nSelect the PRIMARY task to keep [1-' + group.tasks.length + ']: ', asChalkColor((asChalkColor(('cyan' as ChalkColor))))), resolve);
   });
   
   rl1.close();
@@ -37,7 +39,7 @@ export async function handleMerge(
   const primaryTaskIdx = parseInt(primaryTaskInput) - 1;
   
   if (isNaN(primaryTaskIdx) || primaryTaskIdx < 0 || primaryTaskIdx >= group.tasks.length) {
-    console.log(colorize('Invalid task selection. Merge cancelled.', 'red'));
+    console.log(colorize('Invalid task selection. Merge cancelled.', asChalkColor((asChalkColor(('red' as ChalkColor))))));
     return;
   }
   
@@ -49,7 +51,7 @@ export async function handleMerge(
   
   const secondaryTasksInput = await new Promise<string>(resolve => {
     rl2.question(
-      colorize('\nSelect tasks to merge INTO the primary task (comma-separated, e.g. "2,3" or "all"): ', 'cyan'), 
+      colorize('\nSelect tasks to merge INTO the primary task (comma-separated, e.g. "2,3" or "all"): ', asChalkColor((asChalkColor(('cyan' as ChalkColor))))), 
       resolve
     );
   });
@@ -77,7 +79,7 @@ export async function handleMerge(
   }
   
   if (secondaryTaskIndices.length === 0) {
-    console.log(colorize('No valid secondary tasks selected. Merge cancelled.', 'red'));
+    console.log(colorize('No valid secondary tasks selected. Merge cancelled.', asChalkColor((asChalkColor(('red' as ChalkColor))))));
     return;
   }
   
@@ -85,19 +87,21 @@ export async function handleMerge(
   const primaryTask = group.tasks[primaryTaskIdx];
   const secondaryTasks = secondaryTaskIndices.map(idx => group.tasks[idx]);
   
-  console.log(colorize('\nMerge preview:', 'blue', 'bold'));
-  console.log(colorize('Primary Task: ', 'green') + `${primaryTask.id}: ${primaryTask.title}`);
-  console.log(colorize('Will merge with:', 'yellow'));
+  console.log(colorize('\nMerge preview:', asChalkColor((asChalkColor(('blue' as ChalkColor)))), asChalkColor('bold')));
+  console.log(colorize('Primary Task: ', asChalkColor((asChalkColor(('green' as ChalkColor))))) + `${primaryTask.id}: ${primaryTask.title}`);
+  console.log(colorize('Will merge with:', asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
   
   for (const task of secondaryTasks) {
     console.log(`- ${task.id}: ${task.title}`);
   }
   
   // Collect all unique tags
-  const allTags = new Set<string>(primaryTask.tags);
+  const allTags = new Set<string>(primaryTask.tags || []);
   for (const task of secondaryTasks) {
-    for (const tag of task.tags) {
-      allTags.add(tag);
+    if (task.tags) {
+      for (const tag of task.tags) {
+        allTags.add(tag);
+      }
     }
   }
   
@@ -113,11 +117,11 @@ export async function handleMerge(
   };
   
   // Show merge details
-  console.log(colorize('\nResults after merge:', 'blue'));
-  console.log(colorize('Title: ', 'green') + primaryTask.title + ' (unchanged)');
-  console.log(colorize('Tags: ', 'green') + Array.from(allTags).join(', '));
-  console.log(colorize('Status: ', 'green') + primaryTask.status + ' (unchanged)');
-  console.log(colorize('Readiness: ', 'green') + primaryTask.readiness + ' (unchanged)');
+  console.log(colorize('\nResults after merge:', asChalkColor((asChalkColor(('blue' as ChalkColor))))));
+  console.log(colorize('Title: ', asChalkColor((asChalkColor(('green' as ChalkColor))))) + primaryTask.title + ' (unchanged)');
+  console.log(colorize('Tags: ', asChalkColor((asChalkColor(('green' as ChalkColor))))) + Array.from(allTags).join(', '));
+  console.log(colorize('Status: ', asChalkColor((asChalkColor(('green' as ChalkColor))))) + primaryTask.status + ' (unchanged)');
+  console.log(colorize('Readiness: ', asChalkColor((asChalkColor(('green' as ChalkColor))))) + primaryTask.readiness + ' (unchanged)');
   
   // Confirm merge
   const rl3 = readline.createInterface({
@@ -126,13 +130,13 @@ export async function handleMerge(
   });
   
   const confirmMerge = await new Promise<string>(resolve => {
-    rl3.question(colorize('\nProceed with merge? [y/n]: ', 'cyan'), resolve);
+    rl3.question(colorize('\nProceed with merge? [y/n]: ', asChalkColor((asChalkColor(('cyan' as ChalkColor))))), resolve);
   });
   
   rl3.close();
   
   if (confirmMerge.toLowerCase() !== 'y') {
-    console.log(colorize('Merge cancelled.', 'yellow'));
+    console.log(colorize('Merge cancelled.', asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
     return;
   }
   
@@ -152,7 +156,7 @@ export async function handleMerge(
     });
     
     const deleteSecondary = await new Promise<string>(resolve => {
-      rl4.question(colorize('\nDelete merged secondary tasks? [y/n]: ', 'cyan'), resolve);
+      rl4.question(colorize('\nDelete merged secondary tasks? [y/n]: ', asChalkColor((asChalkColor(('cyan' as ChalkColor))))), resolve);
     });
     
     rl4.close();
@@ -160,7 +164,7 @@ export async function handleMerge(
     if (deleteSecondary.toLowerCase() === 'y') {
       for (const task of secondaryTasks) {
         await repo.removeTask(task.id);
-        console.log(colorize(`Task ${task.id} deleted.`, 'yellow'));
+        console.log(colorize(`Task ${task.id} deleted.`, asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
       }
     } else {
       // Mark as duplicates
@@ -176,19 +180,19 @@ export async function handleMerge(
             duplicateMarkedAt: new Date().toISOString()
           }
         });
-        console.log(colorize(`Task ${task.id} marked as duplicate of ${primaryTask.id}.`, 'yellow'));
+        console.log(colorize(`Task ${task.id} marked as duplicate of ${primaryTask.id}.`, asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
       }
     }
     
-    console.log(colorize('\n✅ Merge completed successfully!', 'green', 'bold'));
-    if (updateResult.success && updateResult.data) {
-      console.log(`Primary task ${updateResult.data.id} now contains merged data.`);
+    console.log(colorize('\n✅ Merge completed successfully!', asChalkColor((asChalkColor(('green' as ChalkColor)))), asChalkColor('bold')));
+    if (updateResult?.success && updateResult?.data) {
+      console.log(`Primary task ${updateResult?.data?.id} now contains merged data.`);
     } else {
       console.log(`Primary task update completed with issues.`);
     }
   } catch (error) {
-    console.error('Error during merge:', error);
-    console.log(colorize('Merge failed. See error details above.', 'red'));
+    console?.error('Error during merge:', error);
+    console.log(colorize('Merge failed. See error details above.', asChalkColor((asChalkColor(('red' as ChalkColor))))));
   }
 }
 
@@ -209,31 +213,33 @@ export async function suggestMerge(
   }, group.tasks[0]);
   
   // Display tasks in this group
-  console.log(colorize(`Group with ${Math.round(group.maxSimilarity * 100)}% similarity:`, 'yellow'));
+  console.log(colorize(`Group with ${Math.round(group.maxSimilarity * 100)}% similarity:`, asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
   
   for (let i = 0; i < group.tasks.length; i++) {
     const task = group.tasks[i];
     const isNewest = task.id === newestTask.id;
     
-    console.log((isNewest ? colorize('→ ', 'green', 'bold') : '  ') + 
-                colorize(`[${i + 1}] `, 'blue') + 
+    console.log((isNewest ? colorize('→ ', asChalkColor((asChalkColor(('green' as ChalkColor)))), asChalkColor('bold')) : '  ') + 
+                colorize(`[${i + 1}] `, asChalkColor((asChalkColor(('blue' as ChalkColor))))) + 
                 `${task.id}: ${task.title}`);
-    console.log(`     Status: ${task.status}, Tags: ${task.tags.join(', ') || 'none'}`);
+    console.log(`     Status: ${task.status}, Tags: ${formatTags(task.tags)}`);
     console.log(`     Updated: ${new Date(task.updatedAt).toLocaleString()}` + 
-                (isNewest ? colorize(' (newest)', 'green') : ''));
+                (isNewest ? colorize(' (newest)', asChalkColor((asChalkColor(('green' as ChalkColor))))) : ''));
   }
   
   // Calculate combined tags
   const allTags = new Set<string>();
   for (const task of group.tasks) {
-    for (const tag of task.tags) {
-      allTags.add(tag);
+    if (task.tags) {
+      for (const tag of task.tags) {
+        allTags.add(tag);
+      }
     }
   }
   
   // Show automatic suggestion
-  console.log(colorize('\nSuggested action:', 'blue', 'bold'));
-  console.log(`Merge all tasks into ${colorize(newestTask.id, 'green')}: ${newestTask.title}`);
+  console.log(colorize('\nSuggested action:', asChalkColor((asChalkColor(('blue' as ChalkColor)))), asChalkColor('bold')));
+  console.log(`Merge all tasks into ${colorize(newestTask.id, asChalkColor((asChalkColor(('green' as ChalkColor)))))}: ${newestTask.title}`);
   console.log(`Combined tags: ${Array.from(allTags).join(', ') || 'none'}`);
   
   // Ask for confirmation
@@ -243,19 +249,19 @@ export async function suggestMerge(
   });
   
   const confirm = await new Promise<string>(resolve => {
-    rl.question(colorize('Proceed with suggested merge? [y/n/s(skip)]: ', 'cyan'), resolve);
+    rl.question(colorize('Proceed with suggested merge? [y/n/s(skip)]: ', asChalkColor((asChalkColor(('cyan' as ChalkColor))))), resolve);
   });
   
   rl.close();
   
   if (confirm.toLowerCase() === 's') {
-    console.log(colorize('Skipped this group.', 'yellow'));
+    console.log(colorize('Skipped this group.', asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
     console.log(''); // Empty line
     return;
   }
   
   if (confirm.toLowerCase() !== 'y') {
-    console.log(colorize('Merge cancelled for this group.', 'yellow'));
+    console.log(colorize('Merge cancelled for this group.', asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
     console.log(''); // Empty line
     return;
   }
@@ -288,7 +294,7 @@ export async function suggestMerge(
     });
     
     const secondaryAction = await new Promise<string>(resolve => {
-      rl2.question(colorize('What to do with secondary tasks? [d(delete)/m(mark as duplicates)]: ', 'cyan'), resolve);
+      rl2.question(colorize('What to do with secondary tasks? [d(delete)/m(mark as duplicates)]: ', asChalkColor((asChalkColor(('cyan' as ChalkColor))))), resolve);
     });
     
     rl2.close();
@@ -298,7 +304,7 @@ export async function suggestMerge(
       for (const task of secondaryTasks) {
         await repo.removeTask(task.id);
       }
-      console.log(colorize(`${secondaryTasks.length} secondary tasks deleted.`, 'yellow'));
+      console.log(colorize(`${secondaryTasks.length} secondary tasks deleted.`, asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
     } else {
       // Mark as duplicates
       for (const task of secondaryTasks) {
@@ -314,14 +320,14 @@ export async function suggestMerge(
           }
         });
       }
-      console.log(colorize(`${secondaryTasks.length} tasks marked as duplicates.`, 'yellow'));
+      console.log(colorize(`${secondaryTasks.length} tasks marked as duplicates.`, asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
     }
     
-    console.log(colorize('✅ Merge completed successfully!', 'green'));
+    console.log(colorize('✅ Merge completed successfully!', asChalkColor((asChalkColor(('green' as ChalkColor))))));
     console.log(''); // Empty line
   } catch (error) {
-    console.error('Error during merge:', error);
-    console.log(colorize('Merge failed. See error details above.', 'red'));
+    console?.error('Error during merge:', error);
+    console.log(colorize('Merge failed. See error details above.', asChalkColor((asChalkColor(('red' as ChalkColor))))));
     console.log(''); // Empty line
   }
 }

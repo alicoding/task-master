@@ -3,7 +3,7 @@
  */
 
 import { expect } from 'chai';
-import { formatMetadata } from '../../core/graph/formatters/metadata-formatter.ts';
+import { formatMetadata } from '../../core/graph/formatters/metadata-formatter';
 
 // First, we need to create the metadata formatter module
 // This requires extracting the formatMetadata function from polished-task.ts to a separate file

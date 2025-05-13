@@ -1,5 +1,7 @@
+import { ChalkColor, asChalkColor } from '@/cli/utils/chalk-utils';
 import chalk from 'chalk';
-import { TaskReadiness, TaskStatus } from '../../../../core/types.ts';
+import { TaskReadiness, TaskStatus } from '../../../../core/types';
+
 
 // Define allowed color and style types
 export type ChalkColor = 'blue' | 'yellow' | 'green' | 'red' | 'magenta' | 'cyan' | 'gray' | 'white';
@@ -14,11 +16,11 @@ export type ChalkStyle = 'bold' | 'italic' | 'underline' | 'dim';
 export function colorizeStatus(status: string, colorize: (text: string, color?: ChalkColor, style?: ChalkStyle) => string): string {
   switch (status) {
     case 'todo':
-      return colorize(status, 'blue');
+      return colorize(status, asChalkColor((asChalkColor(('blue' as ChalkColor)))));
     case 'in-progress':
-      return colorize(status, 'yellow');
+      return colorize(status, asChalkColor((asChalkColor(('yellow' as ChalkColor)))));
     case 'done':
-      return colorize(status, 'green');
+      return colorize(status, asChalkColor((asChalkColor(('green' as ChalkColor)))));
     default:
       return status;
   }
@@ -33,11 +35,11 @@ export function colorizeStatus(status: string, colorize: (text: string, color?: 
 export function colorizeReadiness(readiness: string, colorize: (text: string, color?: ChalkColor, style?: ChalkStyle) => string): string {
   switch (readiness) {
     case 'draft':
-      return colorize(readiness, 'gray');
+      return colorize(readiness, asChalkColor((asChalkColor(('gray' as ChalkColor)))));
     case 'ready':
-      return colorize(readiness, 'green');
+      return colorize(readiness, asChalkColor((asChalkColor(('green' as ChalkColor)))));
     case 'blocked':
-      return colorize(readiness, 'red');
+      return colorize(readiness, asChalkColor((asChalkColor(('red' as ChalkColor)))));
     default:
       return readiness;
   }

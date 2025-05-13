@@ -2,9 +2,9 @@
  * Title banner formatter for task display
  */
 
-import { TYPOGRAPHY } from '../typography/constants.ts';
-import { COLORS } from '../colors/constants.ts';
-import { getGradient } from '../utils/gradient.ts';
+import { TYPOGRAPHY } from '../typography/constants';
+import { COLORS } from '../colors/constants';
+import { getGradient } from '../utils/gradient';
 
 // Dynamic imports
 let chalk: any;

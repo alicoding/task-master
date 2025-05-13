@@ -2,7 +2,7 @@
  * Entity definitions for the NLP service
  * Defines common task-related terms and provides methods to add them to NLP manager
  */
-import { NlpManager } from '../nlp-mock/index.ts';
+import { NlpManager } from '../nlp-mock/index';
 
 /**
  * Common task-related terms for entity extraction

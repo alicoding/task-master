@@ -6,14 +6,14 @@
  */
 
 // Export main API functionality
-export { processPlanTask } from './task-processor.ts';
-export { processPlanWithEnhancedUI } from './batch.ts';
+export { processPlanTask } from './task-processor';
+export { processPlanWithEnhancedUI } from './batch';
 
 // Export additional functionality for direct use if needed
-export { handleTaskUpdate } from './task-update.ts';
-export { createNewTask } from './task-creation.ts';
-export { handleNewTask } from './similarity.ts';
-export { handleAutoMerge } from './auto-merge.ts';
+export { handleTaskUpdate } from './task-update';
+export { createNewTask } from './task-creation';
+export { handleNewTask } from './similarity';
+export { handleAutoMerge } from './auto-merge';
 
 // Export types
-export type { SimilarTask } from './auto-merge.ts';
+export type { SimilarTask } from './auto-merge';

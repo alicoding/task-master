@@ -1,8 +1,8 @@
 import { test } from 'uvu';
 import * as assert from 'uvu/assert';
-import { TaskRepository } from '../../core/repo.ts';
-import { TaskInsertOptions, TaskUpdateOptions } from '../../core/types.ts';
-import { createTestRepository } from './test-helpers.ts';
+import { TaskRepository } from '../../core/repo';
+import { TaskInsertOptions, TaskUpdateOptions } from '../../core/types';
+import { createTestRepository } from './test-helpers';
 
 test('TaskRepository - create and get tasks', async () => {
   // Create repo with in-memory DB for testing with proper schema

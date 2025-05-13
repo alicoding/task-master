@@ -8,8 +8,8 @@
  * @module TaskGraphUtils
  */
 
-import { Task } from '../../db/schema.ts';
-import { TaskWithChildren } from '../types.ts';
+import { Task } from '../../db/schema';
+import { TaskWithChildren } from '../types';
 
 /**
  * Parse and compare task IDs

@@ -3,7 +3,7 @@
  * Enhanced version with caching and performance improvements
  */
 
-import { BaseNlpService } from './base-service.ts';
+import { BaseNlpService } from './base-service';
 import {
   NlpManager as INlpManager,
   NlpManagerOptions,
@@ -11,33 +11,33 @@ import {
   SimilarTask,
   ProcessedQuery,
   ExtractedSearchFilters
-} from '../types.ts';
-import { addTaskEntities } from '../processing/entities.ts';
+} from '../types';
+import { addTaskEntities } from '../processing/entities';
 import {
   tryLoadModel,
   addTrainingExamples,
   trainAndSaveModel,
   DEFAULT_MODEL_PATH
-} from '../processing/trainer.ts';
+} from '../processing/trainer';
 import {
   Tokenizer,
   Stemmer
-} from '../processing/processor.ts';
+} from '../processing/processor';
 import {
   processQuery,
   calculateSimilarity,
   extractSearchFilters,
   bulkCalculateSimilarity,
   getNlpCache
-} from '../processing/optimized-processor.ts';
+} from '../processing/optimized-processor';
 import {
   fuzzySearch,
   combineSearchResults
-} from '../matchers/fuzzy-matcher.ts';
-import { getNlpProfiler, profileMethod } from '../utils/profiler.ts';
+} from '../matchers/fuzzy-matcher';
+import { getNlpProfiler, profileMethod } from '../utils/profiler';
 
 // Import the ESM-compatible NlpManager
-import { NlpManager } from '../esm-compat/nlp-manager.ts';
+import { NlpManager } from '../esm-compat/nlp-manager';
 
 /**
  * Optimized NLP Service for Task Master

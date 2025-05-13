@@ -2,24 +2,24 @@
  * Polished task formatter with professional typography and advanced visual styling
  */
 
-import { Task, TaskWithChildren } from '../../types.ts';
+import { Task, TaskWithChildren } from '../../types';
 
 // Import typography and colors constants
-import { TYPOGRAPHY } from './typography/constants.ts';
-import { COLORS } from './colors/constants.ts';
+import { TYPOGRAPHY } from './typography/constants';
+import { COLORS } from './colors/constants';
 
 // Import formatter sections
-import { createTitleBanner } from './sections/title-banner.ts';
-import { createSectionHeader } from './sections/section-header.ts';
-import { formatText } from './utils/text-formatter.ts';
-import { createProgressBar } from './sections/progress-bar.ts';
-import { formatReadiness } from './sections/readiness-formatter.ts';
-import { formatTagBadges } from './sections/tags-formatter.ts';
-import { formatDates } from './sections/dates-formatter.ts';
-import { formatCommandBlock, createPlaceholder } from './sections/command-block.ts';
-import { formatMetadata } from './metadata-formatter.ts';
-import { formatDoD } from './sections/dod-formatter.ts';
-import { formatTreeText, getStatusSymbol } from './tree.ts';
+import { createTitleBanner } from './sections/title-banner';
+import { createSectionHeader } from './sections/section-header';
+import { formatText } from './utils/text-formatter';
+import { createProgressBar } from './sections/progress-bar';
+import { formatReadiness } from './sections/readiness-formatter';
+import { formatTagBadges } from './sections/tags-formatter';
+import { formatDates } from './sections/dates-formatter';
+import { formatCommandBlock, createPlaceholder } from './sections/command-block';
+import { formatMetadata } from './metadata-formatter';
+import { formatDoD } from './sections/dod-formatter';
+import { formatTreeText, getStatusSymbol } from './tree';
 
 // Dynamic imports for ESM compatibility
 let chalk: any;

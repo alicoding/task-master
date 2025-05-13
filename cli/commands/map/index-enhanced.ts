@@ -1,12 +1,12 @@
 import { Command } from 'commander';
-import { TaskRepository } from '../../../core/repo.ts';
+import { TaskRepository } from '../../../core/repo';
 import { 
   CapabilityMapGenerator, 
   CapabilityDiscoveryOptions 
-} from '../../../core/capability-map/index.ts';
-import { EnhancedCapabilityMapVisualizer } from '../../../core/capability-map/enhanced-visualizer.ts';
-import { helpFormatter } from '../../helpers/help-formatter.ts';
-import { AiProviderFactory } from '../../../core/ai/factory.ts';
+} from '../../../core/capability-map/index';
+import { EnhancedCapabilityMapVisualizer } from '../../../core/capability-map/enhanced-visualizer';
+import { helpFormatter } from '../../helpers/help-formatter';
+import { AiProviderFactory } from '../../../core/ai/factory';
 
 /**
  * Create the enhanced map command for visualizing task capabilities
@@ -230,7 +230,7 @@ export async function createEnhancedMapCommand() {
       // Close repository
       repo.close();
     } catch (error) {
-      console.error('Error generating capability map:', error);
+      console?.error('Error generating capability map:', error);
       console.log('');
       console.log('Troubleshooting suggestions:');
       console.log('1. Try using the mock provider: tm map --ai-model mock');

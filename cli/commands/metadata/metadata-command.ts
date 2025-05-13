@@ -3,17 +3,17 @@
  */
 
 import { Command } from 'commander';
-import { TaskRepository } from '../../../core/repo.ts';
-import { OutputFormat } from '../../../core/types.ts';
-import { helpFormatter } from '../../helpers/help-formatter.ts';
-import { commandRegistry } from '../../../core/api/command.ts';
-import { CommandContext, InputSource, OutputMode } from '../../../core/api/context.ts';
+import { TaskRepository } from '../../../core/repo';
+import { OutputFormat } from '../../../core/types';
+import { helpFormatter } from '../../helpers/help-formatter';
+import { commandRegistry } from '../../../core/api/command';
+import { CommandContext, InputSource, OutputMode } from '../../../core/api/context';
 import { 
   SetMetadataParams,
   RemoveMetadataParams,
   GetMetadataParams,
   MetadataResult
-} from '../../../core/api/handlers/task-metadata.ts';
+} from '../../../core/api/handlers/task-metadata';
 
 /**
  * Helper class for metadata value parsing
@@ -65,24 +65,29 @@ export class MetadataCommandHandler {
           output: format === 'json' ? OutputMode.Json : OutputMode.Console,
           source: InputSource.Cli
         });
-        
+
         const params: GetMetadataParams = {
           id: options.id,
           field: options.field
         };
-        
-        const result = await commandRegistry.get('metadata.get').execute(context, params);
-        
+
+        const command = commandRegistry.get('metadata.get');
+        if (!command) {
+          throw new Error("Command 'metadata.get' not found in registry");
+        }
+
+        const result = await command.execute(context, params);
+
         // Display result
         if (format === 'json') {
-          console.log(JSON.stringify(result.result, null, 2));
+          console.log(JSON.stringify(result?.result ?? null, null, 2));
         } else {
           if (options.field) {
             console.log(`Metadata field '${options.field}' for task ${options.id}:`);
-            console.log(JSON.stringify(result.result.value, null, 2));
+            console.log(JSON.stringify(result?.result?.value !== undefined ? result?.result?.value : null, null, 2));
           } else {
             console.log(`Metadata for task ${options.id}:`);
-            console.log(JSON.stringify(result.result.metadata, null, 2));
+            console.log(JSON.stringify(result?.result?.metadata !== undefined ? result?.result?.metadata : null, null, 2));
           }
         }
         
@@ -114,7 +119,7 @@ export class MetadataCommandHandler {
         return metadata;
       }
     } catch (error) {
-      console.error('Error getting metadata:', error);
+      console?.error('Error getting metadata:', error);
       throw error;
     }
   }
@@ -133,16 +138,21 @@ export class MetadataCommandHandler {
           output: format === 'json' ? OutputMode.Json : OutputMode.Console,
           source: InputSource.Cli
         });
-        
+
         const params: SetMetadataParams = {
           id: options.id,
           field: options.field,
           value: parsedValue
         };
-        
-        const result = await commandRegistry.get('metadata.set').execute(context, params);
-        const metadata = result.result?.metadata;
-        
+
+        const command = commandRegistry.get('metadata.set');
+        if (!command) {
+          throw new Error("Command 'metadata.set' not found in registry");
+        }
+
+        const result = await command.execute(context, params);
+        const metadata = result?.result?.metadata !== undefined ? result?.result?.metadata : null;
+
         // Display result
         if (format === 'json') {
           console.log(JSON.stringify(metadata, null, 2));
@@ -150,7 +160,7 @@ export class MetadataCommandHandler {
           console.log(`Metadata field '${options.field}' set for task ${options.id}`);
           console.log(`Updated metadata: ${JSON.stringify(metadata, null, 2)}`);
         }
-        
+
         return metadata;
       }
       
@@ -158,20 +168,20 @@ export class MetadataCommandHandler {
       const updatedTask = await this.repo.updateMetadata(options.id, options.field, parsedValue, 'set');
       
       if (!updatedTask) {
-        console.error(`Task with ID ${options.id} not found`);
+        console?.error(`Task with ID ${options.id} not found`);
         return null;
       }
       
       if (format === 'json') {
-        console.log(JSON.stringify(updatedTask.metadata, null, 2));
+        console.log(JSON.stringify((updatedTask as any).metadata || {}, null, 2));
       } else {
         console.log(`Metadata field '${options.field}' set for task ${options.id}`);
-        console.log(`Updated metadata: ${JSON.stringify(updatedTask.metadata, null, 2)}`);
+        console.log(`Updated metadata: ${JSON.stringify((updatedTask as any).metadata || {}, null, 2)}`);
       }
-      
-      return updatedTask.metadata;
+
+      return (updatedTask as any).metadata || {};
     } catch (error) {
-      console.error('Error setting metadata:', error);
+      console?.error('Error setting metadata:', error);
       throw error;
     }
   }
@@ -187,15 +197,20 @@ export class MetadataCommandHandler {
           output: format === 'json' ? OutputMode.Json : OutputMode.Console,
           source: InputSource.Cli
         });
-        
+
         const params: RemoveMetadataParams = {
           id: options.id,
           field: options.field
         };
-        
-        const result = await commandRegistry.get('metadata.remove').execute(context, params);
-        const metadata = result.result?.metadata;
-        
+
+        const command = commandRegistry.get('metadata.remove');
+        if (!command) {
+          throw new Error("Command 'metadata.remove' not found in registry");
+        }
+
+        const result = await command.execute(context, params);
+        const metadata = result?.result?.metadata !== undefined ? result?.result?.metadata : null;
+
         // Display result
         if (format === 'json') {
           console.log(JSON.stringify(metadata, null, 2));
@@ -203,7 +218,7 @@ export class MetadataCommandHandler {
           console.log(`Metadata field '${options.field}' removed from task ${options.id}`);
           console.log(`Updated metadata: ${JSON.stringify(metadata, null, 2)}`);
         }
-        
+
         return metadata;
       }
       
@@ -211,20 +226,20 @@ export class MetadataCommandHandler {
       const updatedTask = await this.repo.updateMetadata(options.id, options.field, null, 'remove');
       
       if (!updatedTask) {
-        console.error(`Task with ID ${options.id} not found`);
+        console?.error(`Task with ID ${options.id} not found`);
         return null;
       }
       
       if (format === 'json') {
-        console.log(JSON.stringify(updatedTask.metadata, null, 2));
+        console.log(JSON.stringify((updatedTask as any).metadata || {}, null, 2));
       } else {
         console.log(`Metadata field '${options.field}' removed from task ${options.id}`);
-        console.log(`Updated metadata: ${JSON.stringify(updatedTask.metadata, null, 2)}`);
+        console.log(`Updated metadata: ${JSON.stringify((updatedTask as any).metadata || {}, null, 2)}`);
       }
-      
-      return updatedTask.metadata;
+
+      return (updatedTask as any).metadata || {};
     } catch (error) {
-      console.error('Error removing metadata:', error);
+      console?.error('Error removing metadata:', error);
       throw error;
     }
   }
@@ -243,45 +258,50 @@ export class MetadataCommandHandler {
           output: format === 'json' ? OutputMode.Json : OutputMode.Console,
           source: InputSource.Cli
         });
-        
+
         const params: SetMetadataParams = {
           id: options.id,
           field: options.field,
           value: parsedValue
         };
-        
-        const result = await commandRegistry.get('metadata.append').execute(context, params);
-        const updatedTask = result.result?.task;
-        
+
+        const command = commandRegistry.get('metadata.append');
+        if (!command) {
+          throw new Error("Command 'metadata.append' not found in registry");
+        }
+
+        const result = await command.execute(context, params);
+        const updatedTask = result?.result?.task !== undefined ? result?.result?.task : null;
+
         // Display result
         if (format === 'json') {
-          console.log(JSON.stringify(updatedTask.metadata, null, 2));
+          console.log(JSON.stringify(updatedTask?.metadata ?? null, null, 2));
         } else {
           console.log(`Value appended to metadata field '${options.field}' for task ${options.id}`);
-          console.log(`Updated field: ${JSON.stringify(updatedTask.metadata[options.field], null, 2)}`);
+          console.log(`Updated field: ${JSON.stringify(updatedTask?.metadata?.[options.field] ?? null, null, 2)}`);
         }
-        
-        return updatedTask.metadata;
+
+        return updatedTask?.metadata ?? null;
       }
       
       // Use direct repository access (fallback)
       const updatedTask = await this.repo.updateMetadata(options.id, options.field, parsedValue, 'append');
       
       if (!updatedTask) {
-        console.error(`Task with ID ${options.id} not found`);
+        console?.error(`Task with ID ${options.id} not found`);
         return null;
       }
       
       if (format === 'json') {
-        console.log(JSON.stringify(updatedTask.metadata, null, 2));
+        console.log(JSON.stringify((updatedTask as any).metadata || {}, null, 2));
       } else {
         console.log(`Value appended to metadata field '${options.field}' for task ${options.id}`);
-        console.log(`Updated field: ${JSON.stringify(updatedTask.metadata[options.field], null, 2)}`);
+        console.log(`Updated field: ${JSON.stringify((updatedTask as any).metadata?.[options.field], null, 2)}`);
       }
-      
-      return updatedTask.metadata;
+
+      return (updatedTask as any).metadata || {};
     } catch (error) {
-      console.error('Error appending to metadata:', error);
+      console?.error('Error appending to metadata:', error);
       throw error;
     }
   }
@@ -378,7 +398,7 @@ export function createMetadataCommand() {
           repo.close();
         }
       } catch (error) {
-        console.error('Error getting metadata:', error);
+        console?.error('Error getting metadata:', error);
         process.exit(1);
       }
     });
@@ -432,7 +452,7 @@ export function createMetadataCommand() {
           repo.close();
         }
       } catch (error) {
-        console.error('Error setting metadata:', error);
+        console?.error('Error setting metadata:', error);
         process.exit(1);
       }
     });
@@ -476,7 +496,7 @@ export function createMetadataCommand() {
           repo.close();
         }
       } catch (error) {
-        console.error('Error removing metadata:', error);
+        console?.error('Error removing metadata:', error);
         process.exit(1);
       }
     });
@@ -526,7 +546,7 @@ export function createMetadataCommand() {
           repo.close();
         }
       } catch (error) {
-        console.error('Error appending to metadata:', error);
+        console?.error('Error appending to metadata:', error);
         process.exit(1);
       }
     });

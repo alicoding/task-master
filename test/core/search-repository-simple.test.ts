@@ -1,11 +1,11 @@
 import { test } from 'uvu';
 import * as assert from 'uvu/assert';
-import { TaskSearchRepository } from '../../core/repository/search.ts';
+import { TaskSearchRepository } from '../../core/repository/search';
 import { 
   TaskStatus,
   TaskReadiness,
   TaskErrorCode
-} from '../../core/types.ts';
+} from '../../core/types';
 
 // Create an empty mock for the repository
 class MockSearchRepository extends TaskSearchRepository {

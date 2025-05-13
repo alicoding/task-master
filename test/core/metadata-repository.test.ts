@@ -5,9 +5,9 @@
 
 import { test } from 'uvu';
 import * as assert from 'uvu/assert';
-import { TaskRepository } from '../../core/repo.ts';
-import { TaskMetadataRepository } from '../../core/repository/metadata.ts';
-import { TaskOperationResult, Task, TaskErrorCode } from '../../core/types.ts';
+import { TaskRepository } from '../../core/repo';
+import { TaskMetadataRepository } from '../../core/repository/metadata';
+import { TaskOperationResult, Task, TaskErrorCode } from '../../core/types';
 
 // Simple test for dot notation in metadata field access
 test('getMetadataField dot notation - nested properties', async () => {

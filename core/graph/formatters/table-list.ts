@@ -2,7 +2,7 @@
  * Table formatter for task list visualization
  */
 
-import { Task } from '../../types.ts';
+import { Task } from '../../types';
 
 // Dynamic imports for ESM compatibility
 let chalk: any;

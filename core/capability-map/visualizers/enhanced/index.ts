@@ -10,12 +10,12 @@
  * - Support for detailed views
  */
 
-import { CapabilityMap } from '../../index.ts';
-import { EnhancedVisualizationOptions } from '../options.ts';
-import { renderEnhancedTextVisualization } from './text-renderer.ts';
-import { renderEnhancedMermaidDiagram } from './mermaid-renderer.ts';
-import { renderEnhancedDotDiagram } from './dot-renderer.ts';
-import { renderEnhancedJsonOutput } from './json-renderer.ts';
+import { CapabilityMap } from '../../index';
+import { EnhancedVisualizationOptions } from '../options';
+import { renderEnhancedTextVisualization } from './text-renderer';
+import { renderEnhancedMermaidDiagram } from './mermaid-renderer';
+import { renderEnhancedDotDiagram } from './dot-renderer';
+import { renderEnhancedJsonOutput } from './json-renderer';
 
 /**
  * Enhanced visualizer for capability maps with improved readability and insights

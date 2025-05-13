@@ -1,6 +1,6 @@
-import { TaskRepository } from '../core/repo.ts';
-import { tasks } from '../db/schema.ts';
-import { Task } from '../core/types.ts';
+import { TaskRepository } from '../core/repo';
+import { tasks } from '../db/schema';
+import { Task } from '../core/types';
 
 /**
  * Debug test utility for testing task repository functionality

@@ -6,8 +6,8 @@
  */
 
 import chalk from 'chalk';
-import { CapabilityMap, CapabilityNode, CapabilityEdge } from '../../index.ts';
-import { EnhancedVisualizationOptions } from '../options.ts';
+import { CapabilityMap, CapabilityNode, CapabilityEdge } from '../../index';
+import { EnhancedVisualizationOptions } from '../options';
 import {
   calculateOverallProgress,
   getCapabilityProgress,
@@ -21,7 +21,7 @@ import {
   getCategoryIcon,
   createHierarchicalGroups, 
   renderProgressBar
-} from '../utils/index.ts';
+} from '../utils/index';
 
 /**
  * Render enhanced text visualization with progress indicators and better formatting

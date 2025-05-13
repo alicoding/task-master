@@ -2,11 +2,11 @@
  * DOT/Graphviz renderer for capability map visualizations
  */
 
-import { CapabilityMap } from '../../index.ts';
-import { VisualizationOptions } from '../options.ts';
-import { BaseRenderer } from './base-renderer.ts';
-import { getDotEdgeStyle } from '../utils/formatting.ts';
-import { getNodeColorByTypeAndConfidence } from '../utils/colors.ts';
+import { CapabilityMap } from '../../index';
+import { VisualizationOptions } from '../options';
+import { BaseRenderer } from './base-renderer';
+import { getDotEdgeStyle } from '../utils/formatting';
+import { getNodeColorByTypeAndConfidence } from '../utils/colors';
 
 /**
  * Renderer for DOT/Graphviz diagrams of capability maps

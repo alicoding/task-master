@@ -4,7 +4,7 @@
  * for improved search and matching
  */
 
-import { BaseNlpService } from './base-service.ts';
+import { BaseNlpService } from './base-service';
 import {
   NlpManager as INlpManager,
   NlpManagerOptions,
@@ -12,28 +12,28 @@ import {
   SimilarTask,
   ProcessedQuery,
   ExtractedSearchFilters
-} from '../types.ts';
-import { addTaskEntities } from '../processing/entities.ts';
+} from '../types';
+import { addTaskEntities } from '../processing/entities';
 import {
   tryLoadModel,
   addTrainingExamples,
   trainAndSaveModel,
   DEFAULT_MODEL_PATH
-} from '../processing/trainer.ts';
+} from '../processing/trainer';
 import {
   processQuery as processQueryImpl,
   calculateSimilarity,
   extractSearchFilters as extractSearchFiltersImpl,
   Tokenizer,
   Stemmer
-} from '../processing/processor.ts';
+} from '../processing/processor';
 import {
   fuzzySearch,
   combineSearchResults
-} from '../matchers/fuzzy-matcher.ts';
+} from '../matchers/fuzzy-matcher';
 
 // Import the ESM-compatible NlpManager
-import { NlpManager } from '../esm-compat/nlp-manager.ts';
+import { NlpManager } from '../esm-compat/nlp-manager';
 
 /**
  * NLP Service for Task Master

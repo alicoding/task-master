@@ -2,9 +2,9 @@
  * Mermaid.js renderer for capability map visualizations
  */
 
-import { CapabilityMap } from '../../index.ts';
-import { VisualizationOptions } from '../options.ts';
-import { BaseRenderer } from './base-renderer.ts';
+import { CapabilityMap } from '../../index';
+import { VisualizationOptions } from '../options';
+import { BaseRenderer } from './base-renderer';
 
 /**
  * Renderer for Mermaid.js diagrams of capability maps

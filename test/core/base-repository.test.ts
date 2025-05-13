@@ -1,8 +1,8 @@
 import { test } from 'uvu';
 import * as assert from 'uvu/assert';
-import { BaseTaskRepository } from '../../core/repository/base.ts';
-import { Task } from '../../db/schema.ts';
-import { TaskInsertOptions, TaskUpdateOptions, TaskErrorCode } from '../../core/types.ts';
+import { BaseTaskRepository } from '../../core/repository/base';
+import { Task } from '../../db/schema';
+import { TaskInsertOptions, TaskUpdateOptions, TaskErrorCode } from '../../core/types';
 
 // Helper to create a repository for testing
 function createTestRepository(): BaseTaskRepository {

@@ -8,7 +8,7 @@
  * 
  * It handles:
  * - Static imports: import { X } from './path.ts' -> import { X } from './path.js'
- * - Dynamic imports: await import('./path.ts') -> await import('./path.ts')
+ * - Dynamic imports: await import('./path') -> await import('./path')
  * - Re-exports: export * from './path.ts' -> export * from './path.js'
  * - Named exports: export { X } from './path.ts' -> export { X } from './path.js'
  */
@@ -146,7 +146,7 @@ function processFile(sourceFile: SourceFile): boolean {
     }
   }
 
-  // 3. Handle dynamic imports: import('./path.ts') using string manipulation
+  // 3. Handle dynamic imports: import('./path') using string manipulation
   //    ts-morph doesn't have direct API for these, so we need to find them manually
   const fileText = sourceFile.getFullText();
   let newFileText = fileText;

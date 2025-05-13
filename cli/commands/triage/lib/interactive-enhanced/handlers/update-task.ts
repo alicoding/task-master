@@ -3,9 +3,10 @@
  */
 
 import readline from 'readline';
-import { TaskRepository } from '../../../../../core/repo.ts';
-import { TaskStatus, TaskReadiness } from '../../../../../core/types.ts';
-import { ChalkColor, ChalkStyle, ProcessingOptions, TriageResults, TriageTask, colorizeStatus, colorizeReadiness } from '../../utils.ts';
+import { TaskRepository } from '../../../../../core/repo';
+import { TaskStatus, TaskReadiness } from '../../../../../core/types';
+import { ChalkColor, ChalkStyle, ProcessingOptions, TriageResults, TriageTask, colorizeStatus, colorizeReadiness } from '../../utils';
+import { ChalkColor, asChalkColor } from "@/cli/utils/chalk-utils";
 
 /**
  * Handle updating task status and readiness
@@ -23,8 +24,8 @@ export async function handleUpdateTaskAction(
   const { dryRun, colorize } = options;
   
   if (dryRun) {
-    console.log(colorize('Would update task (dry run).', 'yellow'));
-    results.updated.push({
+    console.log(colorize('Would update task (dry run).', asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
+    results?.updated.push({
       id: task.id,
       title: task.title,
       dry_run: true
@@ -33,9 +34,9 @@ export async function handleUpdateTaskAction(
   }
   
   // Status update
-  console.log(colorize('\n┌─ Update Task Status/Readiness', 'yellow', 'bold'));
-  console.log(colorize('│', 'yellow'));
-  console.log(colorize('├─ Current Status: ', 'yellow') + colorizeStatus(task.status as string, colorize));
+  console.log(colorize('\n┌─ Update Task Status/Readiness', asChalkColor((asChalkColor(('yellow' as ChalkColor)))), asChalkColor('bold')));
+  console.log(colorize('│', asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
+  console.log(colorize('├─ Current Status: ', asChalkColor((asChalkColor(('yellow' as ChalkColor))))) + colorizeStatus(task.status as string, colorize));
   
   const rl1 = readline.createInterface({
     input: process.stdin,
@@ -43,18 +44,18 @@ export async function handleUpdateTaskAction(
   });
   
   const statusMenu = `
-${colorize('1', 'blue')} - todo
-${colorize('2', 'yellow')} - in-progress
-${colorize('3', 'green')} - done
-${colorize('0', 'gray')} - keep current
+${colorize('1', asChalkColor((asChalkColor(('blue' as ChalkColor)))))} - todo
+${colorize('2', asChalkColor((asChalkColor(('yellow' as ChalkColor)))))} - in-progress
+${colorize('3', asChalkColor((asChalkColor(('green' as ChalkColor)))))} - done
+${colorize('0', asChalkColor((asChalkColor(('gray' as ChalkColor)))))} - keep current
 `;
   
-  console.log(colorize('│', 'yellow'));
-  console.log(colorize('├─ Available Options:', 'yellow'));
+  console.log(colorize('│', asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
+  console.log(colorize('├─ Available Options:', asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
   console.log(statusMenu);
   
   const statusInput = await new Promise<string>(resolve => {
-    rl1.question(colorize('├─ Select new status [0-3]: ', 'yellow'), resolve);
+    rl1.question(colorize('├─ Select new status [0-3]: ', asChalkColor((asChalkColor(('yellow' as ChalkColor))))), resolve);
   });
   
   rl1.close();
@@ -65,12 +66,12 @@ ${colorize('0', 'gray')} - keep current
     case '1': newStatus = 'todo'; break;
     case '2': newStatus = 'in-progress'; break;
     case '3': newStatus = 'done'; break;
-    default: console.log(colorize('│  Keeping current status', 'gray'));
+    default: console.log(colorize('│  Keeping current status', asChalkColor((asChalkColor(('gray' as ChalkColor))))));
   }
   
   // Readiness update
-  console.log(colorize('│', 'yellow'));
-  console.log(colorize('├─ Current Readiness: ', 'yellow') + colorizeReadiness(task.readiness as string, colorize));
+  console.log(colorize('│', asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
+  console.log(colorize('├─ Current Readiness: ', asChalkColor((asChalkColor(('yellow' as ChalkColor))))) + colorizeReadiness(task.readiness as string, colorize));
   
   const rl2 = readline.createInterface({
     input: process.stdin,
@@ -78,18 +79,18 @@ ${colorize('0', 'gray')} - keep current
   });
   
   const readinessMenu = `
-${colorize('1', 'yellow')} - draft
-${colorize('2', 'green')} - ready
-${colorize('3', 'red')} - blocked
-${colorize('0', 'gray')} - keep current
+${colorize('1', asChalkColor((asChalkColor(('yellow' as ChalkColor)))))} - draft
+${colorize('2', asChalkColor((asChalkColor(('green' as ChalkColor)))))} - ready
+${colorize('3', asChalkColor((asChalkColor(('red' as ChalkColor)))))} - blocked
+${colorize('0', asChalkColor((asChalkColor(('gray' as ChalkColor)))))} - keep current
 `;
   
-  console.log(colorize('│', 'yellow'));
-  console.log(colorize('├─ Available Options:', 'yellow'));
+  console.log(colorize('│', asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
+  console.log(colorize('├─ Available Options:', asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
   console.log(readinessMenu);
   
   const readinessInput = await new Promise<string>(resolve => {
-    rl2.question(colorize('├─ Select new readiness [0-3]: ', 'yellow'), resolve);
+    rl2.question(colorize('├─ Select new readiness [0-3]: ', asChalkColor((asChalkColor(('yellow' as ChalkColor))))), resolve);
   });
   
   rl2.close();
@@ -100,7 +101,7 @@ ${colorize('0', 'gray')} - keep current
     case '1': newReadiness = 'draft'; break;
     case '2': newReadiness = 'ready'; break;
     case '3': newReadiness = 'blocked'; break;
-    default: console.log(colorize('│  Keeping current readiness', 'gray'));
+    default: console.log(colorize('│  Keeping current readiness', asChalkColor((asChalkColor(('gray' as ChalkColor))))));
   }
   
   // Only update if something changed
@@ -111,9 +112,9 @@ ${colorize('0', 'gray')} - keep current
     
     const updatedTask = await repo.updateTask(updateParams);
     
-    results.updated.push(updatedTask);
-    console.log(colorize('└─ ✓ Task updated successfully', 'green', 'bold'));
+    results?.updated.push(updatedTask);
+    console.log(colorize('└─ ✓ Task updated successfully', asChalkColor((asChalkColor(('green' as ChalkColor)))), asChalkColor('bold')));
   } else {
-    console.log(colorize('└─ No changes made', 'yellow'));
+    console.log(colorize('└─ No changes made', asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
   }
 }

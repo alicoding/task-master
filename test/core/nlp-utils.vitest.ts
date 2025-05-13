@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest';
-import * as distance from '../../core/nlp/utils/distance.ts';
-import * as stemming from '../../core/nlp/utils/stemming.ts';
-import * as tokenization from '../../core/nlp/utils/tokenization.ts';
-import * as synonyms from '../../core/nlp/utils/synonyms.ts';
+import * as distance from '../../core/nlp/utils/distance';
+import * as stemming from '../../core/nlp/utils/stemming';
+import * as tokenization from '../../core/nlp/utils/tokenization';
+import * as synonyms from '../../core/nlp/utils/synonyms';
 
 describe('NLP Distance Utilities', () => {
   describe('levenshteinDistance', () => {

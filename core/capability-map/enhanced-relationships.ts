@@ -3,8 +3,8 @@
  * Provides more intelligent relationship discovery without requiring AI
  */
 
-import { Task } from '../types.ts';
-import { CapabilityNode, CapabilityEdge } from './index.ts';
+import { Task } from '../types';
+import { CapabilityNode, CapabilityEdge } from './index';
 
 /**
  * Relationship types with descriptions

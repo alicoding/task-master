@@ -1,4 +1,4 @@
-import { createDb } from './init.ts';
+import { createDb } from './init';
 import { migrate } from 'drizzle-orm/better-sqlite3/migrator';
 import { mkdir } from 'fs/promises';
 import { dirname } from 'path';
@@ -9,7 +9,7 @@ async function ensureDbDir(dbPath: string) {
   } catch (e) {
     // Directory already exists or can't be created
     if ((e as any).code !== 'EEXIST') {
-      console.error('Failed to create database directory:', e);
+      console?.error('Failed to create database directory:', e);
     }
   }
 }
@@ -57,7 +57,7 @@ async function runMigration() {
 
     console.log('All migrations processed');
   } catch (error) {
-    console.error('Error running migrations:', error);
+    console?.error('Error running migrations:', error);
     throw error;
   }
   
@@ -66,5 +66,5 @@ async function runMigration() {
 
 // For direct invocation during setup
 if (process.argv[1] === import.meta.url) {
-  runMigration().catch(console.error);
+  runMigration().catch(console?.error);
 }

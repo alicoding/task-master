@@ -17,7 +17,7 @@
  * @module NlpSynonymUtils
  */
 
-import { tokenizeAndNormalize } from './tokenization.ts';
+import { tokenizeAndNormalize } from './tokenization';
 
 /**
  * A mapping of common task management terms and their synonyms

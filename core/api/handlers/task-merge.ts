@@ -3,9 +3,9 @@
  * Merges two tasks together
  */
 
-import { BaseCommandHandler, CommandParams } from '../command.ts';
-import { CommandContext } from '../context.ts';
-import { Task } from '../../types.ts';
+import { BaseCommandHandler, CommandParams } from '../command';
+import { CommandContext } from '../context';
+import { Task } from '../../types';
 
 /**
  * Parameters for merging a task

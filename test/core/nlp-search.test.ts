@@ -1,7 +1,7 @@
 import { test } from 'uvu';
 import * as assert from 'uvu/assert';
-import { NlpService } from '../../core/nlp-service.ts';
-import { TaskRepository } from '../../core/repo.ts';
+import { NlpService } from '../../core/nlp-service';
+import { TaskRepository } from '../../core/repo';
 
 test('NLP Service - Basic Functionality', async () => {
   const nlp = new NlpService();

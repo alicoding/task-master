@@ -3,13 +3,13 @@
  */
 
 // Export stemming utilities
-export * from './stemming.ts';
+export * from './stemming';
 
 // Export tokenization utilities
-export * from './tokenization.ts';
+export * from './tokenization';
 
 // Export distance/similarity metrics
-export * from './distance.ts';
+export * from './distance';
 
 // Export synonym utilities
-export * from './synonyms.ts';
+export * from './synonyms';

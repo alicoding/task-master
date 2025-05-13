@@ -5,15 +5,15 @@
  * for compatibility with Markdown documents and web-based visualization.
  */
 
-import { CapabilityMap } from '../../index.ts';
-import { EnhancedVisualizationOptions } from '../options.ts';
+import { CapabilityMap } from '../../index';
+import { EnhancedVisualizationOptions } from '../options';
 import {
   getCapabilityProgress,
   normalizeCapabilityNames,
   formatRelationshipType,
   formatGroupName,
   createHierarchicalGroups
-} from '../utils/index.ts';
+} from '../utils/index';
 
 /**
  * Render enhanced Mermaid diagram with progress indicators

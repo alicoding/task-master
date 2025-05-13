@@ -15,7 +15,7 @@ export {
   levenshteinDistance,
   fuzzyScore,
   expandWithSynonyms
-} from './nlp/utils/index.ts';
+} from './nlp/utils/index';
 
 // Re-export the synonym map for backward compatibility
-export { synonymMap } from './nlp/utils/synonyms.ts';
+export { synonymMap } from './nlp/utils/synonyms';

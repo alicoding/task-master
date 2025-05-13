@@ -1,95 +1,78 @@
 # Test Migration Plan
 
-## Summary
+## Current Status
 
-- Total test files: 27
-- uvu test files: 21
-- Vitest test files: 3
-- Other test files: 3
-- Total tests in uvu: 84
-- Total tests in Vitest: 10
+After implementing the TypeScript ESM loader solution using tsx, we have made significant progress:
 
-## Migration Progress
+- Fixed 1 of 24 failing test files (file-system-watcher.vitest.ts)
+- Fixed import resolution issues for .ts extensions
+- 461 passing tests (out of 598 total)
+- 121 failing tests (down from 89 initially since we're now running more tests)
+- 16 skipped tests
 
-- Migration progress: 11%
+## Remaining Issues
 
-## Migration Plan
+The failing tests appear to be primarily in the following areas:
 
-### Core
+1. **Terminal Session Integration Tests**
+   - Many of these tests are failing with specific error messages
+   - The tests are designed to handle errors correctly, but the errors are not being caught as expected
 
-*Core tests* are those in the `/test/core/` directory and test the core functionality of the application.
+2. **Terminal Time Window Tests**
+   - Similar to the terminal session tests, these are showing errors that are part of the test but not being handled correctly
 
-#### Files to Convert
+3. **Legacy Test Format Issues**
+   - Some tests are using the older uvu test format which might not be fully compatible with our new loader
 
-```
-test/core/base-repository.test.ts (8 tests)
-test/core/base-repository.vitest.test.ts (8 tests)
-test/core/graph.test.ts (3 tests)
-test/core/hierarchy-repository-simple.test.ts (3 tests)
-test/core/metadata-repository.test.ts (6 tests)
-test/core/nlp-search.test.ts (5 tests)
-test/core/repo-advanced-simple.test.ts (1 tests)
-test/core/repo-advanced.test.ts (5 tests)
-test/core/repo.test.ts (4 tests)
-test/core/repository-factory.test.ts (3 tests)
-test/core/search-repository-simple.test.ts (2 tests)
-test/core/search-repository.test.ts (6 tests)
-```
+## Action Plan
 
-### Commands
+### 1. Timing and Asynchronous Issues
 
-*Command tests* are those in the `/test/commands/` directory and test the CLI commands.
+- Create a more robust test helper for asynchronous operations
+- Implement test utilities for reliable wait times
+- Address any race conditions in tests
 
-#### Files to Convert
+### 2. Terminal Session Tests
 
-```
-test/commands/add-command.test.ts (5 tests)
-test/commands/api-simple.test.ts (1 tests)
-test/commands/api.test.ts (3 tests)
-test/commands/metadata-command.test.ts (8 tests)
-test/commands/metadata-nested.test.ts (9 tests)
-test/commands/metadata-simple.test.ts (1 tests)
-test/commands/metadata.test.ts (1 tests)
-test/commands/next-simple.test.ts (1 tests)
-test/commands/next.test.ts (1 tests)
-```
+- Review and update error handling in terminal session tests
+- Use our new timeout utilities to ensure consistent behavior
+- Update mocks and stubs to work with the new loader
 
-### Other
+### 3. Legacy Test Migration
 
-*Other tests* are those in other directories or that don't fall into the previous categories.
+- Systematically convert remaining legacy tests to Vitest format
+- Create compatibility layer for tests that can't be immediately migrated
+- Update test assertions to match Vitest expectations
 
-#### Files to Convert
+### 4. Error Handling Improvements
 
-All other files have been converted.
+- Update error handling patterns across the codebase
+- Ensure consistent error catching and reporting
+- Fix any incorrect expectations in tests
 
-## Recommendations
+## Implementation Approach
 
-1. Run the migration script for each category:
+1. Create a comprehensive test utility module:
+   - Standardized timing constants
+   - Retry mechanisms for flaky tests
+   - Better error handling for async operations
 
-```bash
-# Migrate core tests
-npm run test:migrate:file test/core/base-repository.test.ts
-npm run test:migrate:file test/core/base-repository.vitest.test.ts
-npm run test:migrate:file test/core/graph.test.ts
-# ... and 9 more
+2. Use a staged migration approach:
+   - Fix one category of tests at a time
+   - Start with the simplest failures first
+   - Add thorough documentation of fixes for future reference
 
-# Migrate command tests
-npm run test:migrate:file test/commands/add-command.test.ts
-npm run test:migrate:file test/commands/api-simple.test.ts
-npm run test:migrate:file test/commands/api.test.ts
-# ... and 6 more
+3. Ensure consistency:
+   - Apply the same patterns to all tests
+   - Document standards for future test development
+   - Create migration guides for team members
 
-# Migrate other tests
-```
+## Expected Outcomes
 
-2. Or use the automated migration for all files:
+- All 598 tests should pass consistently
+- Test suite should run faster with optimized timing
+- Better error handling and reporting
+- More maintainable test codebase
 
-```bash
-npm run test:migrate:all
-```
-
-3. Verify the migrated tests by running:
-
-```bash
-npm test
-```
+By following this plan, we will systematically address all the remaining test failures and create a more robust testing infrastructure.
+EOF < /dev/null

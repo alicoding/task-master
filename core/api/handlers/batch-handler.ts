@@ -3,8 +3,8 @@
  * Executes multiple commands in a single batch
  */
 
-import { BaseCommandHandler, CommandParams, commandRegistry } from '../command.ts';
-import { CommandContext, CommandResponse } from '../context.ts';
+import { BaseCommandHandler, CommandParams, commandRegistry } from '../command';
+import { CommandContext, CommandResponse } from '../context';
 
 /**
  * Single operation in a batch

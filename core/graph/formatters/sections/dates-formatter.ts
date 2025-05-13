@@ -3,8 +3,8 @@
  * Formats timestamps in a visually appealing layout
  */
 
-import { TYPOGRAPHY } from '../typography/constants.ts';
-import { COLORS } from '../colors/constants.ts';
+import { TYPOGRAPHY } from '../typography/constants';
+import { COLORS } from '../colors/constants';
 
 // Dynamic imports
 let chalk: any;

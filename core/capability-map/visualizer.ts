@@ -13,4 +13,4 @@ export {
   CapabilityMapVisualizer, 
   VisualizationFormat, 
   VisualizationOptions 
-} from './visualizers/index.ts';
+} from './visualizers/index';

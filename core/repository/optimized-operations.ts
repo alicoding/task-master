@@ -9,14 +9,14 @@
 import Database from 'better-sqlite3';
 import { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
 import { eq, and, like, or, inArray } from 'drizzle-orm';
-import { tasks, dependencies, Task } from '../../db/schema.ts';
+import { tasks, dependencies, Task } from '../../db/schema';
 import {
   TaskOperationResult,
   TaskError,
   TaskErrorCode,
   TaskUpdateOptions,
   SearchFilters
-} from '../types.ts';
+} from '../types';
 
 /**
  * Cache entry interface

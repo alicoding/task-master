@@ -5,9 +5,9 @@
  * caching, and improved performance for common task operations.
  */
 
-import { BaseTaskRepository } from './base.ts';
-import { OptimizedDatabaseOperations, DatabaseCache } from './optimized-operations.ts';
-import { Task } from '../../db/schema.ts';
+import { BaseTaskRepository } from './base';
+import { OptimizedDatabaseOperations, DatabaseCache } from './optimized-operations';
+import { Task } from '../../db/schema';
 import {
   TaskInsertOptions,
   TaskUpdateOptions,
@@ -15,7 +15,7 @@ import {
   TaskOperationResult,
   TaskError,
   TaskErrorCode
-} from '../types.ts';
+} from '../types';
 
 /**
  * EnhancedTaskRepository class with optimized database operations

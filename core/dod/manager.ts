@@ -13,8 +13,8 @@ import {
   DoDError,
   DoDErrorCode,
   DoDOperationResult
-} from './types.ts';
-import { TaskRepository } from '../repo.ts';
+} from './types';
+import { TaskRepository } from '../repo';
 
 /**
  * Default DoD configuration for development tasks

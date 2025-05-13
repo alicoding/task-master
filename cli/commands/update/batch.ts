@@ -4,8 +4,8 @@
  */
 
 import { Command } from 'commander';
-import { TaskRepository } from '../../../core/repo.ts';
-import { TaskUpdateOptions } from '../../../core/types.ts';
+import { TaskRepository } from '../../../core/repo';
+import { TaskUpdateOptions } from '../../../core/types';
 import fs from 'fs/promises';
 
 export async function createBatchUpdateCommand() {
@@ -18,7 +18,7 @@ export async function createBatchUpdateCommand() {
 
   // Import helpFormatter here to avoid circular dependency
   // Using dynamic import instead of require for ESM compatibility
-  const helpFormatterModule = await import('../../helpers/help-formatter.ts');
+  const helpFormatterModule = await import('../../helpers/help-formatter');
   const helpFormatter = helpFormatterModule.helpFormatter;
 
   // Enhance help with examples and additional information
@@ -77,12 +77,12 @@ export async function createBatchUpdateCommand() {
             // Extract updates from operations array (similar to API batch)
             updates = parsed.operations
               .filter(op => op.type === 'update')
-              .map(op => op.data);
+              .map(op => op?.data);
           } else {
             throw new Error('Invalid batch update format. Expected an array of updates or a structured object with a tasks/updates array.');
           }
         } catch (e) {
-          console.error('Error parsing JSON file:', e);
+          console?.error('Error parsing JSON file:', e);
           repo.close();
           return;
         }
@@ -131,7 +131,7 @@ export async function createBatchUpdateCommand() {
             const updatedTask = await repo.updateTask(update);
             results.updated.push(updatedTask);
           } catch (error) {
-            console.error(`Error updating task ${update.id}:`, error);
+            console?.error(`Error updating task ${update.id}:`, error);
             results.failed.push({
               update,
               error: error.message
@@ -156,7 +156,7 @@ export async function createBatchUpdateCommand() {
             console.log('\nFailed updates:');
             results.failed.forEach((item, i) => {
               console.log(`  ${i + 1}. Task ID: ${item.update.id}`);
-              console.log(`     Error: ${item.error}`);
+              console.log(`     Error: ${item?.error}`);
             });
           }
           
@@ -167,7 +167,7 @@ export async function createBatchUpdateCommand() {
         
         repo.close();
       } catch (error) {
-        console.error('Error processing batch update:', error);
+        console?.error('Error processing batch update:', error);
         process.exit(1);
       }
     });

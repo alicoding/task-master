@@ -5,9 +5,9 @@
  * based on the environment and available dependencies.
  */
 
-import { NlpServiceInterface } from './types.ts';
-import { MockNlpService } from './services/mock-service.ts';
-import { TestSafeNlpService } from './testing/nlp-test-utils.ts';
+import { NlpServiceInterface } from './types';
+import { MockNlpService } from './services/mock-service';
+import { TestSafeNlpService } from './testing/nlp-test-utils';
 
 // Environment detection
 const isTestEnvironment = process.env.NODE_ENV === 'test' || 
@@ -45,7 +45,7 @@ export async function createNlpService(
     // Use optimized implementation if requested
     if (useOptimized) {
       try {
-        const optimizedModule = await import('./services/optimized-nlp-service.ts');
+        const optimizedModule = await import('./services/optimized-nlp-service');
         return new optimizedModule.OptimizedNlpService(modelPath, enableProfiling);
       } catch (optimizedError) {
         console.warn('Failed to load OptimizedNlpService, falling back to standard NlpService:', optimizedError);
@@ -53,7 +53,7 @@ export async function createNlpService(
     }
 
     // Standard implementation
-    const standardModule = await import('./services/nlp-service.ts');
+    const standardModule = await import('./services/nlp-service');
     return new standardModule.NlpService(modelPath);
   } catch (error) {
     console.warn('Failed to load NlpService, falling back to MockNlpService:', error);
@@ -80,7 +80,7 @@ export async function createOptimizedNlpService(
   enableProfiling: boolean = false
 ): Promise<NlpServiceInterface> {
   try {
-    const optimizedModule = await import('./services/optimized-nlp-service.ts');
+    const optimizedModule = await import('./services/optimized-nlp-service');
     return new optimizedModule.OptimizedNlpService(modelPath, enableProfiling);
   } catch (error) {
     console.warn('Failed to load OptimizedNlpService, falling back to MockNlpService:', error);

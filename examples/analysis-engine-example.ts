@@ -5,9 +5,9 @@
  * and associate them with tasks.
  */
 
-import { AnalysisEngine } from '../core/daemon/analysis-engine.ts';
-import { FileTrackingRepository } from '../core/repository/file-tracking.ts';
-import { createDb } from '../db/init.ts';
+import { AnalysisEngine } from '../core/daemon/analysis-engine';
+import { FileTrackingRepository } from '../core/repository/file-tracking';
+import { createDb } from '../db/init';
 import path from 'path';
 import fs from 'fs/promises';
 import chalk from 'chalk';

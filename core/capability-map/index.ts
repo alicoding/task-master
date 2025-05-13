@@ -1,20 +1,22 @@
 /**
  * Capability Map - A dynamic, self-learning system for visualizing TaskMaster capabilities
- * 
+ *
  * This module provides a completely dynamic way to discover, analyze, and visualize
  * capabilities based on task data without any hardcoded categories or relationships.
  * It uses AI/NLP to organically derive feature categories, relationships, and insights
  * from task content itself, adapting as the tasks evolve.
+ *
+ * Modified to remove dependencies on file tracking functionality.
  */
 
-import { Task } from '../../db/schema.ts';
-import { TaskRepository } from '../repo.ts';
-import { AiProvider } from '../ai/types.ts';
-import { AiProviderFactory } from '../ai/factory.ts';
-import { calculateSimilarity } from '../nlp/processor.ts';
+import { Task } from '../../db/schema';
+import { TaskRepository } from '../repo';
+import { AiProvider } from '../ai/types';
+import { AiProviderFactory } from '../ai/factory';
+import { calculateSimilarity } from '../nlp/processor';
 import { v4 as uuidv4 } from 'uuid';
-import { discoverCapabilitiesEnhanced } from './enhanced-discovery.ts';
-import { discoverEnhancedRelationships } from './enhanced-relationships.ts';
+import { discoverCapabilitiesEnhanced } from './enhanced-discovery';
+import { discoverEnhancedRelationships } from './enhanced-relationships';
 
 // Dynamic capability node discovered from task content
 export interface CapabilityNode {

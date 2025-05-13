@@ -2,10 +2,12 @@
  * Toggle blocked status handler
  */
 
+import { ChalkColor, asChalkColor } from '@/cli/utils/chalk-utils';
 import readline from 'readline';
-import { TaskRepository } from '../../../../../core/repo.ts';
-import { TaskReadiness } from '../../../../../core/types.ts';
-import { ProcessingOptions, TriageResults, TriageTask, colorizeReadiness } from '../../utils.ts';
+import { TaskRepository } from '../../../../../core/repo';
+import { TaskReadiness } from '../../../../../core/types';
+import { ProcessingOptions, TriageResults, TriageTask, colorizeReadiness } from '../../utils';
+
 
 /**
  * Handle toggling blocked status for a task
@@ -23,8 +25,8 @@ export async function handleToggleBlockedAction(
   const { dryRun, colorize } = options;
   
   if (dryRun) {
-    console.log(colorize('Would toggle blocked status (dry run).', 'yellow'));
-    results.updated.push({
+    console.log(colorize('Would toggle blocked status (dry run).', asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
+    results?.updated.push({
       id: task.id,
       title: task.title,
       readiness: task.readiness === 'blocked' ? 'ready' : 'blocked',
@@ -36,7 +38,7 @@ export async function handleToggleBlockedAction(
   // Determine new readiness based on current value
   const newReadiness: TaskReadiness = task.readiness === 'blocked' ? 'ready' : 'blocked';
   
-  console.log(colorize(`\nToggling task from ${colorizeReadiness(task.readiness as string, colorize)} to ${colorizeReadiness(newReadiness, colorize)}...`, 'magenta'));
+  console.log(colorize(`\nToggling task from ${colorizeReadiness(task.readiness as string, colorize)} to ${colorizeReadiness(newReadiness, colorize)}...`, asChalkColor((asChalkColor(('magenta' as ChalkColor))))));
   
   // For tasks being blocked, optionally add a reason
   let metadata = undefined;
@@ -48,7 +50,7 @@ export async function handleToggleBlockedAction(
     });
     
     const blockedReason = await new Promise<string>(resolve => {
-      rl.question(colorize('Enter reason for blocking (optional): ', 'magenta'), resolve);
+      rl.question(colorize('Enter reason for blocking (optional): ', asChalkColor((asChalkColor(('magenta' as ChalkColor))))), resolve);
     });
     
     rl.close();
@@ -74,11 +76,11 @@ export async function handleToggleBlockedAction(
     metadata
   });
   
-  results.updated.push(updatedTask);
+  results?.updated.push(updatedTask);
   
   if (newReadiness === 'blocked') {
-    console.log(colorize('✓ Task marked as blocked', 'red', 'bold'));
+    console.log(colorize('✓ Task marked as blocked', asChalkColor((asChalkColor(('red' as ChalkColor)))), asChalkColor('bold')));
   } else {
-    console.log(colorize('✓ Task unblocked', 'green', 'bold'));
+    console.log(colorize('✓ Task unblocked', asChalkColor((asChalkColor(('green' as ChalkColor)))), asChalkColor('bold')));
   }
 }

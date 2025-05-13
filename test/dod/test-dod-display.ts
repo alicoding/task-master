@@ -2,8 +2,8 @@
  * Test script for debugging DoD display
  */
 
-import { DoDManager } from '../../core/dod/manager.ts';
-import { formatDoD } from '../../core/graph/formatters/sections/dod-formatter.ts';
+import { DoDManager } from '../../core/dod/manager';
+import { formatDoD } from '../../core/graph/formatters/sections/dod-formatter';
 
 async function testDoDDisplay() {
   console.log('Testing DoD display functionality...');

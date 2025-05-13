@@ -1,6 +1,6 @@
 import { eq, and, like, or } from 'drizzle-orm';
-import { BaseTaskRepository } from './base.ts';
-import { tasks, Task } from '../../db/schema.ts';
+import { BaseTaskRepository } from './base';
+import { tasks, Task } from '../../db/schema';
 import {
   SearchFilters,
   TaskStatus,
@@ -10,10 +10,10 @@ import {
   TaskErrorCode,
   isTaskStatus,
   isTaskReadiness
-} from '../types.ts';
-import { createNlpService } from '../nlp/factory.ts';
-import { TaskSearchInfo, SimilarTask, NlpServiceInterface } from '../nlp/types.ts';
-import { createLogger } from '../utils/logger.ts';
+} from '../types';
+import { createNlpService } from '../nlp/factory';
+import { TaskSearchInfo, SimilarTask, NlpServiceInterface } from '../nlp/types';
+import { createLogger } from '../utils/logger';
 
 // Create logger for search repository
 const logger = createLogger('Repository:Search');
@@ -50,7 +50,7 @@ export class TaskSearchRepository extends BaseTaskRepository {
       } catch (error) {
         logger.error('Failed to initialize NLP service', error);
         // Use mock implementation if initialization fails
-        const { MockNlpService } = await import('../nlp/services/mock-service.ts');
+        const { MockNlpService } = await import('../nlp/services/mock-service');
         this.nlpService = new MockNlpService();
         this.nlpInitialized = true;
       }
@@ -78,7 +78,7 @@ export class TaskSearchRepository extends BaseTaskRepository {
       metadata: task.metadata || '{}',
       created_at: task.created_at || now,
       updated_at: task.updated_at || now,
-      parent_id: task.parent_id || null
+      parentId: task.parentId || null
     };
 
     await this.db.insert(tasks).values(fullTask);

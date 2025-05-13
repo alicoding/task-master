@@ -5,7 +5,7 @@
  * formatting progress-related information in capability maps.
  */
 
-import { CapabilityNode } from '../../index.ts';
+import { CapabilityNode } from '../../index';
 
 /**
  * Get progress percentage for a capability

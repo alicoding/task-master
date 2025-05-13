@@ -8,23 +8,23 @@
  * - JSON output for use with other visualization tools
  */
 
-import { CapabilityMap } from '../index.ts';
-import { VisualizationFormat, VisualizationOptions, EnhancedVisualizationOptions } from './options.ts';
+import { CapabilityMap } from '../index';
+import { VisualizationFormat, VisualizationOptions, EnhancedVisualizationOptions } from './options';
 import {
   TextRenderer,
   MermaidRenderer,
   DotRenderer,
   JsonRenderer
-} from './renderers/index.ts';
+} from './renderers/index';
 
 // Export enhanced visualizer components
-export { EnhancedCapabilityMapVisualizer } from './enhanced/index.ts';
+export { EnhancedCapabilityMapVisualizer } from './enhanced/index';
 
 // Re-export types
-export * from './options.ts';
+export * from './options';
 
 // Export utility functions for external use
-export * from './utils/index.ts';
+export * from './utils/index';
 
 /**
  * Creates visualizations of capability maps in various formats

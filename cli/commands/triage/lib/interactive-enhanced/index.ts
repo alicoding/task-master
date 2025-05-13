@@ -3,11 +3,12 @@
  * Provides an improved UI for working with tasks
  */
 
-import { TaskRepository } from '../../../../../core/repo.ts';
-import { NlpService } from '../../../../../core/nlp-service-mock.ts';
-import { TaskGraph } from '../../../../../core/graph.ts';
-import { ProcessingOptions, TriageResults } from '../utils.ts';
-import { sortPendingTasks } from './utils/sorting.ts';
+import { ChalkColor, asChalkColor } from '@/cli/utils/chalk-utils';
+import { TaskRepository } from '../../../../../core/repo';
+import { NlpService } from '../../../../../core/nlp-service-mock';
+import { TaskGraph } from '../../../../../core/graph';
+import { ProcessingOptions, TriageResults } from '../utils';
+import { sortPendingTasks } from './utils/sorting';
 
 // Import display components
 import {
@@ -17,7 +18,7 @@ import {
   displayDependencies,
   displayActionMenu,
   displayHelpScreen
-} from './display/index.ts';
+} from './display/index';
 
 // Import handlers
 import {
@@ -27,10 +28,11 @@ import {
   handleMergeTaskAction,
   handleCreateSubtaskAction,
   handleToggleBlockedAction
-} from './handlers/index.ts';
+} from './handlers/index';
 
 // Import prompts
-import { promptForAction } from './prompts/index.ts';
+import { promptForAction } from './prompts/index';
+
 
 /**
  * Run enhanced interactive triage mode
@@ -51,7 +53,7 @@ export async function runInteractiveMode(
   // Get all tasks
   const tasksResult = await repo.getAllTasks();
   // Check if result has data property and it's an array
-  const allTasks = tasksResult.success && Array.isArray(tasksResult.data) ? tasksResult.data : [];
+  const allTasks = tasksResult?.success && Array.isArray(tasksResult?.data) ? tasksResult?.data : [];
 
   // Get pending tasks (open tasks that need triage)
   // Focus on tasks that are not done or are in draft state
@@ -63,7 +65,7 @@ export async function runInteractiveMode(
     if (jsonOutput) {
       console.log(JSON.stringify({ message: 'No pending tasks to triage' }));
     } else {
-      console.log(colorize('No pending tasks to triage.', 'yellow'));
+      console.log(colorize('No pending tasks to triage.', asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
     }
     return;
   }
@@ -101,8 +103,8 @@ export async function runInteractiveMode(
       
       // Find similar tasks
       const similarTasksResult = await repo.findSimilarTasks(task.title);
-      const similarTasks = similarTasksResult.success && Array.isArray(similarTasksResult.data)
-        ? similarTasksResult.data
+      const similarTasks = similarTasksResult?.success && Array.isArray(similarTasksResult?.data)
+        ? similarTasksResult?.data
         : [];
 
       // Filter by threshold and exclude the current task
@@ -131,7 +133,7 @@ export async function runInteractiveMode(
       // Process the action
       switch (action) {
         case 'q': // Quit
-          console.log(colorize('Exiting triage mode.', 'yellow'));
+          console.log(colorize('Exiting triage mode.', asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
           running = false;
           break;
           
@@ -144,8 +146,8 @@ export async function runInteractiveMode(
           break;
           
         case 's': // Skip
-          console.log(colorize('Skipping this task.', 'gray'));
-          results.skipped.push({
+          console.log(colorize('Skipping this task.', asChalkColor((asChalkColor(('gray' as ChalkColor))))));
+          results?.skipped.push({
             id: task.id,
             title: task.title,
             reason: 'Manual skip in interactive mode'
@@ -172,7 +174,7 @@ export async function runInteractiveMode(
           if (filteredTasks.length > 0) {
             await handleMergeTaskAction(task, filteredTasks, repo, results, options);
           } else {
-            console.log(colorize('No similar tasks available for merging.', 'yellow'));
+            console.log(colorize('No similar tasks available for merging.', asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
           }
           taskIndex++;
           break;
@@ -192,13 +194,13 @@ export async function runInteractiveMode(
           break;
           
         default:
-          console.log(colorize('Invalid option. Press h for help.', 'red'));
+          console.log(colorize('Invalid option. Press h for help.', asChalkColor((asChalkColor(('red' as ChalkColor))))));
           break;
       }
     }
   }
   
   if (!jsonOutput && running) {
-    console.log(colorize('\n✅ All pending tasks have been triaged!', 'green', 'bold'));
+    console.log(colorize('\n✅ All pending tasks have been triaged!', asChalkColor((asChalkColor(('green' as ChalkColor)))), asChalkColor('bold')));
   }
 }

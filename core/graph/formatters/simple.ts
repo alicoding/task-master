@@ -2,7 +2,7 @@
  * Simple text formatter for task graph visualization
  */
 
-import { TaskWithChildren } from '../../types.ts';
+import { TaskWithChildren } from '../../types';
 
 /**
  * Original simple format with indentation

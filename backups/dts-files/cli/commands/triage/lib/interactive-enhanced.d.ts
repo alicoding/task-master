@@ -1,0 +1,15 @@
+/**
+ * Enhanced interactive mode for triage command
+ * Provides an improved UI for working with tasks
+ *
+ * This file is a wrapper around the modularized implementation
+ * to maintain backward compatibility
+ */
+import { TaskRepository } from '../../../../core/repo';
+import { NlpService } from '../../../../core/nlp-service-mock';
+import { ProcessingOptions, TriageResults } from './utils';
+/**
+ * Run enhanced interactive triage mode
+ * This is a compatibility wrapper around the modularized implementation
+ */
+export declare function runInteractiveMode(repo: TaskRepository, nlpService: NlpService, results: TriageResults, options: ProcessingOptions): Promise<void>;

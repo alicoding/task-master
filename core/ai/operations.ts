@@ -3,8 +3,8 @@ import {
   TaskOperationType,
   CompletionOptions,
   CompletionResult
-} from './types.ts';
-import { Task } from '../types.ts';
+} from './types';
+import { Task } from '../types';
 
 /**
  * AI-powered task operations

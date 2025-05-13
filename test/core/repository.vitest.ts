@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach } from 'vitest';
-import { RepositoryFactory } from '../../core/repository/factory.ts';
+import { RepositoryFactory } from '../../core/repository/factory';
 
 describe('Repository Factory', () => {
   afterEach(() => {
@@ -8,7 +8,7 @@ describe('Repository Factory', () => {
   });
   
   it('should initialize and provide a database connection', () => {
-    const connection = RepositoryFactory.initialize('./test.db', true);
+    const connection = RepositoryFactory.initialize();
     
     expect(connection).toBeDefined();
     expect(connection.db).toBeDefined();
@@ -17,7 +17,7 @@ describe('Repository Factory', () => {
   });
   
   it('should reset the connection', () => {
-    RepositoryFactory.initialize('./test.db', true);
+    RepositoryFactory.initialize();
     expect(RepositoryFactory.isInitialized()).toBe(true);
     
     const resetResult = RepositoryFactory.reset();

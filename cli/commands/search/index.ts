@@ -1,6 +1,6 @@
 import { Command } from 'commander';
-import { helpFormatter } from '../../helpers/help-formatter.ts';
-import { handleSearchCommand } from './search-handler.ts';
+import { helpFormatter } from '../../helpers/help-formatter';
+import { handleSearchCommand } from './search-handler';
 
 export function createSearchCommand() {
   const searchCommand = new Command('search')
