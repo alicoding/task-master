@@ -27,21 +27,21 @@ export async function handleNewTask(taskData: TriageTask, repo: TaskRepository, 
     });
     if (filteredTasks.length > 0) {
         if (!jsonOutput) {
-            console.log(colorize(`│    ⚠ Found ${filteredTasks.length} similar tasks`, asChalkColor((asChalkColor(('yellow'))))));
+            console.log(colorize(`│    ⚠ Found ${filteredTasks.length} similar tasks`, asChalkColor(1)));
             // Show top matches
             const topTasks = filteredTasks.slice(0, 3); // Show max 3
             topTasks.forEach((t, i) => {
                 const score = t.metadata?.similarityScore || 0;
                 const percentage = Math.round(score * 100);
-                let scoreColor: ChalkColor = (asChalkColor((asChalkColor(('green')))));
+                let scoreColor: ChalkColor = (asChalkColor(1));
                 if (percentage >= 80)
-                    scoreColor = (asChalkColor((asChalkColor(('red')))));
+                    scoreColor = (asChalkColor(1));
                 else if (percentage >= 60)
-                    scoreColor = (asChalkColor((asChalkColor(('yellow')))));
+                    scoreColor = (asChalkColor(1));
                 console.log(colorize(`│      ${i + 1}. ${t.id}: "${t.title}" (${percentage}% similar)`, scoreColor));
             });
             if (filteredTasks.length > 3) {
-                console.log(colorize(`│      + ${filteredTasks.length - 3} more similar tasks...`, asChalkColor((asChalkColor(('gray'))))));
+                console.log(colorize(`│      + ${filteredTasks.length - 3} more similar tasks...`, asChalkColor(1)));
             }
         }
         // Check for auto-merge
@@ -61,12 +61,12 @@ export async function handleNewTask(taskData: TriageTask, repo: TaskRepository, 
                 }))
             });
             if (!jsonOutput) {
-                console.log(colorize(`│    ⚠ Skipped due to similar existing tasks - use force: true to override`, asChalkColor((asChalkColor(('yellow'))))));
+                console.log(colorize(`│    ⚠ Skipped due to similar existing tasks - use force: true to override`, asChalkColor(1)));
             }
             return;
         }
         else if (!jsonOutput) {
-            console.log(colorize(`│    ⚠ Force flag enabled - creating despite similar tasks`, asChalkColor((asChalkColor(('yellow'))))));
+            console.log(colorize(`│    ⚠ Force flag enabled - creating despite similar tasks`, asChalkColor(1)));
         }
     }
     await createNewTask(taskData, repo, results, options);

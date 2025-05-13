@@ -15,7 +15,7 @@ import { ProcessingOptions, TriageResults, TriageTask } from '../../utils';
 export async function handleUpdateTagsAction(task: TriageTask, repo: TaskRepository, results: TriageResults, options: ProcessingOptions): Promise<void> {
     const { dryRun, colorize } = options;
     if (dryRun) {
-        console.log(colorize('Would update tags (dry run).', asChalkColor((asChalkColor(('yellow'))))));
+        console.log(colorize('Would update tags (dry run).', asChalkColor(1)));
         results?.updated.push({
             id: task.id,
             title: task.title,
@@ -24,39 +24,39 @@ export async function handleUpdateTagsAction(task: TriageTask, repo: TaskReposit
         return;
     }
     // Current tags
-    console.log(colorize('\n┌─ Update Task Tags', asChalkColor((asChalkColor(('cyan')))), 'bold'));
-    console.log(colorize('│', asChalkColor((asChalkColor(('cyan'))))));
-    console.log(colorize('├─ Current Tags: ', asChalkColor((asChalkColor(('cyan'))))) +
+    console.log(colorize('\n┌─ Update Task Tags', asChalkColor(1), 'bold'));
+    console.log(colorize('│', asChalkColor(1)));
+    console.log(colorize('├─ Current Tags: ', asChalkColor(1)) +
         (task.tags && task.tags.length > 0 ?
-            task.tags.map((tag) => colorize(tag, asChalkColor((asChalkColor(('cyan')))))).join(', ') :
-            colorize('none', asChalkColor((asChalkColor(('gray')))))));
+            task.tags.map((tag) => colorize(tag, asChalkColor(1))).join(', ') :
+            colorize('none', asChalkColor(1))));
     const rl = readline.createInterface({
         input: process.stdin,
         output: process.stdout
     });
-    console.log(colorize('│', asChalkColor((asChalkColor(('cyan'))))));
-    console.log(colorize('├─ Enter new tags (comma-separated) or:', asChalkColor((asChalkColor(('cyan'))))));
-    console.log(colorize('│  ', asChalkColor((asChalkColor(('cyan'))))) + colorize('- Enter "clear" to remove all tags', asChalkColor((asChalkColor(('white'))))));
-    console.log(colorize('│  ', asChalkColor((asChalkColor(('cyan'))))) + colorize('- Leave empty to keep current tags', asChalkColor((asChalkColor(('white'))))));
+    console.log(colorize('│', asChalkColor(1)));
+    console.log(colorize('├─ Enter new tags (comma-separated) or:', asChalkColor(1)));
+    console.log(colorize('│  ', asChalkColor(1)) + colorize('- Enter "clear" to remove all tags', asChalkColor(1)));
+    console.log(colorize('│  ', asChalkColor(1)) + colorize('- Leave empty to keep current tags', asChalkColor(1)));
     const tagsInput = await new Promise<string>(resolve => {
-        rl.question(colorize('├─ Tags: ', asChalkColor((asChalkColor(('cyan'))))), resolve);
+        rl.question(colorize('├─ Tags: ', asChalkColor(1)), resolve);
     });
     rl.close();
     // Process input
     let newTags: string[] | undefined = undefined;
     if (tagsInput.trim().toLowerCase() === 'clear') {
         newTags = [];
-        console.log(colorize('│  Clearing all tags', asChalkColor((asChalkColor(('yellow'))))));
+        console.log(colorize('│  Clearing all tags', asChalkColor(1)));
     }
     else if (tagsInput.trim()) {
         newTags = tagsInput.split(',')
             .map(t => t.trim())
             .filter(t => t.length > 0);
-        console.log(colorize('│  Setting new tags: ', asChalkColor((asChalkColor(('green'))))) +
-            newTags.map(tag => colorize(tag, asChalkColor((asChalkColor(('cyan')))))).join(', '));
+        console.log(colorize('│  Setting new tags: ', asChalkColor(1)) +
+            newTags.map(tag => colorize(tag, asChalkColor(1))).join(', '));
     }
     else {
-        console.log(colorize('│  Keeping current tags', asChalkColor((asChalkColor(('gray'))))));
+        console.log(colorize('│  Keeping current tags', asChalkColor(1)));
     }
     // Update if tags changed
     if (newTags !== undefined) {
@@ -65,9 +65,9 @@ export async function handleUpdateTagsAction(task: TriageTask, repo: TaskReposit
             tags: newTags
         });
         results?.updated.push(updatedTask);
-        console.log(colorize('└─ ✓ Tags updated successfully', asChalkColor((asChalkColor(('green')))), 'bold'));
+        console.log(colorize('└─ ✓ Tags updated successfully', asChalkColor(1), 'bold'));
     }
     else {
-        console.log(colorize('└─ No changes made', asChalkColor((asChalkColor(('yellow'))))));
+        console.log(colorize('└─ No changes made', asChalkColor(1)));
     }
 }

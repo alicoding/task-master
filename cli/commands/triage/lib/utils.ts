@@ -13,11 +13,11 @@ export type ChalkStyle = 'bold' | 'italic' | 'underline' | 'dim';
 export function colorizeStatus(status: string, colorize: (text: string, color?: ChalkColor, style?: ChalkStyle) => string): string {
     switch (status) {
         case 'todo':
-            return colorize(status, asChalkColor((asChalkColor(('blue')))));
+            return colorize(status, asChalkColor(1));
         case 'in-progress':
-            return colorize(status, asChalkColor((asChalkColor(('yellow')))));
+            return colorize(status, asChalkColor(1));
         case 'done':
-            return colorize(status, asChalkColor((asChalkColor(('green')))));
+            return colorize(status, asChalkColor(1));
         default:
             return status;
     }
@@ -31,11 +31,11 @@ export function colorizeStatus(status: string, colorize: (text: string, color?: 
 export function colorizeReadiness(readiness: string, colorize: (text: string, color?: ChalkColor, style?: ChalkStyle) => string): string {
     switch (readiness) {
         case 'draft':
-            return colorize(readiness, asChalkColor((asChalkColor(('gray')))));
+            return colorize(readiness, asChalkColor(1));
         case 'ready':
-            return colorize(readiness, asChalkColor((asChalkColor(('green')))));
+            return colorize(readiness, asChalkColor(1));
         case 'blocked':
-            return colorize(readiness, asChalkColor((asChalkColor(('red')))));
+            return colorize(readiness, asChalkColor(1));
         default:
             return readiness;
     }

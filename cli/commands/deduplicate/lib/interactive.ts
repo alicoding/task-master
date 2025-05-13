@@ -14,19 +14,19 @@ export async function runInteractiveMode(limitedGroups: DuplicateGroup[], repo: 
         output: process.stdout
     });
     const answer = await new Promise<string>(resolve => {
-        rl.question(colorize('\nEnter command: ', asChalkColor((asChalkColor(('cyan'))))), resolve);
+        rl.question(colorize('\nEnter command: ', asChalkColor(1)), resolve);
     });
     rl.close();
     const command = answer.trim().toLowerCase();
     if (command === 'q') {
-        console.log(colorize('Exiting deduplication tool.', asChalkColor((asChalkColor(('blue'))))));
+        console.log(colorize('Exiting deduplication tool.', asChalkColor(1)));
         return;
     }
     // Handle merge command
     if (command.startsWith('m ')) {
         const groupNum = parseInt(command.substring(2));
         if (isNaN(groupNum) || groupNum < 1 || groupNum > limitedGroups.length) {
-            console.log(colorize(`Invalid group number. Must be between 1 and ${limitedGroups.length}.`, asChalkColor((asChalkColor(('red'))))));
+            console.log(colorize(`Invalid group number. Must be between 1 and ${limitedGroups.length}.`, asChalkColor(1)));
             return;
         }
         const selectedGroup = limitedGroups[groupNum - 1];
@@ -36,7 +36,7 @@ export async function runInteractiveMode(limitedGroups: DuplicateGroup[], repo: 
     else if (command.startsWith('v ')) {
         const groupNum = parseInt(command.substring(2));
         if (isNaN(groupNum) || groupNum < 1 || groupNum > limitedGroups.length) {
-            console.log(colorize(`Invalid group number. Must be between 1 and ${limitedGroups.length}.`, asChalkColor((asChalkColor(('red'))))));
+            console.log(colorize(`Invalid group number. Must be between 1 and ${limitedGroups.length}.`, asChalkColor(1)));
             return;
         }
         const selectedGroup = limitedGroups[groupNum - 1];

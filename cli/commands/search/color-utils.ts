@@ -46,11 +46,11 @@ export function colorizeStatus(status: string, colorEnabled: boolean): string {
     const { colorize } = getColorFunctions(colorEnabled);
     switch (status) {
         case 'todo':
-            return colorize(status, asChalkColor((asChalkColor((asChalkColor(('blue')))))));
+            return colorize(status, asChalkColor('blue'));
         case 'in-progress':
-            return colorize(status, asChalkColor((asChalkColor((asChalkColor(('yellow')))))));
+            return colorize(status, asChalkColor('yellow'));
         case 'done':
-            return colorize(status, asChalkColor((asChalkColor((asChalkColor(('green')))))));
+            return colorize(status, asChalkColor('green'));
         default:
             return status;
     }
@@ -65,11 +65,11 @@ export function colorizeReadiness(readiness: string, colorEnabled: boolean): str
     const { colorize } = getColorFunctions(colorEnabled);
     switch (readiness) {
         case 'draft':
-            return colorize(readiness, asChalkColor((asChalkColor((asChalkColor(('gray')))))));
+            return colorize(readiness, asChalkColor('gray'));
         case 'ready':
-            return colorize(readiness, asChalkColor((asChalkColor((asChalkColor(('green')))))));
+            return colorize(readiness, asChalkColor('green'));
         case 'blocked':
-            return colorize(readiness, asChalkColor((asChalkColor((asChalkColor(('red')))))));
+            return colorize(readiness, asChalkColor('red'));
         default:
             return readiness;
     }

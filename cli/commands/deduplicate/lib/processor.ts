@@ -34,10 +34,10 @@ export async function processAutoMerge(limitedGroups: Awaited<ReturnType<typeof 
     // Get high similarity groups (80%+)
     const highSimilarityGroups = limitedGroups.filter(group => group.maxSimilarity >= 0.8);
     if (highSimilarityGroups.length === 0) {
-        console.log(colorize('No groups with 80%+ similarity found for auto-merge.', asChalkColor((asChalkColor(('yellow'))))));
+        console.log(colorize('No groups with 80%+ similarity found for auto-merge.', asChalkColor(1)));
         return;
     }
-    console.log(colorize(`\nAuto-merge suggestions for ${highSimilarityGroups.length} groups:\n`, asChalkColor((asChalkColor(('blue')))), 'bold'));
+    console.log(colorize(`\nAuto-merge suggestions for ${highSimilarityGroups.length} groups:\n`, asChalkColor(1), 'bold'));
     // Import here to avoid circular dependencies
     const { suggestMerge } = await import('./merger');
     for (let i = 0; i < highSimilarityGroups.length; i++) {

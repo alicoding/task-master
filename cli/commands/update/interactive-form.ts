@@ -26,16 +26,26 @@ export class InteractiveUpdateForm {
     /**
      * Color helper function
      */
-    colorize(text: string, color?: string, style?: string): string {
+    colorize(text: string, color?: ChalkColor, style?: ChalkColor): string {
         if (!this.useColors)
             return text;
         let result = text;
-        if (color && chalk[color]) {
-            result = chalk[color](result);
+        
+        // Use the color if provided
+        if (color) {
+            // Check if it's a color
+            if (color in chalk) {
+                const colorKey = color as keyof typeof chalk;
+                result = chalk[colorKey](result);
+            }
         }
-        if (style && chalk[style]) {
-            result = chalk[style](result);
+        
+        // Apply style if provided
+        if (style && style in chalk) {
+            const styleKey = style as keyof typeof chalk;
+            result = chalk[styleKey](result);
         }
+        
         return result;
     }
     /**
@@ -43,11 +53,11 @@ export class InteractiveUpdateForm {
      */
     displayBanner(): void {
         console.clear();
-        console.log(this.colorize('─'.repeat(60), asChalkColor((asChalkColor(('blue'))))));
-        console.log(this.colorize(`📋 TASK MASTER - Update Task ${this.task.id}`, asChalkColor((asChalkColor(('blue')))), 'bold'));
-        console.log(this.colorize('─'.repeat(60), asChalkColor((asChalkColor(('blue'))))));
+        console.log(this.colorize('─'.repeat(60), asChalkColor('blue')));
+        console.log(this.colorize(`📋 TASK MASTER - Update Task ${this.task.id}`, asChalkColor('blue'), 'bold'));
+        console.log(this.colorize('─'.repeat(60), asChalkColor('blue')));
         console.log('');
-        console.log(this.colorize('Update the fields below (leave empty to keep current value)', asChalkColor((asChalkColor(('yellow'))))));
+        console.log(this.colorize('Update the fields below (leave empty to keep current value)', asChalkColor('blue')));
         console.log('');
     }
     /**
@@ -68,7 +78,7 @@ export class InteractiveUpdateForm {
     private async askMultipleChoice<T extends string>(question: string, choices: T[], defaultChoice: T): Promise<T> {
         const choiceStr = choices.map((choice, i) => {
             const isDefault = choice === defaultChoice;
-            const choiceText = isDefault ? this.colorize(`${choice} (current)`, asChalkColor((asChalkColor(('green'))))) : choice;
+            const choiceText = isDefault ? this.colorize(`${choice} (current)`, asChalkColor('blue')) : choice;
             return `${i + 1}. ${choiceText}`;
         }).join('  ');
         return new Promise<T>((resolve) => {
@@ -85,7 +95,7 @@ export class InteractiveUpdateForm {
                         resolve(answer as T);
                     }
                     else {
-                        console.log(this.colorize('  Invalid choice. Using current value.', asChalkColor((asChalkColor(('red'))))));
+                        console.log(this.colorize('  Invalid choice. Using current value.', asChalkColor('blue')));
                         resolve(defaultChoice);
                     }
                 }
@@ -116,19 +126,19 @@ export class InteractiveUpdateForm {
         try {
             this.displayBanner();
             // Display current task info before editing
-            console.log(this.colorize('Current Task Information:', asChalkColor((asChalkColor(('cyan')))), 'bold'));
-            console.log(`${this.colorize('Title:', asChalkColor((asChalkColor(('gray')))))} ${this.task.title}`);
+            console.log(this.colorize('Current Task Information:', asChalkColor('blue'), 'bold'));
+            console.log(`${this.colorize('Title:', asChalkColor('blue'))} ${this.task.title}`);
             if (this.task.description !== undefined && this.task.description !== null) {
-                console.log(`${this.colorize('Description:', asChalkColor((asChalkColor(('gray')))))} ${this.task.description}`);
+                console.log(`${this.colorize('Description:', asChalkColor('blue'))} ${this.task.description}`);
             }
             if (this.task.body !== undefined && this.task.body !== null) {
-                console.log(`${this.colorize('Body:', asChalkColor((asChalkColor(('gray')))))} ${this.task.body.length > 60 ?
+                console.log(`${this.colorize('Body:', asChalkColor('blue'))} ${this.task.body.length > 60 ?
                     this.task.body.substring(0, 60) + '...' : this.task.body}`);
             }
-            console.log(`${this.colorize('Status:', asChalkColor((asChalkColor(('gray')))))} ${this.task.status}`);
-            console.log(`${this.colorize('Readiness:', asChalkColor((asChalkColor(('gray')))))} ${this.task.readiness}`);
-            console.log(`${this.colorize('Tags:', asChalkColor((asChalkColor(('gray')))))} ${this.task.tags?.join(', ') || 'none'}`);
-            console.log(this.colorize('\nUpdate Fields (press Enter to keep current value):', asChalkColor((asChalkColor(('yellow')))), 'bold'));
+            console.log(`${this.colorize('Status:', asChalkColor('blue'))} ${this.task.status}`);
+            console.log(`${this.colorize('Readiness:', asChalkColor('blue'))} ${this.task.readiness}`);
+            console.log(`${this.colorize('Tags:', asChalkColor('blue'))} ${this.task.tags?.join(', ') || 'none'}`);
+            console.log(this.colorize('\nUpdate Fields (press Enter to keep current value):', asChalkColor('blue'), 'bold'));
             console.log('');
             // Get new title (or keep current)
             const title = await this.askQuestion('Title', this.task.title);
@@ -169,30 +179,30 @@ export class InteractiveUpdateForm {
                     this.updateOptions.metadata = JSON.parse(metadataStr);
                 }
                 catch (e) {
-                    console.log(this.colorize('  Invalid JSON. Metadata will not be updated.', asChalkColor((asChalkColor(('red'))))));
+                    console.log(this.colorize('  Invalid JSON. Metadata will not be updated.', asChalkColor('blue')));
                 }
             }
             // Check if anything was changed
             const hasChanges = Object.keys(this.updateOptions).length > 1; // More than just ID
             if (!hasChanges) {
-                console.log(this.colorize('\nNo changes were made to the task.', asChalkColor((asChalkColor(('yellow'))))));
+                console.log(this.colorize('\nNo changes were made to the task.', asChalkColor('blue')));
                 return null;
             }
             // Confirm submission
             console.log('');
-            console.log(this.colorize('─'.repeat(60), asChalkColor((asChalkColor(('blue'))))));
-            console.log(this.colorize('Task Update Summary:', asChalkColor((asChalkColor(('blue')))), 'bold'));
-            console.log(this.colorize('─'.repeat(60), asChalkColor((asChalkColor(('blue'))))));
+            console.log(this.colorize('─'.repeat(60), asChalkColor('blue')));
+            console.log(this.colorize('Task Update Summary:', asChalkColor('blue'), 'bold'));
+            console.log(this.colorize('─'.repeat(60), asChalkColor('blue')));
             // Show what will be updated
             Object.entries(this.updateOptions).forEach(([key, value]) => {
                 if (key !== 'id') {
-                    console.log(`${this.colorize(key + ':', asChalkColor((asChalkColor(('yellow')))))} ${typeof value === 'object' ? JSON.stringify(value) : value}`);
+                    console.log(`${this.colorize(key + ':', asChalkColor('blue'))} ${typeof value === 'object' ? JSON.stringify(value) : value}`);
                 }
             });
             console.log('');
             const confirm = await this.askQuestion('Save these changes? (y/n)');
             if (confirm.toLowerCase() !== 'y') {
-                console.log(this.colorize('Task update cancelled.', asChalkColor((asChalkColor(('yellow'))))));
+                console.log(this.colorize('Task update cancelled.', asChalkColor('blue')));
                 return null;
             }
             return this.updateOptions;

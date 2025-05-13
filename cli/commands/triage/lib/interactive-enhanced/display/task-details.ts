@@ -22,61 +22,61 @@ export async function displayEnhancedTaskDetails(task: TriageTask & {
     const childTasks = allTasks.filter(t => t.parentId === task.id);
     const parentTask = task.parentId ? allTasks.find(t => t.id === task.parentId) : null;
     // Header with progress
-    console.log(colorize(`\n┌─ Task ${index + 1}/${total} `, asChalkColor((asChalkColor(('blue')))), 'bold') +
+    console.log(colorize(`\n┌─ Task ${index + 1}/${total} `, asChalkColor(1), 'bold') +
         colorize(`(${task.status}`, getStatusColor(task.status as string)) +
-        colorize(' / ', asChalkColor((asChalkColor(('gray'))))) +
+        colorize(' / ', asChalkColor(1)) +
         colorize(`${task.readiness})`, getReadinessColor(task.readiness as string)));
-    console.log(colorize('│', asChalkColor((asChalkColor(('blue'))))));
-    console.log(colorize('├─ ID: ', asChalkColor((asChalkColor(('blue'))))) + colorize(task.id || '', asChalkColor((asChalkColor(('blue')))), 'bold'));
+    console.log(colorize('│', asChalkColor(1)));
+    console.log(colorize('├─ ID: ', asChalkColor(1)) + colorize(task.id || '', asChalkColor(1), 'bold'));
     // Task title with status indicators
-    console.log(colorize('├─ Title: ', asChalkColor((asChalkColor(('blue'))))) + task.title);
+    console.log(colorize('├─ Title: ', asChalkColor(1)) + task.title);
     // Tags with better formatting
     if (task.tags && task.tags.length > 0) {
-        console.log(colorize('├─ Tags: ', asChalkColor((asChalkColor(('blue'))))) +
-            task.tags.map((tag) => colorize(tag, asChalkColor((asChalkColor(('cyan')))))).join(', '));
+        console.log(colorize('├─ Tags: ', asChalkColor(1)) +
+            task.tags.map((tag) => colorize(tag, asChalkColor(1))).join(', '));
     }
     else {
-        console.log(colorize('├─ Tags: ', asChalkColor((asChalkColor(('blue'))))) + colorize('none', asChalkColor((asChalkColor(('gray'))))));
+        console.log(colorize('├─ Tags: ', asChalkColor(1)) + colorize('none', asChalkColor(1)));
     }
     // Show status with color
-    console.log(colorize('├─ Status: ', asChalkColor((asChalkColor(('blue'))))) + colorizeStatus(task.status as string, colorize));
+    console.log(colorize('├─ Status: ', asChalkColor(1)) + colorizeStatus(task.status as string, colorize));
     // Show readiness with color
-    console.log(colorize('├─ Readiness: ', asChalkColor((asChalkColor(('blue'))))) + colorizeReadiness(task.readiness as string, colorize));
+    console.log(colorize('├─ Readiness: ', asChalkColor(1)) + colorizeReadiness(task.readiness as string, colorize));
     // Show creation/update dates
-    console.log(colorize('├─ Created: ', asChalkColor((asChalkColor(('blue'))))) + new Date(task.createdAt).toLocaleString());
-    console.log(colorize('├─ Updated: ', asChalkColor((asChalkColor(('blue'))))) + new Date(task.updatedAt).toLocaleString());
+    console.log(colorize('├─ Created: ', asChalkColor(1)) + new Date(task.createdAt).toLocaleString());
+    console.log(colorize('├─ Updated: ', asChalkColor(1)) + new Date(task.updatedAt).toLocaleString());
     // Show parentage information if any
     if (parentTask) {
-        console.log(colorize('│', asChalkColor((asChalkColor(('blue'))))));
-        console.log(colorize('├─ Parent Task:', asChalkColor((asChalkColor(('magenta'))))));
-        console.log(colorize('│  ', asChalkColor((asChalkColor(('blue'))))) + colorize(parentTask.id + ': ', asChalkColor((asChalkColor(('magenta'))))) + parentTask.title);
+        console.log(colorize('│', asChalkColor(1)));
+        console.log(colorize('├─ Parent Task:', asChalkColor(1)));
+        console.log(colorize('│  ', asChalkColor(1)) + colorize(parentTask.id + ': ', asChalkColor(1)) + parentTask.title);
     }
     // Show child tasks if any
     if (childTasks.length > 0) {
-        console.log(colorize('│', asChalkColor((asChalkColor(('blue'))))));
-        console.log(colorize(`├─ Child Tasks (${childTasks.length}):`, asChalkColor((asChalkColor(('green'))))));
+        console.log(colorize('│', asChalkColor(1)));
+        console.log(colorize(`├─ Child Tasks (${childTasks.length}):`, asChalkColor(1)));
         childTasks.forEach((child, idx) => {
             const statusColor = getStatusColor(child.status as string);
-            console.log(colorize('│  ', asChalkColor((asChalkColor(('blue'))))) +
-                colorize(`[${idx + 1}] `, asChalkColor((asChalkColor(('green'))))) +
-                colorize((child.id || '') + ': ', asChalkColor((asChalkColor(('green'))))) +
+            console.log(colorize('│  ', asChalkColor(1)) +
+                colorize(`[${idx + 1}] `, asChalkColor(1)) +
+                colorize((child.id || '') + ': ', asChalkColor(1)) +
                 child.title + ' ' +
                 colorize(`(${child.status})`, statusColor));
         });
     }
     // Show metadata if any
     if (task.metadata && Object.keys(task.metadata).length > 0) {
-        console.log(colorize('│', asChalkColor((asChalkColor(('blue'))))));
-        console.log(colorize('├─ Metadata:', asChalkColor((asChalkColor(('yellow'))))));
+        console.log(colorize('│', asChalkColor(1)));
+        console.log(colorize('├─ Metadata:', asChalkColor(1)));
         for (const [key, value] of Object.entries(task.metadata)) {
             // Skip similarity score
             if (key === 'similarityScore')
                 continue;
-            console.log(colorize('│  ', asChalkColor((asChalkColor(('blue'))))) +
-                colorize(key + ': ', asChalkColor((asChalkColor(('yellow'))))) +
+            console.log(colorize('│  ', asChalkColor(1)) +
+                colorize(key + ': ', asChalkColor(1)) +
                 JSON.stringify(value));
         }
     }
     // Footer
-    console.log(colorize('└' + '─'.repeat(60), asChalkColor((asChalkColor(('blue'))))));
+    console.log(colorize('└' + '─'.repeat(60), asChalkColor(1)));
 }

@@ -199,7 +199,7 @@ function handleMissingModeError(jsonOutput: boolean, colorize: (text: string, co
         }));
     }
     else {
-        console?.error(colorize('Error: Either --plan or --interactive option must be specified', asChalkColor((asChalkColor(('red'))))));
+        console?.error(colorize('Error: Either --plan or --interactive option must be specified', asChalkColor(1)));
         console.log('Run "tm triage --help" for usage information');
     }
     repo.close();
@@ -224,15 +224,15 @@ function outputResults(results: TriageResults, dryRun: boolean, similarityThresh
     }
     else {
         // Enhanced results presentation
-        console.log(colorize('\n┌' + '─'.repeat(60) + '┐', asChalkColor((asChalkColor(('blue'))))));
-        console.log(colorize('│ TRIAGE RESULTS SUMMARY', asChalkColor((asChalkColor(('blue')))), 'bold') + colorize(' '.repeat(39) + '│', asChalkColor((asChalkColor(('blue'))))));
-        console.log(colorize('└' + '─'.repeat(60) + '┘', asChalkColor((asChalkColor(('blue'))))));
+        console.log(colorize('\n┌' + '─'.repeat(60) + '┐', asChalkColor(1)));
+        console.log(colorize('│ TRIAGE RESULTS SUMMARY', asChalkColor(1), 'bold') + colorize(' '.repeat(39) + '│', asChalkColor(1)));
+        console.log(colorize('└' + '─'.repeat(60) + '┘', asChalkColor(1)));
         console.log('');
-        console.log(`  ${colorize('✓', asChalkColor((asChalkColor(('green')))))} ${colorize('Tasks added:', asChalkColor((asChalkColor(('white')))), 'bold')}    ${colorize(results?.added.length.toString(), asChalkColor((asChalkColor(('green')))))}`);
-        console.log(`  ${colorize('✓', asChalkColor((asChalkColor(('yellow')))))} ${colorize('Tasks updated:', asChalkColor((asChalkColor(('white')))), 'bold')}  ${colorize(results?.updated.length.toString(), asChalkColor((asChalkColor(('yellow')))))}`);
-        console.log(`  ${colorize('✓', asChalkColor((asChalkColor(('magenta')))))} ${colorize('Tasks merged:', asChalkColor((asChalkColor(('white')))), 'bold')}   ${colorize(results?.merged.length.toString(), asChalkColor((asChalkColor(('magenta')))))}`);
-        console.log(`  ${colorize('⊘', asChalkColor((asChalkColor(('gray')))))} ${colorize('Tasks skipped:', asChalkColor((asChalkColor(('white')))), 'bold')}  ${colorize(results?.skipped.length.toString(), asChalkColor((asChalkColor(('gray')))))}`);
-        console.log(`  ${results?.errors?.length > 0 ? colorize('✗', asChalkColor((asChalkColor(('red'))))) : colorize('✓', asChalkColor((asChalkColor(('green')))))} ${colorize('Errors:', asChalkColor((asChalkColor(('white')))), 'bold')}        ${results?.errors?.length > 0 ? colorize(results?.errors?.length?.toString(), asChalkColor((asChalkColor(('red'))))) : colorize('0', asChalkColor((asChalkColor(('green')))))}`);
+        console.log(`  ${colorize('✓', asChalkColor(1))} ${colorize('Tasks added:', asChalkColor(1), 'bold')}    ${colorize(results?.added.length.toString(), asChalkColor(1))}`);
+        console.log(`  ${colorize('✓', asChalkColor(1))} ${colorize('Tasks updated:', asChalkColor(1), 'bold')}  ${colorize(results?.updated.length.toString(), asChalkColor(1))}`);
+        console.log(`  ${colorize('✓', asChalkColor(1))} ${colorize('Tasks merged:', asChalkColor(1), 'bold')}   ${colorize(results?.merged.length.toString(), asChalkColor(1))}`);
+        console.log(`  ${colorize('⊘', asChalkColor(1))} ${colorize('Tasks skipped:', asChalkColor(1), 'bold')}  ${colorize(results?.skipped.length.toString(), asChalkColor(1))}`);
+        console.log(`  ${results?.errors?.length > 0 ? colorize('✗', asChalkColor(1)) : colorize('✓', asChalkColor(1))} ${colorize('Errors:', asChalkColor(1), 'bold')}        ${results?.errors?.length > 0 ? colorize(results?.errors?.length?.toString(), asChalkColor(1)) : colorize('0', asChalkColor(1))}`);
         // Generate progress bars for visual representation
         const total = results?.added.length + results?.updated.length + results?.merged.length + results?.skipped.length;
         if (total > 0) {
@@ -242,21 +242,21 @@ function outputResults(results: TriageResults, dryRun: boolean, similarityThresh
             const skippedPct = Math.floor((results?.skipped.length / total) * 40);
             console.log('\n  Task Distribution:');
             // Draw percentage bars
-            console.log(`  ${colorize('█'.repeat(addedPct), asChalkColor((asChalkColor(('green')))))}${colorize('█'.repeat(updatedPct), asChalkColor((asChalkColor(('yellow')))))}${colorize('█'.repeat(mergedPct), asChalkColor((asChalkColor(('magenta')))))}${colorize('█'.repeat(skippedPct), asChalkColor((asChalkColor(('gray')))))}${' '.repeat(Math.max(0, 40 - addedPct - updatedPct - mergedPct - skippedPct))}`);
+            console.log(`  ${colorize('█'.repeat(addedPct), asChalkColor(1))}${colorize('█'.repeat(updatedPct), asChalkColor(1))}${colorize('█'.repeat(mergedPct), asChalkColor(1))}${colorize('█'.repeat(skippedPct), asChalkColor(1))}${' '.repeat(Math.max(0, 40 - addedPct - updatedPct - mergedPct - skippedPct))}`);
             // Legend
-            console.log(`  ${colorize('■', asChalkColor((asChalkColor(('green')))))} Added  ${colorize('■', asChalkColor((asChalkColor(('yellow')))))} Updated  ${colorize('■', asChalkColor((asChalkColor(('magenta')))))} Merged  ${colorize('■', asChalkColor((asChalkColor(('gray')))))} Skipped`);
+            console.log(`  ${colorize('■', asChalkColor(1))} Added  ${colorize('■', asChalkColor(1))} Updated  ${colorize('■', asChalkColor(1))} Merged  ${colorize('■', asChalkColor(1))} Skipped`);
         }
         if (results?.errors?.length > 0) {
-            console.log(colorize('\nErrors:', asChalkColor((asChalkColor(('red')))), 'bold'));
+            console.log(colorize('\nErrors:', asChalkColor(1), 'bold'));
             results?.errors?.forEach((err: string, i: number) => {
                 console.log(`  ${i + 1}. ${err}`);
             });
         }
         if (dryRun) {
-            console.log(colorize('\n✅ Dry run completed. No changes were made.', asChalkColor((asChalkColor(('green')))), 'bold'));
+            console.log(colorize('\n✅ Dry run completed. No changes were made.', asChalkColor(1), 'bold'));
         }
         else {
-            console.log(colorize('\n✅ Triage completed successfully.', asChalkColor((asChalkColor(('green')))), 'bold'));
+            console.log(colorize('\n✅ Triage completed successfully.', asChalkColor(1), 'bold'));
         }
     }
 }

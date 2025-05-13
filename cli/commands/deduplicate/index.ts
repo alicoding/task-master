@@ -101,7 +101,7 @@ async function handleDeduplicateCommand(options: DeduplicateCommandOptions) {
         // Create colorize helper function
         const colorize = createColorize(useColors, jsonOutput);
         if (!jsonOutput) {
-            console.log(colorize('\n🔍 Scanning for duplicate tasks...', asChalkColor((asChalkColor(('blue')))), 'bold'));
+            console.log(colorize('\n🔍 Scanning for duplicate tasks...', asChalkColor(1), 'bold'));
         }
         // Get filtered tasks
         const allTasks = await processTasks(repo, nlpService, {
@@ -109,7 +109,7 @@ async function handleDeduplicateCommand(options: DeduplicateCommandOptions) {
             tag: options.tag
         });
         if (allTasks.length === 0) {
-            console.log(colorize(getNoTasksMessage(jsonOutput), asChalkColor((asChalkColor(('yellow'))))));
+            console.log(colorize(getNoTasksMessage(jsonOutput), asChalkColor(1)));
             repo.close();
             return;
         }
@@ -122,7 +122,7 @@ async function handleDeduplicateCommand(options: DeduplicateCommandOptions) {
         // Limit the number of groups
         const limitedGroups = duplicateGroups.slice(0, limit);
         if (limitedGroups.length === 0) {
-            console.log(colorize(getEmptyResultsMessage(minSimilarity, jsonOutput), asChalkColor((asChalkColor(('green'))))));
+            console.log(colorize(getEmptyResultsMessage(minSimilarity, jsonOutput), asChalkColor(1)));
             repo.close();
             return;
         }
@@ -136,7 +136,7 @@ async function handleDeduplicateCommand(options: DeduplicateCommandOptions) {
         displayDuplicateGroups(limitedGroups, duplicateGroups, colorize);
         // Exit if dry run
         if (dryRun) {
-            console.log(colorize('\n✅ Dry run complete. No changes made.', asChalkColor((asChalkColor(('blue'))))));
+            console.log(colorize('\n✅ Dry run complete. No changes made.', asChalkColor(1)));
             repo.close();
             return;
         }
@@ -145,7 +145,7 @@ async function handleDeduplicateCommand(options: DeduplicateCommandOptions) {
             // Find high similarity groups (80%+)
             const highSimilarityGroups = limitedGroups.filter(group => group.maxSimilarity >= 0.8);
             if (highSimilarityGroups.length === 0) {
-                console.log(colorize('\nNo groups with 80%+ similarity found for auto-merge.', asChalkColor((asChalkColor(('yellow'))))));
+                console.log(colorize('\nNo groups with 80%+ similarity found for auto-merge.', asChalkColor(1)));
                 // If in interactive mode, run that instead
                 if (interactive) {
                     await runInteractiveMode(limitedGroups, repo, colorize);
@@ -165,8 +165,8 @@ async function handleDeduplicateCommand(options: DeduplicateCommandOptions) {
             return;
         }
         // Display basic prompt for non-interactive mode
-        console.log(colorize('\nTip: Run with --interactive for an enhanced deduplication experience!', asChalkColor((asChalkColor(('blue'))))));
-        console.log(colorize('     Use --auto-merge to automatically handle high-similarity duplicates.', asChalkColor((asChalkColor(('blue'))))));
+        console.log(colorize('\nTip: Run with --interactive for an enhanced deduplication experience!', asChalkColor(1)));
+        console.log(colorize('     Use --auto-merge to automatically handle high-similarity duplicates.', asChalkColor(1)));
         repo.close();
     }
     catch (error) {

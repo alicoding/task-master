@@ -24,10 +24,10 @@ export async function processPlanTask(taskData: TriageTask, repo: TaskRepository
         if (!jsonOutput) {
             // Show task being processed
             if (isUpdate) {
-                console.log(colorize(`│  → Updating task ${taskData.id}: "${taskData.title || '[No title update]'}"`, asChalkColor((asChalkColor(('yellow'))))));
+                console.log(colorize(`│  → Updating task ${taskData.id}: "${taskData.title || '[No title update]'}"`, asChalkColor(1)));
             }
             else {
-                console.log(colorize(`│  → Creating task: "${taskData.title}"`, asChalkColor((asChalkColor(('green'))))));
+                console.log(colorize(`│  → Creating task: "${taskData.title}"`, asChalkColor(1)));
             }
         }
         if (isUpdate) {
@@ -39,7 +39,7 @@ export async function processPlanTask(taskData: TriageTask, repo: TaskRepository
                 const errorMsg = 'Task is missing required title field';
                 results?.errors?.push(errorMsg);
                 if (!jsonOutput) {
-                    console.log(colorize(`│    ✘ ERROR: ${errorMsg}`, asChalkColor((asChalkColor(('red'))))));
+                    console.log(colorize(`│    ✘ ERROR: ${errorMsg}`, asChalkColor(1)));
                 }
                 return;
             }
@@ -50,7 +50,7 @@ export async function processPlanTask(taskData: TriageTask, repo: TaskRepository
         const errorMessage = error instanceof Error ? error.message : String(error);
         results?.errors?.push(`Error processing task: ${errorMessage}`);
         if (!jsonOutput) {
-            console.log(colorize(`│    ✘ ERROR: ${errorMessage}`, asChalkColor((asChalkColor(('red'))))));
+            console.log(colorize(`│    ✘ ERROR: ${errorMessage}`, asChalkColor(1)));
         }
     }
 }

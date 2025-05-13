@@ -27,10 +27,10 @@ export async function createNewTask(taskData: TriageTask, repo: TaskRepository, 
         });
         results?.added.push(newTask);
         if (!jsonOutput) {
-            console.log(colorize(`│    ✓ Created new task ${newTask.id}`, asChalkColor((asChalkColor(('green'))))));
+            console.log(colorize(`│    ✓ Created new task ${newTask.id}`, asChalkColor(1)));
             // Show hierarchy info if applicable
             if (newTask.parentId) {
-                console.log(colorize(`│      Child of task: ${newTask.parentId}`, asChalkColor((asChalkColor(('blue'))))));
+                console.log(colorize(`│      Child of task: ${newTask.parentId}`, asChalkColor(1)));
             }
             // Show key properties
             const properties = [];
@@ -41,7 +41,7 @@ export async function createNewTask(taskData: TriageTask, repo: TaskRepository, 
             if (taskData.tags && taskData.tags.length > 0)
                 properties.push(`tags: [${taskData.tags.join(', ')}]`);
             if (properties.length > 0) {
-                console.log(colorize(`│      Properties: ${properties.join(', ')}`, asChalkColor((asChalkColor(('gray'))))));
+                console.log(colorize(`│      Properties: ${properties.join(', ')}`, asChalkColor(1)));
             }
         }
     }
@@ -56,7 +56,7 @@ export async function createNewTask(taskData: TriageTask, repo: TaskRepository, 
         };
         results?.added.push(simTask);
         if (!jsonOutput) {
-            console.log(colorize(`│    ✓ Would create new task: "${taskData.title}"`, asChalkColor((asChalkColor(('green'))))));
+            console.log(colorize(`│    ✓ Would create new task: "${taskData.title}"`, asChalkColor(1)));
         }
     }
 }

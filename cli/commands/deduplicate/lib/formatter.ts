@@ -4,8 +4,8 @@ import { DuplicateGroup, ColorizeFunction } from './utils';
  * Display duplicate groups
  */
 export function displayDuplicateGroups(limitedGroups: DuplicateGroup[], duplicateGroups: DuplicateGroup[], colorize: ColorizeFunction) {
-    console.log(colorize(`\nFound ${duplicateGroups.length} potential duplicate groups (showing top ${limitedGroups.length}):`, asChalkColor((asChalkColor(('green'))))));
-    console.log(colorize('Groups are sorted by similarity (highest first)\n', asChalkColor((asChalkColor(('gray'))))));
+    console.log(colorize(`\nFound ${duplicateGroups.length} potential duplicate groups (showing top ${limitedGroups.length}):`, asChalkColor(1)));
+    console.log(colorize('Groups are sorted by similarity (highest first)\n', asChalkColor(1)));
     for (let i = 0; i < limitedGroups.length; i++) {
         const group = limitedGroups[i];
         const groupNumber = i + 1;
@@ -21,7 +21,7 @@ export function displayDuplicateGroups(limitedGroups: DuplicateGroup[], duplicat
             colorize(`${Math.round(group.maxSimilarity * 100)}% max similarity`, groupColor));
         // Display tasks in group
         group.tasks.forEach((task, taskIndex) => {
-            console.log(colorize(`  [${taskIndex + 1}] ${task.id}: `, asChalkColor((asChalkColor(('blue')))), 'bold') + task.title);
+            console.log(colorize(`  [${taskIndex + 1}] ${task.id}: `, asChalkColor(1), 'bold') + task.title);
             console.log(`     Status: ${task.status}, Tags: ${task.tags?.join(', ') || 'none'}`);
             // Show similarity matrix for this task
             if (group.similarityMatrix[taskIndex].some(sim => sim > 0)) {
@@ -36,10 +36,10 @@ export function displayDuplicateGroups(limitedGroups: DuplicateGroup[], duplicat
         });
         // Add action suggestion for high similarity groups
         if (group.maxSimilarity >= 0.8) {
-            console.log(colorize('  ⚠️  These tasks are likely duplicates and should be merged', asChalkColor((asChalkColor(('red'))))));
+            console.log(colorize('  ⚠️  These tasks are likely duplicates and should be merged', asChalkColor(1)));
         }
         else if (group.maxSimilarity >= 0.6) {
-            console.log(colorize('  ℹ️  These tasks are similar and may be related or duplicates', asChalkColor((asChalkColor(('magenta'))))));
+            console.log(colorize('  ℹ️  These tasks are similar and may be related or duplicates', asChalkColor(1)));
         }
         console.log(''); // Empty line between groups
     }
@@ -48,23 +48,23 @@ export function displayDuplicateGroups(limitedGroups: DuplicateGroup[], duplicat
  * Display detailed view of a group
  */
 export function displayDetailedGroupView(groupNum: number, selectedGroup: DuplicateGroup, colorize: ColorizeFunction) {
-    console.log(colorize(`\nDetailed view of Group ${groupNum}:\n`, asChalkColor((asChalkColor(('blue')))), 'bold'));
+    console.log(colorize(`\nDetailed view of Group ${groupNum}:\n`, asChalkColor(1), 'bold'));
     // Display similarity matrix
-    console.log(colorize('Similarity Matrix:', asChalkColor((asChalkColor(('cyan'))))));
-    console.log(colorize('                  '.substring(0, 18), asChalkColor((asChalkColor(('gray'))))) +
-        selectedGroup.tasks.map((t, i) => colorize(`[${i + 1}]`.padEnd(6), asChalkColor((asChalkColor(('blue')))))).join(''));
+    console.log(colorize('Similarity Matrix:', asChalkColor(1)));
+    console.log(colorize('                  '.substring(0, 18), asChalkColor(1)) +
+        selectedGroup.tasks.map((t, i) => colorize(`[${i + 1}]`.padEnd(6), asChalkColor(1))).join(''));
     for (let i = 0; i < selectedGroup.tasks.length; i++) {
         const task = selectedGroup.tasks[i];
-        console.log(colorize(`[${i + 1}] ${task.id}:`.padEnd(18), asChalkColor((asChalkColor(('blue'))))) +
+        console.log(colorize(`[${i + 1}] ${task.id}:`.padEnd(18), asChalkColor(1)) +
             selectedGroup.similarityMatrix[i].map((sim, j) => {
                 if (i === j)
-                    return colorize('  -  ', asChalkColor((asChalkColor(('gray')))));
+                    return colorize('  -  ', asChalkColor(1));
                 const percentage = Math.round(sim * 100);
-                let simColor = (asChalkColor((asChalkColor(('green')))));
+                let simColor = (asChalkColor(1));
                 if (percentage >= 80)
-                    simColor = (asChalkColor((asChalkColor(('red')))));
+                    simColor = (asChalkColor(1));
                 else if (percentage >= 60)
-                    simColor = (asChalkColor((asChalkColor(('yellow')))));
+                    simColor = (asChalkColor(1));
                 return colorize(`${percentage}%`.padEnd(6), simColor);
             }).join(''));
     }
@@ -72,7 +72,7 @@ export function displayDetailedGroupView(groupNum: number, selectedGroup: Duplic
     // Display task details
     for (let i = 0; i < selectedGroup.tasks.length; i++) {
         const task = selectedGroup.tasks[i];
-        console.log(colorize(`Task [${i + 1}] ${task.id}:`, asChalkColor((asChalkColor(('blue')))), 'bold'));
+        console.log(colorize(`Task [${i + 1}] ${task.id}:`, asChalkColor(1), 'bold'));
         console.log(`  Title: ${task.title}`);
         console.log(`  Status: ${task.status}, Readiness: ${task.readiness}`);
         console.log(`  Tags: ${task.tags?.join(', ') || 'none'}`);
@@ -93,8 +93,8 @@ export function displayDetailedGroupView(groupNum: number, selectedGroup: Duplic
  * Display interactive mode help
  */
 export function displayInteractiveHelp(colorize: ColorizeFunction) {
-    console.log(colorize('\nWhat would you like to do?', asChalkColor((asChalkColor(('cyan')))), 'bold'));
-    console.log(colorize('  m <group>', asChalkColor((asChalkColor(('green'))))) + ') ' + colorize('Merge tasks in a specific group', asChalkColor((asChalkColor(('white'))))));
-    console.log(colorize('  v <group>', asChalkColor((asChalkColor(('blue'))))) + ') ' + colorize('View group details', asChalkColor((asChalkColor(('white'))))));
-    console.log(colorize('  q', asChalkColor((asChalkColor(('red'))))) + ') ' + colorize('Quit', asChalkColor((asChalkColor(('white'))))));
+    console.log(colorize('\nWhat would you like to do?', asChalkColor(1), 'bold'));
+    console.log(colorize('  m <group>', asChalkColor(1)) + ') ' + colorize('Merge tasks in a specific group', asChalkColor(1)));
+    console.log(colorize('  v <group>', asChalkColor(1)) + ') ' + colorize('View group details', asChalkColor(1)));
+    console.log(colorize('  q', asChalkColor(1)) + ') ' + colorize('Quit', asChalkColor(1)));
 }

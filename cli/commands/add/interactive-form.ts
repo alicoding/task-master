@@ -22,23 +22,23 @@ export class InteractiveTaskForm {
      */
     displayBanner(): void {
         console.clear();
-        console.log(this.colorize('─'.repeat(60), asChalkColor((asChalkColor(('blue'))))));
-        console.log(this.colorize('📋 TASK MASTER - Interactive Task Creation', asChalkColor((asChalkColor(('blue')))), 'bold'));
-        console.log(this.colorize('─'.repeat(60), asChalkColor((asChalkColor(('blue'))))));
+        console.log(this.colorize('─'.repeat(60), asChalkColor(1)));
+        console.log(this.colorize('📋 TASK MASTER - Interactive Task Creation', asChalkColor(1), 'bold'));
+        console.log(this.colorize('─'.repeat(60), asChalkColor(1)));
         console.log('');
-        console.log(this.colorize('Fill out the form below to create a new task.', asChalkColor((asChalkColor(('yellow'))))));
-        console.log(this.colorize('Required fields are marked with *', asChalkColor((asChalkColor(('red'))))));
+        console.log(this.colorize('Fill out the form below to create a new task.', asChalkColor(1)));
+        console.log(this.colorize('Required fields are marked with *', asChalkColor(1)));
         console.log('');
     }
     /**
      * Ask a question and get user input
      */
     private async askQuestion(question: string, required: boolean = false): Promise<string> {
-        const marker = required ? this.colorize('*', asChalkColor((asChalkColor(('red')))), 'bold') + ' ' : '  ';
+        const marker = required ? this.colorize('*', asChalkColor(1), 'bold') + ' ' : '  ';
         return new Promise<string>((resolve) => {
             this.readline.question(`${marker}${question}: `, (answer) => {
                 if (required && !answer.trim()) {
-                    console.log(this.colorize('  This field is required.', asChalkColor((asChalkColor(('red'))))));
+                    console.log(this.colorize('  This field is required.', asChalkColor(1)));
                     resolve(this.askQuestion(question, required));
                 }
                 else {
@@ -51,10 +51,10 @@ export class InteractiveTaskForm {
      * Ask a multiple choice question
      */
     private async askMultipleChoice<T extends string>(question: string, choices: T[], defaultChoice?: T, required: boolean = false): Promise<T | undefined> {
-        const marker = required ? this.colorize('*', asChalkColor((asChalkColor(('red')))), 'bold') + ' ' : '  ';
+        const marker = required ? this.colorize('*', asChalkColor(1), 'bold') + ' ' : '  ';
         const choiceStr = choices.map((choice, i) => {
             const isDefault = choice === defaultChoice;
-            const choiceText = isDefault ? this.colorize(`${choice} (default)`, asChalkColor((asChalkColor(('green'))))) : choice;
+            const choiceText = isDefault ? this.colorize(`${choice} (default)`, asChalkColor(1)) : choice;
             return `${i + 1}. ${choiceText}`;
         }).join('  ');
         return new Promise<T | undefined>((resolve) => {
@@ -71,7 +71,7 @@ export class InteractiveTaskForm {
                         resolve(answer as T);
                     }
                     else {
-                        console.log(this.colorize('  Invalid choice. Please try again.', asChalkColor((asChalkColor(('red'))))));
+                        console.log(this.colorize('  Invalid choice. Please try again.', asChalkColor(1)));
                         resolve(this.askMultipleChoice(question, choices, defaultChoice, required));
                     }
                 }
@@ -137,33 +137,33 @@ export class InteractiveTaskForm {
                     this.taskOptions.metadata = metadata;
                 }
                 catch (e) {
-                    console.log(this.colorize('  Invalid JSON. Metadata will be ignored.', asChalkColor((asChalkColor(('red'))))));
+                    console.log(this.colorize('  Invalid JSON. Metadata will be ignored.', asChalkColor(1)));
                 }
             }
             // Confirm submission
             console.log('');
-            console.log(this.colorize('─'.repeat(60), asChalkColor((asChalkColor(('blue'))))));
-            console.log(this.colorize('Task Summary:', asChalkColor((asChalkColor(('blue')))), 'bold'));
-            console.log(this.colorize('─'.repeat(60), asChalkColor((asChalkColor(('blue'))))));
-            console.log(this.colorize('Title: ', asChalkColor((asChalkColor(('yellow'))))) + title);
+            console.log(this.colorize('─'.repeat(60), asChalkColor(1)));
+            console.log(this.colorize('Task Summary:', asChalkColor(1), 'bold'));
+            console.log(this.colorize('─'.repeat(60), asChalkColor(1)));
+            console.log(this.colorize('Title: ', asChalkColor(1)) + title);
             if (description)
-                console.log(this.colorize('Description: ', asChalkColor((asChalkColor(('yellow'))))) + description);
+                console.log(this.colorize('Description: ', asChalkColor(1)) + description);
             if (body) {
-                console.log(this.colorize('Body: ', asChalkColor((asChalkColor(('yellow'))))));
+                console.log(this.colorize('Body: ', asChalkColor(1)));
                 console.log(body.replace(/\\n/g, '\n'));
             }
-            console.log(this.colorize('Status: ', asChalkColor((asChalkColor(('yellow'))))) + status);
-            console.log(this.colorize('Readiness: ', asChalkColor((asChalkColor(('yellow'))))) + readiness);
+            console.log(this.colorize('Status: ', asChalkColor(1)) + status);
+            console.log(this.colorize('Readiness: ', asChalkColor(1)) + readiness);
             if (tags.length > 0)
-                console.log(this.colorize('Tags: ', asChalkColor((asChalkColor(('yellow'))))) + tags.join(', '));
+                console.log(this.colorize('Tags: ', asChalkColor(1)) + tags.join(', '));
             if (childOf)
-                console.log(this.colorize('Child of: ', asChalkColor((asChalkColor(('yellow'))))) + childOf);
+                console.log(this.colorize('Child of: ', asChalkColor(1)) + childOf);
             if (after)
-                console.log(this.colorize('After: ', asChalkColor((asChalkColor(('yellow'))))) + after);
+                console.log(this.colorize('After: ', asChalkColor(1)) + after);
             console.log('');
             const confirm = await this.askQuestion('Create this task? (y/n)');
             if (confirm.toLowerCase() !== 'y') {
-                console.log(this.colorize('Task creation cancelled.', asChalkColor((asChalkColor(('yellow'))))));
+                console.log(this.colorize('Task creation cancelled.', asChalkColor(1)));
                 return null;
             }
             return this.taskOptions as TaskInsertOptions;

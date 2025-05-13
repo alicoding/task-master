@@ -14,7 +14,7 @@ import { ProcessingOptions, TriageResults, TriageTask } from '../../utils';
 export async function handleMarkAsDoneAction(task: TriageTask, repo: TaskRepository, results: TriageResults, options: ProcessingOptions): Promise<void> {
     const { dryRun, colorize } = options;
     if (dryRun) {
-        console.log(colorize('Would mark task as done (dry run).', asChalkColor((asChalkColor(('yellow'))))));
+        console.log(colorize('Would mark task as done (dry run).', asChalkColor(1)));
         results?.updated.push({
             id: task.id,
             title: task.title,
@@ -23,7 +23,7 @@ export async function handleMarkAsDoneAction(task: TriageTask, repo: TaskReposit
         });
         return;
     }
-    console.log(colorize('\nMarking task as done...', asChalkColor((asChalkColor(('green'))))));
+    console.log(colorize('\nMarking task as done...', asChalkColor(1)));
     // Mark as done
     const updatedTask = await repo.updateTask({
         id: task.id,
@@ -31,5 +31,5 @@ export async function handleMarkAsDoneAction(task: TriageTask, repo: TaskReposit
         readiness: 'ready' // Also ensure it's ready
     });
     results?.updated.push(updatedTask);
-    console.log(colorize('✓ Task marked as done', asChalkColor((asChalkColor(('green')))), 'bold'));
+    console.log(colorize('✓ Task marked as done', asChalkColor(1), 'bold'));
 }

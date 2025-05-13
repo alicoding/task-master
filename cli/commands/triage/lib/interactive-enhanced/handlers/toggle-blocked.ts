@@ -16,7 +16,7 @@ import { ProcessingOptions, TriageResults, TriageTask, colorizeReadiness } from 
 export async function handleToggleBlockedAction(task: TriageTask, repo: TaskRepository, results: TriageResults, options: ProcessingOptions): Promise<void> {
     const { dryRun, colorize } = options;
     if (dryRun) {
-        console.log(colorize('Would toggle blocked status (dry run).', asChalkColor((asChalkColor(('yellow'))))));
+        console.log(colorize('Would toggle blocked status (dry run).', asChalkColor(1)));
         results?.updated.push({
             id: task.id,
             title: task.title,
@@ -27,7 +27,7 @@ export async function handleToggleBlockedAction(task: TriageTask, repo: TaskRepo
     }
     // Determine new readiness based on current value
     const newReadiness: TaskReadiness = task.readiness === 'blocked' ? 'ready' : 'blocked';
-    console.log(colorize(`\nToggling task from ${colorizeReadiness(task.readiness as string, colorize)} to ${colorizeReadiness(newReadiness, colorize)}...`, asChalkColor((asChalkColor(('magenta'))))));
+    console.log(colorize(`\nToggling task from ${colorizeReadiness(task.readiness as string, colorize)} to ${colorizeReadiness(newReadiness, colorize)}...`, asChalkColor(1)));
     // For tasks being blocked, optionally add a reason
     let metadata = undefined;
     if (newReadiness === 'blocked') {
@@ -36,7 +36,7 @@ export async function handleToggleBlockedAction(task: TriageTask, repo: TaskRepo
             output: process.stdout
         });
         const blockedReason = await new Promise<string>(resolve => {
-            rl.question(colorize('Enter reason for blocking (optional): ', asChalkColor((asChalkColor(('magenta'))))), resolve);
+            rl.question(colorize('Enter reason for blocking (optional): ', asChalkColor(1)), resolve);
         });
         rl.close();
         if (blockedReason.trim()) {
@@ -61,9 +61,9 @@ export async function handleToggleBlockedAction(task: TriageTask, repo: TaskRepo
     });
     results?.updated.push(updatedTask);
     if (newReadiness === 'blocked') {
-        console.log(colorize('✓ Task marked as blocked', asChalkColor((asChalkColor(('red')))), 'bold'));
+        console.log(colorize('✓ Task marked as blocked', asChalkColor(1), 'bold'));
     }
     else {
-        console.log(colorize('✓ Task unblocked', asChalkColor((asChalkColor(('green')))), 'bold'));
+        console.log(colorize('✓ Task unblocked', asChalkColor(1), 'bold'));
     }
 }

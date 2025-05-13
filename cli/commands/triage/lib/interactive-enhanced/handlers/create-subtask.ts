@@ -16,7 +16,7 @@ import { ProcessingOptions, TriageResults, TriageTask } from '../../utils';
 export async function handleCreateSubtaskAction(task: TriageTask, repo: TaskRepository, results: TriageResults, options: ProcessingOptions): Promise<void> {
     const { dryRun, colorize } = options;
     if (dryRun) {
-        console.log(colorize('Would create subtask (dry run).', asChalkColor((asChalkColor(('yellow'))))));
+        console.log(colorize('Would create subtask (dry run).', asChalkColor(1)));
         results?.added.push({
             title: '[Subtask]',
             parentId: task.id,
@@ -24,21 +24,21 @@ export async function handleCreateSubtaskAction(task: TriageTask, repo: TaskRepo
         });
         return;
     }
-    console.log(colorize('\n┌─ Create Subtask', asChalkColor((asChalkColor(('green')))), 'bold'));
-    console.log(colorize('│', asChalkColor((asChalkColor(('green'))))));
-    console.log(colorize('├─ Parent Task: ', asChalkColor((asChalkColor(('green'))))) +
-        colorize(task.id || '', asChalkColor((asChalkColor(('green'))))) + ': ' + task.title);
+    console.log(colorize('\n┌─ Create Subtask', asChalkColor(1), 'bold'));
+    console.log(colorize('│', asChalkColor(1)));
+    console.log(colorize('├─ Parent Task: ', asChalkColor(1)) +
+        colorize(task.id || '', asChalkColor(1)) + ': ' + task.title);
     // Get subtask details
     const rl1 = readline.createInterface({
         input: process.stdin,
         output: process.stdout
     });
     const titleInput = await new Promise<string>(resolve => {
-        rl1.question(colorize('├─ Subtask Title: ', asChalkColor((asChalkColor(('green'))))), resolve);
+        rl1.question(colorize('├─ Subtask Title: ', asChalkColor(1)), resolve);
     });
     rl1.close();
     if (!titleInput.trim()) {
-        console.log(colorize('└─ Cancelled - title is required', asChalkColor((asChalkColor(('yellow'))))));
+        console.log(colorize('└─ Cancelled - title is required', asChalkColor(1)));
         return;
     }
     // Get status
@@ -47,16 +47,16 @@ export async function handleCreateSubtaskAction(task: TriageTask, repo: TaskRepo
         output: process.stdout
     });
     const statusMenu = `
-${colorize('1', asChalkColor((asChalkColor(('blue')))))} - todo
-${colorize('2', asChalkColor((asChalkColor(('yellow')))))} - in-progress
-${colorize('3', asChalkColor((asChalkColor(('green')))))} - done
-${colorize('0', asChalkColor((asChalkColor(('gray')))))} - default (todo)
+${colorize('1', asChalkColor(1))} - todo
+${colorize('2', asChalkColor(1))} - in-progress
+${colorize('3', asChalkColor(1))} - done
+${colorize('0', asChalkColor(1))} - default (todo)
 `;
-    console.log(colorize('│', asChalkColor((asChalkColor(('green'))))));
-    console.log(colorize('├─ Status Options:', asChalkColor((asChalkColor(('green'))))));
+    console.log(colorize('│', asChalkColor(1)));
+    console.log(colorize('├─ Status Options:', asChalkColor(1)));
     console.log(statusMenu);
     const statusInput = await new Promise<string>(resolve => {
-        rl2.question(colorize('├─ Select status [0-3]: ', asChalkColor((asChalkColor(('green'))))), resolve);
+        rl2.question(colorize('├─ Select status [0-3]: ', asChalkColor(1)), resolve);
     });
     rl2.close();
     // Map input to status
@@ -77,10 +77,10 @@ ${colorize('0', asChalkColor((asChalkColor(('gray')))))} - default (todo)
         input: process.stdin,
         output: process.stdout
     });
-    console.log(colorize('│', asChalkColor((asChalkColor(('green'))))));
-    console.log(colorize('├─ Enter tags (comma-separated) or leave empty:', asChalkColor((asChalkColor(('green'))))));
+    console.log(colorize('│', asChalkColor(1)));
+    console.log(colorize('├─ Enter tags (comma-separated) or leave empty:', asChalkColor(1)));
     const tagsInput = await new Promise<string>(resolve => {
-        rl3.question(colorize('├─ Tags: ', asChalkColor((asChalkColor(('green'))))), resolve);
+        rl3.question(colorize('├─ Tags: ', asChalkColor(1)), resolve);
     });
     rl3.close();
     // Process tags
@@ -88,8 +88,8 @@ ${colorize('0', asChalkColor((asChalkColor(('gray')))))} - default (todo)
         tagsInput.split(',').map(t => t.trim()).filter(t => t.length > 0) :
         [];
     // Create the subtask
-    console.log(colorize('│', asChalkColor((asChalkColor(('green'))))));
-    console.log(colorize('├─ Creating subtask...', asChalkColor((asChalkColor(('green'))))));
+    console.log(colorize('│', asChalkColor(1)));
+    console.log(colorize('├─ Creating subtask...', asChalkColor(1)));
     const newTask = await repo.createTask({
         title: titleInput.trim(),
         status,
@@ -98,5 +98,5 @@ ${colorize('0', asChalkColor((asChalkColor(('gray')))))} - default (todo)
         childOf: task.id
     });
     results?.added.push(newTask);
-    console.log(colorize('└─ ✓ Subtask created with ID: ' + newTask.id, asChalkColor((asChalkColor(('green')))), 'bold'));
+    console.log(colorize('└─ ✓ Subtask created with ID: ' + newTask.id, asChalkColor(1), 'bold'));
 }

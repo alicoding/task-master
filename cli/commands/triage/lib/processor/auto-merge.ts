@@ -41,7 +41,7 @@ export async function handleAutoMerge(taskData: TriageTask, filteredTasks: Simil
     // For very high similarity, do the merge
     if (score >= 0.8) {
         if (!jsonOutput) {
-            console.log(colorize(`│    🔄 Auto-merging with ${bestMatch.id} (${percentage}% similarity)`, asChalkColor((asChalkColor(('magenta'))))));
+            console.log(colorize(`│    🔄 Auto-merging with ${bestMatch.id} (${percentage}% similarity)`, asChalkColor(1)));
         }
         if (!dryRun) {
             // Combine tags (unique)
@@ -72,11 +72,11 @@ export async function handleAutoMerge(taskData: TriageTask, filteredTasks: Simil
                 source: taskData
             });
             if (!jsonOutput) {
-                console.log(colorize(`│    ✓ Merged successfully with task ${bestMatch.id}`, asChalkColor((asChalkColor(('green'))))));
+                console.log(colorize(`│    ✓ Merged successfully with task ${bestMatch.id}`, asChalkColor(1)));
                 // Show what was merged
                 if (combinedTags.length > bestMatch.tags.length) {
                     const newTags = combinedTags.filter(t => !bestMatch.tags.includes(t));
-                    console.log(colorize(`│      Added tags: ${newTags.join(', ')}`, asChalkColor((asChalkColor(('cyan'))))));
+                    console.log(colorize(`│      Added tags: ${newTags.join(', ')}`, asChalkColor(1)));
                 }
             }
         }
@@ -87,14 +87,14 @@ export async function handleAutoMerge(taskData: TriageTask, filteredTasks: Simil
                 dry_run: true
             });
             if (!jsonOutput) {
-                console.log(colorize(`│    ✓ Would auto-merge with task ${bestMatch.id}`, asChalkColor((asChalkColor(('magenta'))))));
+                console.log(colorize(`│    ✓ Would auto-merge with task ${bestMatch.id}`, asChalkColor(1)));
             }
         }
     }
     else {
         // Similarity not high enough for auto-merge, create new task
         if (!jsonOutput) {
-            console.log(colorize(`│    ℹ Similarity below threshold for auto-merge (${percentage}% < 80%)`, asChalkColor((asChalkColor(('blue'))))));
+            console.log(colorize(`│    ℹ Similarity below threshold for auto-merge (${percentage}% < 80%)`, asChalkColor(1)));
         }
         await createNewTask(taskData, repo, results, options);
     }

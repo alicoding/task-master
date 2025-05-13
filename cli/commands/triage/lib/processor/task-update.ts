@@ -18,7 +18,7 @@ export async function handleTaskUpdate(taskData: TriageTask, repo: TaskRepositor
         const errorMsg = 'Cannot update task: missing id';
         results?.errors?.push(errorMsg);
         if (!jsonOutput) {
-            console.log(colorize(`│    ✘ ERROR: ${errorMsg}`, asChalkColor((asChalkColor(('red'))))));
+            console.log(colorize(`│    ✘ ERROR: ${errorMsg}`, asChalkColor(1)));
         }
         return;
     }
@@ -28,7 +28,7 @@ export async function handleTaskUpdate(taskData: TriageTask, repo: TaskRepositor
         const errorMsg = `Task with ID ${taskData.id} not found. Cannot update.`;
         results?.errors?.push(errorMsg);
         if (!jsonOutput) {
-            console.log(colorize(`│    ✘ ERROR: ${errorMsg}`, asChalkColor((asChalkColor(('red'))))));
+            console.log(colorize(`│    ✘ ERROR: ${errorMsg}`, asChalkColor(1)));
         }
         return;
     }
@@ -54,9 +54,9 @@ export async function handleTaskUpdate(taskData: TriageTask, repo: TaskRepositor
                 changes.push(`readiness: ${taskData.readiness}`);
             if (taskData.tags)
                 changes.push(`tags: [${taskData.tags.join(', ')}]`);
-            console.log(colorize(`│    ✓ Updated task ${updatedTask.id}`, asChalkColor((asChalkColor(('yellow'))))));
+            console.log(colorize(`│    ✓ Updated task ${updatedTask.id}`, asChalkColor(1)));
             if (changes.length > 0) {
-                console.log(colorize(`│      Changed: ${changes.join(', ')}`, asChalkColor((asChalkColor(('gray'))))));
+                console.log(colorize(`│      Changed: ${changes.join(', ')}`, asChalkColor(1)));
             }
         }
     }
@@ -71,7 +71,7 @@ export async function handleTaskUpdate(taskData: TriageTask, repo: TaskRepositor
         };
         results?.updated.push(simTask);
         if (!jsonOutput) {
-            console.log(colorize(`│    ✓ Would update task ${simTask.id}`, asChalkColor((asChalkColor(('yellow'))))));
+            console.log(colorize(`│    ✓ Would update task ${simTask.id}`, asChalkColor(1)));
         }
     }
 }

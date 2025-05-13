@@ -246,19 +246,19 @@ export function displaySearchResults(tasks: Task[], format: OutputFormat, extrac
  */
 function displaySearchExplanation(extractedInfo: ExtractedSearchFilters, query: string, useFuzzy: boolean | undefined, useColor?: boolean): void {
     const { colorize } = getColorFunctions(!!useColor);
-    console.log(colorize('Search query analysis:', asChalkColor((asChalkColor((asChalkColor(('blue')))))), 'bold'));
-    console.log(colorize(`Original query: "${query}"`, asChalkColor((asChalkColor((asChalkColor(('green'))))))));
+    console.log(colorize('Search query analysis:', asChalkColor(1), 'bold'));
+    console.log(colorize(`Original query: "${query}"`, asChalkColor(1)));
     if (extractedInfo.extractedTerms && extractedInfo.extractedTerms.length > 0) {
-        console.log(colorize('Extracted filters:', asChalkColor((asChalkColor((asChalkColor(('blue'))))))));
+        console.log(colorize('Extracted filters:', asChalkColor(1)));
         for (const term of extractedInfo.extractedTerms) {
-            console.log(`  - ${colorize(term, asChalkColor((asChalkColor((asChalkColor(('magenta')))))))}`);
+            console.log(`  - ${colorize(term, asChalkColor(1))}`);
         }
     }
     if (extractedInfo.query !== query) {
-        console.log(colorize('Cleaned query: ', asChalkColor((asChalkColor((asChalkColor(('blue'))))))) +
-            colorize(`"${extractedInfo.query}"`, asChalkColor((asChalkColor((asChalkColor(('green'))))))));
+        console.log(colorize('Cleaned query: ', asChalkColor(1)) +
+            colorize(`"${extractedInfo.query}"`, asChalkColor(1)));
     }
-    console.log(colorize(`Fuzzy matching: ${useFuzzy ? 'enabled' : 'disabled'}`, asChalkColor((asChalkColor((asChalkColor(('blue'))))))));
+    console.log(colorize(`Fuzzy matching: ${useFuzzy ? 'enabled' : 'disabled'}`, asChalkColor(1)));
     console.log(); // Empty line before results
 }
 /**
@@ -324,8 +324,8 @@ export async function performSimilaritySearch(repo: TaskRepository, nlpService: 
         console.log(JSON.stringify(similarTasks, null, 2));
         return;
     }
-    console.log(colorize(`Tasks similar to "${options.similar}":\n`, asChalkColor((asChalkColor((asChalkColor(('blue')))))), 'bold'));
-    console.log(colorize(`Fuzzy matching: ${useFuzzy ? 'enabled' : 'disabled'}`, asChalkColor((asChalkColor((asChalkColor(('blue'))))))));
+    console.log(colorize(`Tasks similar to "${options.similar}":\n`, asChalkColor(1), 'bold'));
+    console.log(colorize(`Fuzzy matching: ${useFuzzy ? 'enabled' : 'disabled'}`, asChalkColor(1)));
     console.log('');
     similarTasks.forEach(task => {
         // Get similarity score from metadata
@@ -338,13 +338,13 @@ export async function performSimilaritySearch(repo: TaskRepository, nlpService: 
         const barLength = Math.round(percentage / 5);
         const bar = '█'.repeat(barLength);
         // Color the bar based on similarity
-        let barColor = asChalkColor((asChalkColor((asChalkColor(('red'))))));
+        let barColor = asChalkColor(1);
         if (percentage >= 70)
-            barColor = asChalkColor((asChalkColor((asChalkColor(('green'))))));
+            barColor = asChalkColor(1);
         else if (percentage >= 40)
-            barColor = asChalkColor((asChalkColor((asChalkColor(('yellow'))))));
+            barColor = asChalkColor(1);
         console.log(`${task.id}. ${task.title}`);
-        console.log(`  ${colorize('Similarity: ', asChalkColor((asChalkColor((asChalkColor(('blue')))))))}${colorize(`${percentage}%`, barColor)} ${colorize(bar, barColor)}`);
+        console.log(`  ${colorize('Similarity: ', asChalkColor(1))}${colorize(`${percentage}%`, barColor)} ${colorize(bar, barColor)}`);
         console.log(`  Tags: ${task.tags?.join(', ') || 'none'}`);
         console.log(`  Status: ${task.status}, Readiness: ${task.readiness}`);
         console.log('');

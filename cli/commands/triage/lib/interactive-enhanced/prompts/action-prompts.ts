@@ -15,7 +15,7 @@ export async function promptForAction(colorize: (text: string, color?: ChalkColo
         output: process.stdout
     });
     const action = await new Promise<string>(resolve => {
-        rl.question(colorize('Choose an action: ', asChalkColor((asChalkColor(('cyan'))))), resolve);
+        rl.question(colorize('Choose an action: ', asChalkColor(1)), resolve);
     });
     rl.close();
     return action.toLowerCase();

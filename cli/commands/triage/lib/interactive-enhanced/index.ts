@@ -36,7 +36,7 @@ export async function runInteractiveMode(repo: TaskRepository, nlpService: NlpSe
             console.log(JSON.stringify({ message: 'No pending tasks to triage' }));
         }
         else {
-            console.log(colorize('No pending tasks to triage.', asChalkColor((asChalkColor(('yellow'))))));
+            console.log(colorize('No pending tasks to triage.', asChalkColor(1)));
         }
         return;
     }
@@ -93,7 +93,7 @@ export async function runInteractiveMode(repo: TaskRepository, nlpService: NlpSe
             // Process the action
             switch (action) {
                 case 'q': // Quit
-                    console.log(colorize('Exiting triage mode.', asChalkColor((asChalkColor(('yellow'))))));
+                    console.log(colorize('Exiting triage mode.', asChalkColor(1)));
                     running = false;
                     break;
                 case 'n': // Next task
@@ -103,7 +103,7 @@ export async function runInteractiveMode(repo: TaskRepository, nlpService: NlpSe
                     taskIndex = Math.max(0, taskIndex - 1);
                     break;
                 case 's': // Skip
-                    console.log(colorize('Skipping this task.', asChalkColor((asChalkColor(('gray'))))));
+                    console.log(colorize('Skipping this task.', asChalkColor(1)));
                     results?.skipped.push({
                         id: task.id,
                         title: task.title,
@@ -128,7 +128,7 @@ export async function runInteractiveMode(repo: TaskRepository, nlpService: NlpSe
                         await handleMergeTaskAction(task, filteredTasks, repo, results, options);
                     }
                     else {
-                        console.log(colorize('No similar tasks available for merging.', asChalkColor((asChalkColor(('yellow'))))));
+                        console.log(colorize('No similar tasks available for merging.', asChalkColor(1)));
                     }
                     taskIndex++;
                     break;
@@ -144,12 +144,12 @@ export async function runInteractiveMode(repo: TaskRepository, nlpService: NlpSe
                     displayHelpScreen(colorize);
                     break;
                 default:
-                    console.log(colorize('Invalid option. Press h for help.', asChalkColor((asChalkColor(('red'))))));
+                    console.log(colorize('Invalid option. Press h for help.', asChalkColor(1)));
                     break;
             }
         }
     }
     if (!jsonOutput && running) {
-        console.log(colorize('\n✅ All pending tasks have been triaged!', asChalkColor((asChalkColor(('green')))), 'bold'));
+        console.log(colorize('\n✅ All pending tasks have been triaged!', asChalkColor(1), 'bold'));
     }
 }

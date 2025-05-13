@@ -9,22 +9,22 @@ import { ChalkColor, ChalkStyle } from '../../utils';
  * @param colorize Colorize function for styling output
  */
 export function displayActionMenu(hasSimilarTasks: boolean, colorize: (text: string, color?: ChalkColor, style?: ChalkStyle) => string): void {
-    console.log(colorize('\nActions:', asChalkColor((asChalkColor(('cyan')))), 'bold'));
+    console.log(colorize('\nActions:', asChalkColor(1), 'bold'));
     // Navigation commands
-    console.log(colorize('  n', asChalkColor((asChalkColor(('blue'))))) + ') ' + colorize('Next', asChalkColor((asChalkColor(('white'))))) + ' - Move to next task');
-    console.log(colorize('  p', asChalkColor((asChalkColor(('blue'))))) + ') ' + colorize('Previous', asChalkColor((asChalkColor(('white'))))) + ' - Move to previous task');
+    console.log(colorize('  n', asChalkColor(1)) + ') ' + colorize('Next', asChalkColor(1)) + ' - Move to next task');
+    console.log(colorize('  p', asChalkColor(1)) + ') ' + colorize('Previous', asChalkColor(1)) + ' - Move to previous task');
     // Task commands
-    console.log(colorize('  u', asChalkColor((asChalkColor(('yellow'))))) + ') ' + colorize('Update', asChalkColor((asChalkColor(('white'))))) + ' - Update task status/readiness');
-    console.log(colorize('  d', asChalkColor((asChalkColor(('green'))))) + ') ' + colorize('Done', asChalkColor((asChalkColor(('white'))))) + ' - Mark task as completed');
-    console.log(colorize('  t', asChalkColor((asChalkColor(('cyan'))))) + ') ' + colorize('Tags', asChalkColor((asChalkColor(('white'))))) + ' - Add/remove tags');
-    console.log(colorize('  b', asChalkColor((asChalkColor(('magenta'))))) + ') ' + colorize('Block/Unblock', asChalkColor((asChalkColor(('white'))))) + ' - Toggle blocked status');
-    console.log(colorize('  c', asChalkColor((asChalkColor(('green'))))) + ') ' + colorize('Create Subtask', asChalkColor((asChalkColor(('white'))))) + ' - Add a subtask to this task');
+    console.log(colorize('  u', asChalkColor(1)) + ') ' + colorize('Update', asChalkColor(1)) + ' - Update task status/readiness');
+    console.log(colorize('  d', asChalkColor(1)) + ') ' + colorize('Done', asChalkColor(1)) + ' - Mark task as completed');
+    console.log(colorize('  t', asChalkColor(1)) + ') ' + colorize('Tags', asChalkColor(1)) + ' - Add/remove tags');
+    console.log(colorize('  b', asChalkColor(1)) + ') ' + colorize('Block/Unblock', asChalkColor(1)) + ' - Toggle blocked status');
+    console.log(colorize('  c', asChalkColor(1)) + ') ' + colorize('Create Subtask', asChalkColor(1)) + ' - Add a subtask to this task');
     // Only show merge if similar tasks exist
     if (hasSimilarTasks) {
-        console.log(colorize('  m', asChalkColor((asChalkColor(('red'))))) + ') ' + colorize('Merge', asChalkColor((asChalkColor(('white'))))) + ' - Merge with a similar task');
+        console.log(colorize('  m', asChalkColor(1)) + ') ' + colorize('Merge', asChalkColor(1)) + ' - Merge with a similar task');
     }
     // Other commands
-    console.log(colorize('  s', asChalkColor((asChalkColor(('gray'))))) + ') ' + colorize('Skip', asChalkColor((asChalkColor(('white'))))) + ' - Skip this task');
-    console.log(colorize('  h', asChalkColor((asChalkColor(('cyan'))))) + ') ' + colorize('Help', asChalkColor((asChalkColor(('white'))))) + ' - Show help screen');
-    console.log(colorize('  q', asChalkColor((asChalkColor(('red'))))) + ') ' + colorize('Quit', asChalkColor((asChalkColor(('white'))))) + ' - Exit triage mode');
+    console.log(colorize('  s', asChalkColor(1)) + ') ' + colorize('Skip', asChalkColor(1)) + ' - Skip this task');
+    console.log(colorize('  h', asChalkColor(1)) + ') ' + colorize('Help', asChalkColor(1)) + ' - Show help screen');
+    console.log(colorize('  q', asChalkColor(1)) + ') ' + colorize('Quit', asChalkColor(1)) + ' - Exit triage mode');
 }

@@ -18,11 +18,11 @@ import { processPlanTask } from './task-processor';
 export async function processPlanWithEnhancedUI(tasks: TriageTask[], repo: TaskRepository, nlpService: NlpService, results: TriageResults, options: ProcessingOptions) {
     const { dryRun, colorize, jsonOutput } = options;
     if (!jsonOutput) {
-        console.log(colorize(`\n┌─ Processing Batch of ${tasks.length} Tasks`, asChalkColor((asChalkColor(('blue')))), 'bold'));
-        console.log(colorize('│', asChalkColor((asChalkColor(('blue'))))));
+        console.log(colorize(`\n┌─ Processing Batch of ${tasks.length} Tasks`, asChalkColor(1), 'bold'));
+        console.log(colorize('│', asChalkColor(1)));
         if (dryRun) {
-            console.log(colorize('│ DRY RUN MODE - No changes will be made', asChalkColor((asChalkColor(('yellow')))), 'bold'));
-            console.log(colorize('│', asChalkColor((asChalkColor(('blue'))))));
+            console.log(colorize('│ DRY RUN MODE - No changes will be made', asChalkColor(1), 'bold'));
+            console.log(colorize('│', asChalkColor(1)));
         }
     }
     // Sort tasks to process updates before creates
@@ -32,28 +32,28 @@ export async function processPlanWithEnhancedUI(tasks: TriageTask[], repo: TaskR
     let totalProcessed = 0;
     // First process updates
     if (updateTasks.length > 0 && !jsonOutput) {
-        console.log(colorize(`├─ Processing ${updateTasks.length} Updates`, asChalkColor((asChalkColor(('yellow'))))));
+        console.log(colorize(`├─ Processing ${updateTasks.length} Updates`, asChalkColor(1)));
     }
     for (const task of updateTasks) {
         await processPlanTask(task, repo, nlpService, results, options);
         totalProcessed++;
         if (!jsonOutput && !options.autoMerge) {
-            console.log(colorize(`│  Progress: ${totalProcessed}/${tasks.length} (${Math.round(totalProcessed / tasks.length * 100)}%)`, asChalkColor((asChalkColor(('gray'))))));
+            console.log(colorize(`│  Progress: ${totalProcessed}/${tasks.length} (${Math.round(totalProcessed / tasks.length * 100)}%)`, asChalkColor(1)));
         }
     }
     // Then process creates
     if (createTasks.length > 0 && !jsonOutput) {
-        console.log(colorize(`├─ Processing ${createTasks.length} New Tasks`, asChalkColor((asChalkColor(('green'))))));
+        console.log(colorize(`├─ Processing ${createTasks.length} New Tasks`, asChalkColor(1)));
     }
     for (const task of createTasks) {
         await processPlanTask(task, repo, nlpService, results, options);
         totalProcessed++;
         if (!jsonOutput && !options.autoMerge) {
-            console.log(colorize(`│  Progress: ${totalProcessed}/${tasks.length} (${Math.round(totalProcessed / tasks.length * 100)}%)`, asChalkColor((asChalkColor(('gray'))))));
+            console.log(colorize(`│  Progress: ${totalProcessed}/${tasks.length} (${Math.round(totalProcessed / tasks.length * 100)}%)`, asChalkColor(1)));
         }
     }
     if (!jsonOutput) {
-        console.log(colorize('│', asChalkColor((asChalkColor(('blue'))))));
-        console.log(colorize('└─ Batch Processing Complete', asChalkColor((asChalkColor(('blue')))), 'bold'));
+        console.log(colorize('│', asChalkColor(1)));
+        console.log(colorize('└─ Batch Processing Complete', asChalkColor(1), 'bold'));
     }
 }

@@ -17,28 +17,28 @@ export function displayDependencies(dependencies: {
         status: string;
     };
 }[], colorize: (text: string, color?: ChalkColor, style?: ChalkStyle) => string): void {
-    console.log(colorize(`\n┌─ Task Dependencies (${dependencies.length})`, asChalkColor((asChalkColor(('cyan')))), 'bold'));
+    console.log(colorize(`\n┌─ Task Dependencies (${dependencies.length})`, asChalkColor(1), 'bold'));
     // Process and categorize dependencies
     const blocked = dependencies.filter(d => d.direction === 'blocked');
     const blocking = dependencies.filter(d => d.direction === 'blocking');
     if (blocked.length > 0) {
-        console.log(colorize('├─ Blocked by:', asChalkColor((asChalkColor(('cyan'))))));
+        console.log(colorize('├─ Blocked by:', asChalkColor(1)));
         blocked.forEach((dep, idx) => {
-            console.log(colorize('│  ', asChalkColor((asChalkColor(('cyan'))))) +
-                colorize(`${dep.task.id}: `, asChalkColor((asChalkColor(('red'))))) +
+            console.log(colorize('│  ', asChalkColor(1)) +
+                colorize(`${dep.task.id}: `, asChalkColor(1)) +
                 dep.task.title + ' ' +
                 colorize(`(${dep.task.status})`, getStatusColor(dep.task.status)));
         });
     }
     if (blocking.length > 0) {
-        console.log(colorize('├─ Blocking:', asChalkColor((asChalkColor(('cyan'))))));
+        console.log(colorize('├─ Blocking:', asChalkColor(1)));
         blocking.forEach((dep, idx) => {
-            console.log(colorize('│  ', asChalkColor((asChalkColor(('cyan'))))) +
-                colorize(`${dep.task.id}: `, asChalkColor((asChalkColor(('yellow'))))) +
+            console.log(colorize('│  ', asChalkColor(1)) +
+                colorize(`${dep.task.id}: `, asChalkColor(1)) +
                 dep.task.title + ' ' +
                 colorize(`(${dep.task.status})`, getStatusColor(dep.task.status)));
         });
     }
     // Footer
-    console.log(colorize('└' + '─'.repeat(60), asChalkColor((asChalkColor(('cyan'))))));
+    console.log(colorize('└' + '─'.repeat(60), asChalkColor(1)));
 }

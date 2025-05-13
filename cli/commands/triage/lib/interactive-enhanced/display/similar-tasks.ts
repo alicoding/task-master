@@ -14,36 +14,36 @@ export async function displaySimilarTasksEnhanced(filteredTasks: TriageTask[] & 
         [key: string]: any;
     };
 }[], colorize: (text: string, color?: ChalkColor, style?: ChalkStyle) => string): Promise<void> {
-    console.log(colorize(`\n┌─ Similar Tasks Found (${filteredTasks.length})`, asChalkColor((asChalkColor(('yellow')))), 'bold'));
+    console.log(colorize(`\n┌─ Similar Tasks Found (${filteredTasks.length})`, asChalkColor(1), 'bold'));
     filteredTasks.forEach((task, idx) => {
         const score = task.metadata?.similarityScore || 0;
         const percentage = Math.round(score * 100);
         // Determine color based on similarity
-        let simColor: ChalkColor = (asChalkColor((asChalkColor(('green')))));
+        let simColor: ChalkColor = (asChalkColor(1));
         if (percentage >= 90)
-            simColor = (asChalkColor((asChalkColor(('red')))));
+            simColor = (asChalkColor(1));
         else if (percentage >= 80)
-            simColor = (asChalkColor((asChalkColor(('red')))));
+            simColor = (asChalkColor(1));
         else if (percentage >= 70)
-            simColor = (asChalkColor((asChalkColor(('magenta')))));
+            simColor = (asChalkColor(1));
         else if (percentage >= 60)
-            simColor = (asChalkColor((asChalkColor(('yellow')))));
+            simColor = (asChalkColor(1));
         // Generate a similarity bar
         const barLength = Math.round(percentage / 5); // 20 chars = 100%
         const bar = '█'.repeat(barLength) + '░'.repeat(20 - barLength);
-        console.log(colorize(`├─ [${idx + 1}] `, asChalkColor((asChalkColor(('yellow'))))) +
-            colorize((task.id || '') + ': ', asChalkColor((asChalkColor(('yellow'))))) +
+        console.log(colorize(`├─ [${idx + 1}] `, asChalkColor(1)) +
+            colorize((task.id || '') + ': ', asChalkColor(1)) +
             task.title);
-        console.log(colorize('│  ', asChalkColor((asChalkColor(('yellow'))))) +
+        console.log(colorize('│  ', asChalkColor(1)) +
             colorize(`Similarity: ${percentage}%  `, simColor) +
             colorize(bar, simColor));
         // Status and tags
-        console.log(colorize('│  ', asChalkColor((asChalkColor(('yellow'))))) +
+        console.log(colorize('│  ', asChalkColor(1)) +
             `Status: ${colorizeStatus(task.status as string, colorize)}, ` +
             `Tags: ${task.tags && task.tags.length > 0 ?
-                task.tags.map((tag) => colorize(tag, asChalkColor((asChalkColor(('cyan')))))).join(', ') :
-                colorize('none', asChalkColor((asChalkColor(('gray')))))}`);
+                task.tags.map((tag) => colorize(tag, asChalkColor(1))).join(', ') :
+                colorize('none', asChalkColor(1))}`);
     });
     // Footer
-    console.log(colorize('└' + '─'.repeat(60), asChalkColor((asChalkColor(('yellow'))))));
+    console.log(colorize('└' + '─'.repeat(60), asChalkColor(1)));
 }
