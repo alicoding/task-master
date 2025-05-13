@@ -9,7 +9,12 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { Project } from 'ts-morph';
 import { findFilesWithPattern, applyTransformation } from './utils';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
+// Get the script directory
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 const CLI_COMMANDS_DIR = path.resolve(__dirname, '../../cli/commands');
 
 // Find files that import asChalkColor and/or have duplicate ChalkColor imports

@@ -3,43 +3,39 @@
  *
  * Provides utilities for colorizing console output in the search command.
  */
-
 import { ChalkColor, asChalkColor } from '@/cli/utils/chalk-utils';
 import chalk from 'chalk';
-
-
 /**
- * Type for chalk style modifiers
+ * Import ChalkStyle and ColorizeFunction types from chalk-utils
+ * 
+ * @deprecated - Use ChalkStyle and ColorizeFunction from '@/cli/utils/chalk-utils' directly
  */
-export type ChalkStyle = 'bold' | 'dim' | 'italic' | 'underline' | 'inverse' | 'hidden' | 'strikethrough';
-
-/**
- * Type for colorize function
- */
-export type ColorizeFunction = (text: string, color?: ChalkColor, style?: ChalkStyle) => string;
-
+import { ChalkStyle as BaseChalkStyle, ColorizeFunction as BaseColorizeFunction } from '@/cli/utils/chalk-utils';
+export type ChalkStyle = BaseChalkStyle;
+export type ColorizeFunction = BaseColorizeFunction;
 /**
  * Get color functions based on whether colors are enabled
  * @param colorEnabled Whether colors are enabled
  * @returns Color utility functions
  */
-export function getColorFunctions(colorEnabled: boolean): { colorize: ColorizeFunction } {
-  return {
-    colorize: (text: string, color?: ChalkColor, style?: ChalkStyle): string => {
-      if (!colorEnabled) return text;
-      
-      let result = text;
-      if (color && chalk[color]) {
-        result = chalk[color](result);
-      }
-      if (style && chalk[style]) {
-        result = chalk[style](result);
-      }
-      return result;
-    }
-  };
+export function getColorFunctions(colorEnabled: boolean): {
+    colorize: ColorizeFunction;
+} {
+    return {
+        colorize: (text: string, color?: ChalkColor, style?: ChalkStyle): string => {
+            if (!colorEnabled)
+                return text;
+            let result = text;
+            if (color && chalk[color]) {
+                result = chalk[color](result);
+            }
+            if (style && chalk[style]) {
+                result = chalk[style](result);
+            }
+            return result;
+        }
+    };
 }
-
 /**
  * Colorize status text based on task status
  * @param status Task status
@@ -47,20 +43,18 @@ export function getColorFunctions(colorEnabled: boolean): { colorize: ColorizeFu
  * @returns Colorized status text
  */
 export function colorizeStatus(status: string, colorEnabled: boolean): string {
-  const { colorize } = getColorFunctions(colorEnabled);
-
-  switch (status) {
-    case 'todo':
-      return colorize(status, asChalkColor((asChalkColor((asChalkColor((asChalkColor('blue'))))))));
-    case 'in-progress':
-      return colorize(status, asChalkColor((asChalkColor((asChalkColor((asChalkColor('yellow'))))))));
-    case 'done':
-      return colorize(status, asChalkColor((asChalkColor((asChalkColor((asChalkColor('green'))))))));
-    default:
-      return status;
-  }
+    const { colorize } = getColorFunctions(colorEnabled);
+    switch (status) {
+        case 'todo':
+            return colorize(status, asChalkColor((asChalkColor((asChalkColor(('blue')))))));
+        case 'in-progress':
+            return colorize(status, asChalkColor((asChalkColor((asChalkColor(('yellow')))))));
+        case 'done':
+            return colorize(status, asChalkColor((asChalkColor((asChalkColor(('green')))))));
+        default:
+            return status;
+    }
 }
-
 /**
  * Colorize readiness text based on task readiness
  * @param readiness Task readiness
@@ -68,16 +62,15 @@ export function colorizeStatus(status: string, colorEnabled: boolean): string {
  * @returns Colorized readiness text
  */
 export function colorizeReadiness(readiness: string, colorEnabled: boolean): string {
-  const { colorize } = getColorFunctions(colorEnabled);
-
-  switch (readiness) {
-    case 'draft':
-      return colorize(readiness, asChalkColor((asChalkColor((asChalkColor((asChalkColor('gray'))))))));
-    case 'ready':
-      return colorize(readiness, asChalkColor((asChalkColor((asChalkColor((asChalkColor('green'))))))));
-    case 'blocked':
-      return colorize(readiness, asChalkColor((asChalkColor((asChalkColor((asChalkColor('red'))))))));
-    default:
-      return readiness;
-  }
+    const { colorize } = getColorFunctions(colorEnabled);
+    switch (readiness) {
+        case 'draft':
+            return colorize(readiness, asChalkColor((asChalkColor((asChalkColor(('gray')))))));
+        case 'ready':
+            return colorize(readiness, asChalkColor((asChalkColor((asChalkColor(('green')))))));
+        case 'blocked':
+            return colorize(readiness, asChalkColor((asChalkColor((asChalkColor(('red')))))));
+        default:
+            return readiness;
+    }
 }
