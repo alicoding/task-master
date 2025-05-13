@@ -53,7 +53,7 @@ export async function handleAutoMerge(
   // For very high similarity, do the merge
   if (score >= 0.8) {
     if (!jsonOutput) {
-      console.log(colorize(`│    🔄 Auto-merging with ${bestMatch.id} (${percentage}% similarity)`, asChalkColor((asChalkColor(('magenta' as ChalkColor))))));
+      console.log(colorize(`│    🔄 Auto-merging with ${bestMatch.id} (${percentage}% similarity)`, asChalkColor((asChalkColor((asChalkColor('magenta')))))));
     }
     
     if (!dryRun) {
@@ -90,12 +90,12 @@ export async function handleAutoMerge(
       });
 
       if (!jsonOutput) {
-        console.log(colorize(`│    ✓ Merged successfully with task ${bestMatch.id}`, asChalkColor((asChalkColor(('green' as ChalkColor))))));
+        console.log(colorize(`│    ✓ Merged successfully with task ${bestMatch.id}`, asChalkColor((asChalkColor((asChalkColor('green')))))));
         
         // Show what was merged
         if (combinedTags.length > bestMatch.tags.length) {
           const newTags = combinedTags.filter(t => !bestMatch.tags.includes(t));
-          console.log(colorize(`│      Added tags: ${newTags.join(', ')}`, asChalkColor((asChalkColor(('cyan' as ChalkColor))))));
+          console.log(colorize(`│      Added tags: ${newTags.join(', ')}`, asChalkColor((asChalkColor((asChalkColor('cyan')))))));
         }
       }
     } else {
@@ -106,13 +106,13 @@ export async function handleAutoMerge(
       });
 
       if (!jsonOutput) {
-        console.log(colorize(`│    ✓ Would auto-merge with task ${bestMatch.id}`, asChalkColor((asChalkColor(('magenta' as ChalkColor))))));
+        console.log(colorize(`│    ✓ Would auto-merge with task ${bestMatch.id}`, asChalkColor((asChalkColor((asChalkColor('magenta')))))));
       }
     }
   } else {
     // Similarity not high enough for auto-merge, create new task
     if (!jsonOutput) {
-      console.log(colorize(`│    ℹ Similarity below threshold for auto-merge (${percentage}% < 80%)`, asChalkColor((asChalkColor(('blue' as ChalkColor))))));
+      console.log(colorize(`│    ℹ Similarity below threshold for auto-merge (${percentage}% < 80%)`, asChalkColor((asChalkColor((asChalkColor('blue')))))));
     }
     await createNewTask(taskData, repo, results, options);
   }

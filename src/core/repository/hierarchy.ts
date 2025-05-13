@@ -123,7 +123,7 @@ export class TaskHierarchyRepository extends TaskCreationRepository {
     deletedTaskId: string
   ): Promise<TaskOperationResult<void>> {
     try {
-      if (!parentId || typeof parentId !== 'string') {
+      if (!parentId || typeof parent_id !== 'string') {
         return {
           success: false,
           error: new TaskError('Invalid parent ID', TaskErrorCode.INVALID_INPUT)

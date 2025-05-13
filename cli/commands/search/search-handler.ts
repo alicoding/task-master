@@ -298,22 +298,22 @@ function displaySearchExplanation(
 ): void {
   const { colorize } = getColorFunctions(!!useColor);
 
-  console.log(colorize('Search query analysis:', asChalkColor((asChalkColor((asChalkColor(('blue' as ChalkColor)))))), asChalkColor('bold')));
-  console.log(colorize(`Original query: "${query}"`, asChalkColor((asChalkColor((asChalkColor(('green' as ChalkColor))))))));
+  console.log(colorize('Search query analysis:', asChalkColor((asChalkColor((asChalkColor((asChalkColor('blue'))))))), asChalkColor('bold')));
+  console.log(colorize(`Original query: "${query}"`, asChalkColor((asChalkColor((asChalkColor((asChalkColor('green')))))))));
 
   if (extractedInfo.extractedTerms && extractedInfo.extractedTerms.length > 0) {
-    console.log(colorize('Extracted filters:', asChalkColor((asChalkColor((asChalkColor(('blue' as ChalkColor))))))));
+    console.log(colorize('Extracted filters:', asChalkColor((asChalkColor((asChalkColor((asChalkColor('blue')))))))));
     for (const term of extractedInfo.extractedTerms) {
-      console.log(`  - ${colorize(term, asChalkColor((asChalkColor((asChalkColor(('magenta' as ChalkColor)))))))}`);
+      console.log(`  - ${colorize(term, asChalkColor((asChalkColor((asChalkColor((asChalkColor('magenta'))))))))}`);
     }
   }
 
   if (extractedInfo.query !== query) {
-    console.log(colorize('Cleaned query: ', asChalkColor((asChalkColor((asChalkColor(('blue' as ChalkColor))))))) +
-                colorize(`"${extractedInfo.query}"`, asChalkColor((asChalkColor((asChalkColor(('green' as ChalkColor))))))));
+    console.log(colorize('Cleaned query: ', asChalkColor((asChalkColor((asChalkColor((asChalkColor('blue')))))))) +
+                colorize(`"${extractedInfo.query}"`, asChalkColor((asChalkColor((asChalkColor((asChalkColor('green')))))))));
   }
 
-  console.log(colorize(`Fuzzy matching: ${useFuzzy ? 'enabled' : 'disabled'}`, asChalkColor((asChalkColor((asChalkColor(('blue' as ChalkColor))))))));
+  console.log(colorize(`Fuzzy matching: ${useFuzzy ? 'enabled' : 'disabled'}`, asChalkColor((asChalkColor((asChalkColor((asChalkColor('blue')))))))));
 
   console.log(); // Empty line before results
 }
@@ -396,8 +396,8 @@ export async function performSimilaritySearch(
     return;
   }
   
-  console.log(colorize(`Tasks similar to "${options.similar}":\n`, asChalkColor((asChalkColor((asChalkColor(('blue' as ChalkColor)))))), asChalkColor('bold')));
-  console.log(colorize(`Fuzzy matching: ${useFuzzy ? 'enabled' : 'disabled'}`, asChalkColor((asChalkColor((asChalkColor(('blue' as ChalkColor))))))));
+  console.log(colorize(`Tasks similar to "${options.similar}":\n`, asChalkColor((asChalkColor((asChalkColor((asChalkColor('blue'))))))), asChalkColor('bold')));
+  console.log(colorize(`Fuzzy matching: ${useFuzzy ? 'enabled' : 'disabled'}`, asChalkColor((asChalkColor((asChalkColor((asChalkColor('blue')))))))));
   console.log('');
 
   similarTasks.forEach(task => {
@@ -414,12 +414,12 @@ export async function performSimilaritySearch(
     const bar = '█'.repeat(barLength);
 
     // Color the bar based on similarity
-    let barColor = asChalkColor((asChalkColor((asChalkColor(('red' as ChalkColor))))));
-    if (percentage >= 70) barColor = asChalkColor((asChalkColor((asChalkColor(('green' as ChalkColor))))));
-    else if (percentage >= 40) barColor = asChalkColor((asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
+    let barColor = asChalkColor((asChalkColor((asChalkColor((asChalkColor('red')))))));
+    if (percentage >= 70) barColor = asChalkColor((asChalkColor((asChalkColor((asChalkColor('green')))))));
+    else if (percentage >= 40) barColor = asChalkColor((asChalkColor((asChalkColor((asChalkColor('yellow')))))));
 
     console.log(`${task.id}. ${task.title}`);
-    console.log(`  ${colorize('Similarity: ', asChalkColor((asChalkColor((asChalkColor(('blue' as ChalkColor)))))))}${colorize(`${percentage}%`, barColor)} ${colorize(bar, barColor)}`);
+    console.log(`  ${colorize('Similarity: ', asChalkColor((asChalkColor((asChalkColor((asChalkColor('blue'))))))))}${colorize(`${percentage}%`, barColor)} ${colorize(bar, barColor)}`);
     console.log(`  Tags: ${task.tags?.join(', ') || 'none'}`);
     console.log(`  Status: ${task.status}, Readiness: ${task.readiness}`);
     console.log('');

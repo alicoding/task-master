@@ -23,7 +23,7 @@ export async function handleMarkAsDoneAction(
   const { dryRun, colorize } = options;
   
   if (dryRun) {
-    console.log(colorize('Would mark task as done (dry run).', asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
+    console.log(colorize('Would mark task as done (dry run).', asChalkColor((asChalkColor((asChalkColor('yellow')))))));
     results?.updated.push({
       id: task.id,
       title: task.title,
@@ -33,7 +33,7 @@ export async function handleMarkAsDoneAction(
     return;
   }
   
-  console.log(colorize('\nMarking task as done...', asChalkColor((asChalkColor(('green' as ChalkColor))))));
+  console.log(colorize('\nMarking task as done...', asChalkColor((asChalkColor((asChalkColor('green')))))));
   
   // Mark as done
   const updatedTask = await repo.updateTask({
@@ -43,5 +43,5 @@ export async function handleMarkAsDoneAction(
   });
   
   results?.updated.push(updatedTask);
-  console.log(colorize('✓ Task marked as done', asChalkColor((asChalkColor(('green' as ChalkColor)))), asChalkColor('bold')));
+  console.log(colorize('✓ Task marked as done', asChalkColor((asChalkColor((asChalkColor('green'))))), asChalkColor('bold')));
 }

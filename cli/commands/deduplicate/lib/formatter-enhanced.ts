@@ -15,7 +15,7 @@ import { DuplicateGroup, ColorizeFunction } from './utils';
  */
 function formatTags(tags: string[] | null, color: string, colorize: ColorizeFunction): string {
   if (!tags || tags.length === 0) {
-    return colorize('none', asChalkColor(('gray' as ChalkColor)));
+    return colorize('none', asChalkColor((asChalkColor('gray'))));
   }
   return tags.map(tag => colorize(tag, asChalkColor(color))).join(', ');
 }
@@ -25,8 +25,8 @@ export function displayDuplicateGroups(
   duplicateGroups: DuplicateGroup[],
   colorize: ColorizeFunction
 ) {
-  console.log(colorize(`\n🔍 Found ${duplicateGroups.length} potential duplicate groups`, asChalkColor('bold'), asChalkColor(('green' as ChalkColor))));
-  console.log(colorize(`   Showing top ${limitedGroups.length} groups sorted by similarity\n`, asChalkColor(('gray' as ChalkColor))));
+  console.log(colorize(`\n🔍 Found ${duplicateGroups.length} potential duplicate groups`, asChalkColor('bold'), asChalkColor((asChalkColor('green')))));
+  console.log(colorize(`   Showing top ${limitedGroups.length} groups sorted by similarity\n`, asChalkColor((asChalkColor('gray')))));
   
   for (let i = 0; i < limitedGroups.length; i++) {
     const group = limitedGroups[i];
@@ -63,7 +63,7 @@ export function displayDuplicateGroups(
     // Group header with visual elements
     console.log(
       colorize(`┌─ Group ${groupNumber} `, groupColor, asChalkColor('bold')) + 
-      colorize(groupIcon, asChalkColor(('white' as ChalkColor))) + ' ' +
+      colorize(groupIcon, asChalkColor((asChalkColor('white')))) + ' ' +
       colorize(groupLabel, groupColor, asChalkColor('bold')) + ' ' +
       colorize(`(${percentage}% similarity)`, groupColor)
     );
@@ -79,16 +79,16 @@ export function displayDuplicateGroups(
       // Show task with ID and status indicators
       console.log(
         colorize(`│ ${prefix} `, groupColor) + 
-        colorize(`[${taskIndex + 1}] `, asChalkColor('bold'), asChalkColor(('blue' as ChalkColor))) + 
-        colorize(`${task.id}: `, asChalkColor(('blue' as ChalkColor))) + 
+        colorize(`[${taskIndex + 1}] `, asChalkColor('bold'), asChalkColor((asChalkColor('blue')))) + 
+        colorize(`${task.id}: `, asChalkColor((asChalkColor('blue')))) + 
         task.title
       );
       
       // Show details with better formatting
       console.log(
         colorize('│    ', groupColor) + 
-        colorize(`Status: `, asChalkColor(('gray' as ChalkColor))) + colorizeStatus(task.status, colorize) +
-        colorize(` • Tags: `, asChalkColor(('gray' as ChalkColor))) + formatTags(task.tags, asChalkColor(('cyan' as ChalkColor)), colorize)
+        colorize(`Status: `, asChalkColor((asChalkColor('gray')))) + colorizeStatus(task.status, colorize) +
+        colorize(` • Tags: `, asChalkColor((asChalkColor('gray')))) + formatTags(task.tags, asChalkColor((asChalkColor('cyan'))), colorize)
       );
       
       // Show similarity to other tasks in this group
@@ -99,16 +99,16 @@ export function displayDuplicateGroups(
           .sort((a, b) => b[1] - a[1]) // Sort by similarity (highest first)
           .map(([idx, sim]) => {
             const simPercentage = Math.round(sim * 100);
-            let simColor = (asChalkColor(('green' as ChalkColor)));
-            if (simPercentage >= 90) simColor = (asChalkColor(('red' as ChalkColor)));
-            else if (simPercentage >= 70) simColor = (asChalkColor(('yellow' as ChalkColor)));
-            return `${colorize(`[${idx + 1}]`, asChalkColor(('blue' as ChalkColor)))}: ${colorize(`${simPercentage}%`, simColor)}`;
+            let simColor = (asChalkColor((asChalkColor('green'))));
+            if (simPercentage >= 90) simColor = (asChalkColor((asChalkColor('red'))));
+            else if (simPercentage >= 70) simColor = (asChalkColor((asChalkColor('yellow'))));
+            return `${colorize(`[${idx + 1}]`, asChalkColor((asChalkColor('blue'))))}: ${colorize(`${simPercentage}%`, simColor)}`;
           });
         
         if (similarities.length > 0) {
           console.log(
             colorize('│    ', groupColor) + 
-            colorize('Similar to: ', asChalkColor(('gray' as ChalkColor))) + 
+            colorize('Similar to: ', asChalkColor((asChalkColor('gray')))) + 
             similarities.join('  ')
           );
         }
@@ -119,8 +119,8 @@ export function displayDuplicateGroups(
       const updatedDate = new Date(task.updatedAt).toLocaleString();
       console.log(
         colorize('│    ', groupColor) + 
-        colorize('Created: ', asChalkColor(('gray' as ChalkColor))) + createdDate + 
-        colorize(' • Updated: ', asChalkColor(('gray' as ChalkColor))) + updatedDate
+        colorize('Created: ', asChalkColor((asChalkColor('gray')))) + createdDate + 
+        colorize(' • Updated: ', asChalkColor((asChalkColor('gray')))) + updatedDate
       );
     });
     
@@ -128,14 +128,14 @@ export function displayDuplicateGroups(
     if (group.maxSimilarity >= 0.8) {
       console.log(
         colorize('│ ', groupColor) + 
-        colorize('⚠️  Recommendation: ', asChalkColor('bold'), asChalkColor(('red' as ChalkColor))) + 
-        colorize('These tasks should be merged', asChalkColor(('red' as ChalkColor)))
+        colorize('⚠️  Recommendation: ', asChalkColor('bold'), asChalkColor((asChalkColor('red')))) + 
+        colorize('These tasks should be merged', asChalkColor((asChalkColor('red'))))
       );
     } else if (group.maxSimilarity >= 0.6) {
       console.log(
         colorize('│ ', groupColor) + 
-        colorize('ℹ️  Recommendation: ', asChalkColor('bold'), asChalkColor(('yellow' as ChalkColor))) + 
-        colorize('Review these tasks - they may be related or duplicates', asChalkColor(('yellow' as ChalkColor)))
+        colorize('ℹ️  Recommendation: ', asChalkColor('bold'), asChalkColor((asChalkColor('yellow')))) + 
+        colorize('Review these tasks - they may be related or duplicates', asChalkColor((asChalkColor('yellow'))))
       );
     }
     
@@ -178,9 +178,9 @@ export function displayDetailedGroupView(
   console.log(colorize(`└${'─'.repeat(78)}┘`, groupColor));
   
   // Tasks overview section
-  console.log(colorize(`\n● TASKS OVERVIEW (${selectedGroup.tasks.length} tasks)`, asChalkColor('bold'), asChalkColor(('blue' as ChalkColor))));
-  console.log(colorize('  ID           Title                                     Status      Updated', asChalkColor(('gray' as ChalkColor))));
-  console.log(colorize('  ─────────────────────────────────────────────────────────────────────────────', asChalkColor(('gray' as ChalkColor))));
+  console.log(colorize(`\n● TASKS OVERVIEW (${selectedGroup.tasks.length} tasks)`, asChalkColor('bold'), asChalkColor((asChalkColor('blue')))));
+  console.log(colorize('  ID           Title                                     Status      Updated', asChalkColor((asChalkColor('gray')))));
+  console.log(colorize('  ─────────────────────────────────────────────────────────────────────────────', asChalkColor((asChalkColor('gray')))));
   
   for (let i = 0; i < selectedGroup.tasks.length; i++) {
     const task = selectedGroup.tasks[i];
@@ -190,8 +190,8 @@ export function displayDetailedGroupView(
     const title = task.title.length > 40 ? task.title.substring(0, 37) + '...' : task.title;
     
     console.log(
-      `  ${colorize(taskNum.padEnd(4), asChalkColor('bold'), asChalkColor(('blue' as ChalkColor)))}` +
-      `${colorize(task.id.padEnd(10), asChalkColor(('blue' as ChalkColor)))}` +
+      `  ${colorize(taskNum.padEnd(4), asChalkColor('bold'), asChalkColor((asChalkColor('blue'))))}` +
+      `${colorize(task.id.padEnd(10), asChalkColor((asChalkColor('blue'))))}` +
       `${title.padEnd(40)}` +
       `${colorizeStatus(task.status, colorize).padEnd(12)}` +
       `${updatedDate}`
@@ -199,23 +199,23 @@ export function displayDetailedGroupView(
   }
   
   // Similarity matrix section
-  console.log(colorize('\n● SIMILARITY MATRIX', asChalkColor('bold'), asChalkColor(('blue' as ChalkColor))));
+  console.log(colorize('\n● SIMILARITY MATRIX', asChalkColor('bold'), asChalkColor((asChalkColor('blue')))));
   
   // Column headers
-  process.stdout.write(colorize('      ', asChalkColor(('gray' as ChalkColor))));
+  process.stdout.write(colorize('      ', asChalkColor((asChalkColor('gray')))));
   for (let i = 0; i < selectedGroup.tasks.length; i++) {
-    process.stdout.write(colorize(`  [${i + 1}]`, asChalkColor('bold'), asChalkColor(('blue' as ChalkColor))));
+    process.stdout.write(colorize(`  [${i + 1}]`, asChalkColor('bold'), asChalkColor((asChalkColor('blue')))));
   }
   console.log();
   
   // Matrix rows
   for (let i = 0; i < selectedGroup.tasks.length; i++) {
-    process.stdout.write(colorize(`  [${i + 1}]`, asChalkColor('bold'), asChalkColor(('blue' as ChalkColor))));
+    process.stdout.write(colorize(`  [${i + 1}]`, asChalkColor('bold'), asChalkColor((asChalkColor('blue')))));
     
     for (let j = 0; j < selectedGroup.tasks.length; j++) {
       const sim = selectedGroup.similarityMatrix[i][j];
       if (i === j) {
-        process.stdout.write(colorize('   -  ', asChalkColor(('gray' as ChalkColor))));
+        process.stdout.write(colorize('   -  ', asChalkColor((asChalkColor('gray')))));
       } else {
         const percentage = Math.round(sim * 100);
         let simColor = 'green';
@@ -233,15 +233,15 @@ export function displayDetailedGroupView(
   }
   
   // Detailed tasks section
-  console.log(colorize('\n● DETAILED TASK INFORMATION', asChalkColor('bold'), asChalkColor(('blue' as ChalkColor))));
+  console.log(colorize('\n● DETAILED TASK INFORMATION', asChalkColor('bold'), asChalkColor((asChalkColor('blue')))));
   
   for (let i = 0; i < selectedGroup.tasks.length; i++) {
     const task = selectedGroup.tasks[i];
     
-    console.log(colorize(`  ┌ Task [${i + 1}] ${task.id}`, asChalkColor('bold'), asChalkColor(('blue' as ChalkColor))));
+    console.log(colorize(`  ┌ Task [${i + 1}] ${task.id}`, asChalkColor('bold'), asChalkColor((asChalkColor('blue')))));
     console.log(`  │ Title: ${task.title}`);
     console.log(`  │ Status: ${colorizeStatus(task.status, colorize)}, Readiness: ${colorizeReadiness(task.readiness, colorize)}`);
-    console.log(`  │ Tags: ${formatTags(task.tags, asChalkColor(('cyan' as ChalkColor)), colorize)}`);
+    console.log(`  │ Tags: ${formatTags(task.tags, asChalkColor((asChalkColor('cyan'))), colorize)}`);
     console.log(`  │ Created: ${new Date(task.createdAt).toLocaleString()}`);
     console.log(`  │ Updated: ${new Date(task.updatedAt).toLocaleString()}`);
     
@@ -254,7 +254,7 @@ export function displayDetailedGroupView(
       if (Object.keys(cleanMetadata).length > 0) {
         console.log(`  │ Metadata:`);
         for (const [key, value] of Object.entries(cleanMetadata)) {
-          console.log(`  │   ${colorize(key, asChalkColor(('gray' as ChalkColor)))}: ${JSON.stringify(value)}`);
+          console.log(`  │   ${colorize(key, asChalkColor((asChalkColor('gray'))))}: ${JSON.stringify(value)}`);
         }
       }
     }
@@ -286,12 +286,12 @@ export function displayDetailedGroupView(
           `  │   To [${idx + 1}]: ` +
           colorize(`${percentage}%`, simColor) + ' ' +
           colorize(bar, simColor) + ' ' +
-          colorize(`"${otherTask.title.substring(0, 40)}${otherTask.title.length > 40 ? '...' : ''}"`, asChalkColor(('gray' as ChalkColor)))
+          colorize(`"${otherTask.title.substring(0, 40)}${otherTask.title.length > 40 ? '...' : ''}"`, asChalkColor((asChalkColor('gray'))))
         );
       }
     }
     
-    console.log(colorize('  └' + '─'.repeat(60), asChalkColor(('blue' as ChalkColor))));
+    console.log(colorize('  └' + '─'.repeat(60), asChalkColor((asChalkColor('blue')))));
     console.log(); // Empty line between tasks
   }
 }
@@ -300,53 +300,53 @@ export function displayDetailedGroupView(
  * Display interactive mode help with enhanced formatting
  */
 export function displayInteractiveHelp(colorize: ColorizeFunction) {
-  console.log(colorize('\n┌' + '─'.repeat(60) + '┐', asChalkColor(('cyan' as ChalkColor))));
-  console.log(colorize('│ DEDUPLICATION INTERACTIVE MODE', asChalkColor('bold'), asChalkColor(('cyan' as ChalkColor))) + colorize(' '.repeat(34) + '│', asChalkColor(('cyan' as ChalkColor))));
-  console.log(colorize('└' + '─'.repeat(60) + '┘', asChalkColor(('cyan' as ChalkColor))));
+  console.log(colorize('\n┌' + '─'.repeat(60) + '┐', asChalkColor((asChalkColor('cyan')))));
+  console.log(colorize('│ DEDUPLICATION INTERACTIVE MODE', asChalkColor('bold'), asChalkColor((asChalkColor('cyan')))) + colorize(' '.repeat(34) + '│', asChalkColor((asChalkColor('cyan')))));
+  console.log(colorize('└' + '─'.repeat(60) + '┘', asChalkColor((asChalkColor('cyan')))));
   
-  console.log(colorize('\nAvailable Commands:', asChalkColor('bold'), asChalkColor(('cyan' as ChalkColor))));
+  console.log(colorize('\nAvailable Commands:', asChalkColor('bold'), asChalkColor((asChalkColor('cyan')))));
   
   // Format commands in a more organized way
   console.log(
-    colorize('  m <group>  ', asChalkColor('bold'), asChalkColor(('green' as ChalkColor))) + 
+    colorize('  m <group>  ', asChalkColor('bold'), asChalkColor((asChalkColor('green')))) + 
     'Merge tasks in a specific group (e.g., ' + 
-    colorize('m 1', asChalkColor(('green' as ChalkColor))) + 
+    colorize('m 1', asChalkColor((asChalkColor('green')))) + 
     ' to merge group 1)'
   );
   
   console.log(
-    colorize('  v <group>  ', asChalkColor('bold'), asChalkColor(('blue' as ChalkColor))) + 
+    colorize('  v <group>  ', asChalkColor('bold'), asChalkColor((asChalkColor('blue')))) + 
     'View detailed information about a group (e.g., ' + 
-    colorize('v 2', asChalkColor(('blue' as ChalkColor))) + 
+    colorize('v 2', asChalkColor((asChalkColor('blue')))) + 
     ' to view group 2)'
   );
   
   console.log(
-    colorize('  c <number> ', asChalkColor('bold'), asChalkColor(('magenta' as ChalkColor))) + 
+    colorize('  c <number> ', asChalkColor('bold'), asChalkColor((asChalkColor('magenta')))) + 
     'Compare specific tasks (e.g., ' + 
-    colorize('c 1 2', asChalkColor(('magenta' as ChalkColor))) + 
+    colorize('c 1 2', asChalkColor((asChalkColor('magenta')))) + 
     ' to compare tasks 1 and 2)'
   );
   
   console.log(
-    colorize('  s <number> ', asChalkColor('bold'), asChalkColor(('yellow' as ChalkColor))) + 
+    colorize('  s <number> ', asChalkColor('bold'), asChalkColor((asChalkColor('yellow')))) + 
     'Show a specific task in detail (e.g., ' + 
-    colorize('s 3', asChalkColor(('yellow' as ChalkColor))) + 
+    colorize('s 3', asChalkColor((asChalkColor('yellow')))) + 
     ' to show task 3)'
   );
   
   console.log(
-    colorize('  r         ', asChalkColor('bold'), asChalkColor(('cyan' as ChalkColor))) + 
+    colorize('  r         ', asChalkColor('bold'), asChalkColor((asChalkColor('cyan')))) + 
     'Refresh the list of duplicates'
   );
   
   console.log(
-    colorize('  h         ', asChalkColor('bold'), asChalkColor(('gray' as ChalkColor))) + 
+    colorize('  h         ', asChalkColor('bold'), asChalkColor((asChalkColor('gray')))) + 
     'Show this help message'
   );
   
   console.log(
-    colorize('  q         ', asChalkColor('bold'), asChalkColor(('red' as ChalkColor))) + 
+    colorize('  q         ', asChalkColor('bold'), asChalkColor((asChalkColor('red')))) + 
     'Quit deduplication tool'
   );
 }
@@ -357,11 +357,11 @@ export function displayInteractiveHelp(colorize: ColorizeFunction) {
 function colorizeStatus(status: string, colorize: ColorizeFunction): string {
   switch (status) {
     case 'todo':
-      return colorize(status, asChalkColor(('yellow' as ChalkColor)));
+      return colorize(status, asChalkColor((asChalkColor('yellow'))));
     case 'in-progress':
-      return colorize(status, asChalkColor(('blue' as ChalkColor)));
+      return colorize(status, asChalkColor((asChalkColor('blue'))));
     case 'done':
-      return colorize(status, asChalkColor(('green' as ChalkColor)));
+      return colorize(status, asChalkColor((asChalkColor('green'))));
     default:
       return status;
   }
@@ -373,11 +373,11 @@ function colorizeStatus(status: string, colorize: ColorizeFunction): string {
 function colorizeReadiness(readiness: string, colorize: ColorizeFunction): string {
   switch (readiness) {
     case 'draft':
-      return colorize(readiness, asChalkColor(('yellow' as ChalkColor)));
+      return colorize(readiness, asChalkColor((asChalkColor('yellow'))));
     case 'ready':
-      return colorize(readiness, asChalkColor(('green' as ChalkColor)));
+      return colorize(readiness, asChalkColor((asChalkColor('green'))));
     case 'blocked':
-      return colorize(readiness, asChalkColor(('red' as ChalkColor)));
+      return colorize(readiness, asChalkColor((asChalkColor('red'))));
     default:
       return readiness;
   }
@@ -394,7 +394,7 @@ export function displayTaskComparison(
 ) {
   // Validate task indices
   if (task1 < 0 || task1 >= group.tasks.length || task2 < 0 || task2 >= group.tasks.length) {
-    console.log(colorize('Invalid task indices for comparison.', asChalkColor(('red' as ChalkColor))));
+    console.log(colorize('Invalid task indices for comparison.', asChalkColor((asChalkColor('red')))));
     return;
   }
   
@@ -420,10 +420,10 @@ export function displayTaskComparison(
   
   // IDs and titles
   console.log(
-    colorize(`[${task1 + 1}] ${taskA.id}`, asChalkColor('bold'), asChalkColor(('blue' as ChalkColor))) + 
+    colorize(`[${task1 + 1}] ${taskA.id}`, asChalkColor('bold'), asChalkColor((asChalkColor('blue')))) + 
     ' '.repeat(Math.max(1, 40 - taskA.id.length - String(task1 + 1).length)) + 
     '│ ' + 
-    colorize(`[${task2 + 1}] ${taskB.id}`, asChalkColor('bold'), asChalkColor(('blue' as ChalkColor)))
+    colorize(`[${task2 + 1}] ${taskB.id}`, asChalkColor('bold'), asChalkColor((asChalkColor('blue'))))
   );
   
   // Split titles into multiple lines if needed
@@ -455,9 +455,9 @@ export function displayTaskComparison(
   );
   
   // Tags
-  const tags1 = formatTags(taskA.tags, asChalkColor(('cyan' as ChalkColor)), colorize);
+  const tags1 = formatTags(taskA.tags, asChalkColor((asChalkColor('cyan'))), colorize);
 
-  const tags2 = formatTags(taskB.tags, asChalkColor(('cyan' as ChalkColor)), colorize);
+  const tags2 = formatTags(taskB.tags, asChalkColor((asChalkColor('cyan'))), colorize);
   
   // Split tags into multiple lines if needed
   const tags1Lines = splitString(tags1, 33);  // Accounting for "Tags: " prefix
@@ -498,15 +498,15 @@ export function displayTaskComparison(
   
   // Recommendation
   if (percentage >= 90) {
-    console.log(colorize('\n⚠️  RECOMMENDATION: These tasks are almost certainly duplicates and should be merged.', asChalkColor('bold'), asChalkColor(('red' as ChalkColor))));
+    console.log(colorize('\n⚠️  RECOMMENDATION: These tasks are almost certainly duplicates and should be merged.', asChalkColor('bold'), asChalkColor((asChalkColor('red')))));
   } else if (percentage >= 80) {
-    console.log(colorize('\n⚠️  RECOMMENDATION: These tasks are likely duplicates and should be merged.', asChalkColor(('red' as ChalkColor))));
+    console.log(colorize('\n⚠️  RECOMMENDATION: These tasks are likely duplicates and should be merged.', asChalkColor((asChalkColor('red')))));
   } else if (percentage >= 70) {
-    console.log(colorize('\nℹ️  RECOMMENDATION: These tasks are very similar and should be reviewed for potential duplication.', asChalkColor(('magenta' as ChalkColor))));
+    console.log(colorize('\nℹ️  RECOMMENDATION: These tasks are very similar and should be reviewed for potential duplication.', asChalkColor((asChalkColor('magenta')))));
   } else if (percentage >= 50) {
-    console.log(colorize('\nℹ️  RECOMMENDATION: These tasks are moderately similar and may be related.', asChalkColor(('yellow' as ChalkColor))));
+    console.log(colorize('\nℹ️  RECOMMENDATION: These tasks are moderately similar and may be related.', asChalkColor((asChalkColor('yellow')))));
   } else {
-    console.log(colorize('\nℹ️  These tasks show only minor similarity.', asChalkColor(('green' as ChalkColor))));
+    console.log(colorize('\nℹ️  These tasks show only minor similarity.', asChalkColor((asChalkColor('green')))));
   }
 }
 
@@ -520,26 +520,26 @@ export function displayTaskDetail(
 ) {
   // Validate task index
   if (taskIndex < 0 || taskIndex >= group.tasks.length) {
-    console.log(colorize('Invalid task index.', asChalkColor(('red' as ChalkColor))));
+    console.log(colorize('Invalid task index.', asChalkColor((asChalkColor('red')))));
     return;
   }
   
   const task = group.tasks[taskIndex];
   
   // Header
-  console.log(colorize(`\n┌${'─'.repeat(78)}┐`, asChalkColor(('yellow' as ChalkColor))));
-  console.log(colorize(`│ TASK DETAILS - [${taskIndex + 1}] ${task.id} ${' '.repeat(78 - 16 - task.id.length - String(taskIndex + 1).length)}│`, asChalkColor('bold'), asChalkColor(('yellow' as ChalkColor))));
-  console.log(colorize(`└${'─'.repeat(78)}┘`, asChalkColor(('yellow' as ChalkColor))));
+  console.log(colorize(`\n┌${'─'.repeat(78)}┐`, asChalkColor((asChalkColor('yellow')))));
+  console.log(colorize(`│ TASK DETAILS - [${taskIndex + 1}] ${task.id} ${' '.repeat(78 - 16 - task.id.length - String(taskIndex + 1).length)}│`, asChalkColor('bold'), asChalkColor((asChalkColor('yellow')))));
+  console.log(colorize(`└${'─'.repeat(78)}┘`, asChalkColor((asChalkColor('yellow')))));
   
   // Title section
-  console.log(colorize('\n● TITLE', asChalkColor('bold'), asChalkColor(('blue' as ChalkColor))));
+  console.log(colorize('\n● TITLE', asChalkColor('bold'), asChalkColor((asChalkColor('blue')))));
   console.log(task.title);
   
   // Basic info section
-  console.log(colorize('\n● BASIC INFORMATION', asChalkColor('bold'), asChalkColor(('blue' as ChalkColor))));
+  console.log(colorize('\n● BASIC INFORMATION', asChalkColor('bold'), asChalkColor((asChalkColor('blue')))));
   console.log(`Status: ${colorizeStatus(task.status, colorize)}`);
   console.log(`Readiness: ${colorizeReadiness(task.readiness, colorize)}`);
-  console.log(`Tags: ${formatTags(task.tags, asChalkColor(('cyan' as ChalkColor)), colorize)}`);
+  console.log(`Tags: ${formatTags(task.tags, asChalkColor((asChalkColor('cyan'))), colorize)}`);
   console.log(`Created: ${new Date(task.createdAt).toLocaleString()}`);
   console.log(`Updated: ${new Date(task.updatedAt).toLocaleString()}`);
   
@@ -550,15 +550,15 @@ export function displayTaskDetail(
     delete cleanMetadata.similarityScore;
     
     if (Object.keys(cleanMetadata).length > 0) {
-      console.log(colorize('\n● METADATA', asChalkColor('bold'), asChalkColor(('blue' as ChalkColor))));
+      console.log(colorize('\n● METADATA', asChalkColor('bold'), asChalkColor((asChalkColor('blue')))));
       for (const [key, value] of Object.entries(cleanMetadata)) {
-        console.log(`${colorize(key, asChalkColor(('cyan' as ChalkColor)))}: ${JSON.stringify(value, null, 2)}`);
+        console.log(`${colorize(key, asChalkColor((asChalkColor('cyan'))))}: ${JSON.stringify(value, null, 2)}`);
       }
     }
   }
   
   // Similarity section
-  console.log(colorize('\n● SIMILARITY TO OTHER TASKS', asChalkColor('bold'), asChalkColor(('blue' as ChalkColor))));
+  console.log(colorize('\n● SIMILARITY TO OTHER TASKS', asChalkColor('bold'), asChalkColor((asChalkColor('blue')))));
   
   const similarities = group.similarityMatrix[taskIndex]
     .map((sim, idx) => idx !== taskIndex ? { idx, sim } : null)
@@ -581,14 +581,14 @@ export function displayTaskDetail(
       const bar = '█'.repeat(barLength) + '░'.repeat(20 - barLength);
       
       console.log(
-        colorize(`[${idx + 1}] ${otherTask.id}:`, asChalkColor(('blue' as ChalkColor))) + ' ' +
+        colorize(`[${idx + 1}] ${otherTask.id}:`, asChalkColor((asChalkColor('blue')))) + ' ' +
         colorize(`${percentage}%`, simColor) + ' ' +
         colorize(bar, simColor) + ' ' +
         otherTask.title.substring(0, 30) + (otherTask.title.length > 30 ? '...' : '')
       );
     }
   } else {
-    console.log(colorize('No other tasks in this group to compare with.', asChalkColor(('gray' as ChalkColor))));
+    console.log(colorize('No other tasks in this group to compare with.', asChalkColor((asChalkColor('gray')))));
   }
 }
 

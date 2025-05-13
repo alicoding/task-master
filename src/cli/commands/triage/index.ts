@@ -39,10 +39,10 @@ export function createTriageCommand() {
     .option('--format <format>', 'Output format (text, json)', 'text')
     .option('--auto-merge', 'Automatically suggest merges for similar tasks')
     .option('--no-color', 'Disable colored output')
-    .option('--sort-by <field>', 'Sort tasks by field (status, readiness, created, updated, id)', 'status')
-    .option('--filter-status <status>', 'Filter tasks by status (todo, in-progress, done)')
-    .option('--filter-readiness <readiness>', 'Filter tasks by readiness (draft, ready, blocked)')
-    .option('--filter-tags <tags>', 'Filter tasks by tags (comma-separated)');
+    .option('--sort-by <field>', (asChalkColor('Sort tasks by field (status, readiness, created, updated, id)')), 'status')
+    .option('--filter-status <status>', (asChalkColor('Filter tasks by status (todo, in-progress, done)')))
+    .option('--filter-readiness <readiness>', (asChalkColor('Filter tasks by readiness (draft, ready, blocked)')))
+    .option('--filter-tags <tags>', (asChalkColor('Filter tasks by tags (comma-separated)')));
 
   // Enhance help with examples and additional information
   helpFormatter.enhanceHelp(triageCommand, {

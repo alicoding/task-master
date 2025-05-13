@@ -20,7 +20,7 @@ export async function promptForAction(
   });
   
   const action = await new Promise<string>(resolve => {
-    rl.question(colorize('Choose an action: ', asChalkColor((asChalkColor(('cyan' as ChalkColor))))), resolve);
+    rl.question(colorize('Choose an action: ', asChalkColor((asChalkColor((asChalkColor('cyan')))))), resolve);
   });
   
   rl.close();

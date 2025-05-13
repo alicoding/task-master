@@ -28,12 +28,12 @@ export async function processPlanWithEnhancedUI(
   const { dryRun, colorize, jsonOutput } = options;
   
   if (!jsonOutput) {
-    console.log(colorize(`\n┌─ Processing Batch of ${tasks.length} Tasks`, asChalkColor((asChalkColor(('blue' as ChalkColor)))), asChalkColor('bold')));
-    console.log(colorize('│', asChalkColor((asChalkColor(('blue' as ChalkColor))))));
+    console.log(colorize(`\n┌─ Processing Batch of ${tasks.length} Tasks`, asChalkColor((asChalkColor((asChalkColor('blue'))))), asChalkColor('bold')));
+    console.log(colorize('│', asChalkColor((asChalkColor((asChalkColor('blue')))))));
     
     if (dryRun) {
-      console.log(colorize('│ DRY RUN MODE - No changes will be made', asChalkColor((asChalkColor(('yellow' as ChalkColor)))), asChalkColor('bold')));
-      console.log(colorize('│', asChalkColor((asChalkColor(('blue' as ChalkColor))))));
+      console.log(colorize('│ DRY RUN MODE - No changes will be made', asChalkColor((asChalkColor((asChalkColor('yellow'))))), asChalkColor('bold')));
+      console.log(colorize('│', asChalkColor((asChalkColor((asChalkColor('blue')))))));
     }
   }
   
@@ -46,7 +46,7 @@ export async function processPlanWithEnhancedUI(
   
   // First process updates
   if (updateTasks.length > 0 && !jsonOutput) {
-    console.log(colorize(`├─ Processing ${updateTasks.length} Updates`, asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
+    console.log(colorize(`├─ Processing ${updateTasks.length} Updates`, asChalkColor((asChalkColor((asChalkColor('yellow')))))));
   }
   
   for (const task of updateTasks) {
@@ -54,13 +54,13 @@ export async function processPlanWithEnhancedUI(
     totalProcessed++;
     
     if (!jsonOutput && !options.autoMerge) {
-      console.log(colorize(`│  Progress: ${totalProcessed}/${tasks.length} (${Math.round(totalProcessed/tasks.length*100)}%)`, asChalkColor((asChalkColor(('gray' as ChalkColor))))));
+      console.log(colorize(`│  Progress: ${totalProcessed}/${tasks.length} (${Math.round(totalProcessed/tasks.length*100)}%)`, asChalkColor((asChalkColor((asChalkColor('gray')))))));
     }
   }
   
   // Then process creates
   if (createTasks.length > 0 && !jsonOutput) {
-    console.log(colorize(`├─ Processing ${createTasks.length} New Tasks`, asChalkColor((asChalkColor(('green' as ChalkColor))))));
+    console.log(colorize(`├─ Processing ${createTasks.length} New Tasks`, asChalkColor((asChalkColor((asChalkColor('green')))))));
   }
   
   for (const task of createTasks) {
@@ -68,12 +68,12 @@ export async function processPlanWithEnhancedUI(
     totalProcessed++;
     
     if (!jsonOutput && !options.autoMerge) {
-      console.log(colorize(`│  Progress: ${totalProcessed}/${tasks.length} (${Math.round(totalProcessed/tasks.length*100)}%)`, asChalkColor((asChalkColor(('gray' as ChalkColor))))));
+      console.log(colorize(`│  Progress: ${totalProcessed}/${tasks.length} (${Math.round(totalProcessed/tasks.length*100)}%)`, asChalkColor((asChalkColor((asChalkColor('gray')))))));
     }
   }
   
   if (!jsonOutput) {
-    console.log(colorize('│', asChalkColor((asChalkColor(('blue' as ChalkColor))))));
-    console.log(colorize('└─ Batch Processing Complete', asChalkColor((asChalkColor(('blue' as ChalkColor)))), asChalkColor('bold')));
+    console.log(colorize('│', asChalkColor((asChalkColor((asChalkColor('blue')))))));
+    console.log(colorize('└─ Batch Processing Complete', asChalkColor((asChalkColor((asChalkColor('blue'))))), asChalkColor('bold')));
   }
 }

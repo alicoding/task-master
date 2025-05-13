@@ -37,8 +37,8 @@ export function createDeduplicateCommand() {
     .option('--auto-merge', 'Automatically suggest merges for highly similar tasks')
     .option('--interactive', 'Run in interactive mode with enhanced UI')
     .option('--no-color', 'Disable colored output')
-    .option('--json', 'Output results in JSON format')
-    .option('--dry-run', 'Show duplicates without taking action')
+    .option('--json', (asChalkColor('Output results in JSON format')))
+    .option('--dry-run', (asChalkColor('Show duplicates without taking action')))
     
   // Enhance help with examples and additional information
   helpFormatter.enhanceHelp(deduplicateCommand, {

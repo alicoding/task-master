@@ -25,7 +25,7 @@ export async function handleToggleBlockedAction(
   const { dryRun, colorize } = options;
   
   if (dryRun) {
-    console.log(colorize('Would toggle blocked status (dry run).', asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
+    console.log(colorize('Would toggle blocked status (dry run).', asChalkColor((asChalkColor((asChalkColor('yellow')))))));
     results?.updated.push({
       id: task.id,
       title: task.title,
@@ -38,7 +38,7 @@ export async function handleToggleBlockedAction(
   // Determine new readiness based on current value
   const newReadiness: TaskReadiness = task.readiness === 'blocked' ? 'ready' : 'blocked';
   
-  console.log(colorize(`\nToggling task from ${colorizeReadiness(task.readiness as string, colorize)} to ${colorizeReadiness(newReadiness, colorize)}...`, asChalkColor((asChalkColor(('magenta' as ChalkColor))))));
+  console.log(colorize(`\nToggling task from ${colorizeReadiness(task.readiness as string, colorize)} to ${colorizeReadiness(newReadiness, colorize)}...`, asChalkColor((asChalkColor((asChalkColor('magenta')))))));
   
   // For tasks being blocked, optionally add a reason
   let metadata = undefined;
@@ -50,7 +50,7 @@ export async function handleToggleBlockedAction(
     });
     
     const blockedReason = await new Promise<string>(resolve => {
-      rl.question(colorize('Enter reason for blocking (optional): ', asChalkColor((asChalkColor(('magenta' as ChalkColor))))), resolve);
+      rl.question(colorize('Enter reason for blocking (optional): ', asChalkColor((asChalkColor((asChalkColor('magenta')))))), resolve);
     });
     
     rl.close();
@@ -79,8 +79,8 @@ export async function handleToggleBlockedAction(
   results?.updated.push(updatedTask);
   
   if (newReadiness === 'blocked') {
-    console.log(colorize('✓ Task marked as blocked', asChalkColor((asChalkColor(('red' as ChalkColor)))), asChalkColor('bold')));
+    console.log(colorize('✓ Task marked as blocked', asChalkColor((asChalkColor((asChalkColor('red'))))), asChalkColor('bold')));
   } else {
-    console.log(colorize('✓ Task unblocked', asChalkColor((asChalkColor(('green' as ChalkColor)))), asChalkColor('bold')));
+    console.log(colorize('✓ Task unblocked', asChalkColor((asChalkColor((asChalkColor('green'))))), asChalkColor('bold')));
   }
 }

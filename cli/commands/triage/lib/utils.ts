@@ -16,11 +16,11 @@ export type ChalkStyle = 'bold' | 'italic' | 'underline' | 'dim';
 export function colorizeStatus(status: string, colorize: (text: string, color?: ChalkColor, style?: ChalkStyle) => string): string {
   switch (status) {
     case 'todo':
-      return colorize(status, asChalkColor((asChalkColor(('blue' as ChalkColor)))));
+      return colorize(status, asChalkColor((asChalkColor((asChalkColor('blue'))))));
     case 'in-progress':
-      return colorize(status, asChalkColor((asChalkColor(('yellow' as ChalkColor)))));
+      return colorize(status, asChalkColor((asChalkColor((asChalkColor('yellow'))))));
     case 'done':
-      return colorize(status, asChalkColor((asChalkColor(('green' as ChalkColor)))));
+      return colorize(status, asChalkColor((asChalkColor((asChalkColor('green'))))));
     default:
       return status;
   }
@@ -35,11 +35,11 @@ export function colorizeStatus(status: string, colorize: (text: string, color?: 
 export function colorizeReadiness(readiness: string, colorize: (text: string, color?: ChalkColor, style?: ChalkStyle) => string): string {
   switch (readiness) {
     case 'draft':
-      return colorize(readiness, asChalkColor((asChalkColor(('gray' as ChalkColor)))));
+      return colorize(readiness, asChalkColor((asChalkColor((asChalkColor('gray'))))));
     case 'ready':
-      return colorize(readiness, asChalkColor((asChalkColor(('green' as ChalkColor)))));
+      return colorize(readiness, asChalkColor((asChalkColor((asChalkColor('green'))))));
     case 'blocked':
-      return colorize(readiness, asChalkColor((asChalkColor(('red' as ChalkColor)))));
+      return colorize(readiness, asChalkColor((asChalkColor((asChalkColor('red'))))));
     default:
       return readiness;
   }

@@ -35,9 +35,9 @@ export async function processPlanTask(
     if (!jsonOutput) {
       // Show task being processed
       if (isUpdate) {
-        console.log(colorize(`│  → Updating task ${taskData.id}: "${taskData.title || '[No title update]'}"`, asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
+        console.log(colorize(`│  → Updating task ${taskData.id}: "${taskData.title || '[No title update]'}"`, asChalkColor((asChalkColor((asChalkColor('yellow')))))));
       } else {
-        console.log(colorize(`│  → Creating task: "${taskData.title}"`, asChalkColor((asChalkColor(('green' as ChalkColor))))));
+        console.log(colorize(`│  → Creating task: "${taskData.title}"`, asChalkColor((asChalkColor((asChalkColor('green')))))));
       }
     }
 
@@ -50,7 +50,7 @@ export async function processPlanTask(
         results?.errors?.push(errorMsg);
         
         if (!jsonOutput) {
-          console.log(colorize(`│    ✘ ERROR: ${errorMsg}`, asChalkColor((asChalkColor(('red' as ChalkColor))))));
+          console.log(colorize(`│    ✘ ERROR: ${errorMsg}`, asChalkColor((asChalkColor((asChalkColor('red')))))));
         }
         return;
       }
@@ -62,7 +62,7 @@ export async function processPlanTask(
     results?.errors?.push(`Error processing task: ${errorMessage}`);
     
     if (!jsonOutput) {
-      console.log(colorize(`│    ✘ ERROR: ${errorMessage}`, asChalkColor((asChalkColor(('red' as ChalkColor))))));
+      console.log(colorize(`│    ✘ ERROR: ${errorMessage}`, asChalkColor((asChalkColor((asChalkColor('red')))))));
     }
   }
 }

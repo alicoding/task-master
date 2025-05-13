@@ -19,39 +19,39 @@ export async function displaySimilarTasksEnhanced(
   }[],
   colorize: (text: string, color?: ChalkColor, style?: ChalkStyle) => string
 ): Promise<void> {
-  console.log(colorize(`\n┌─ Similar Tasks Found (${filteredTasks.length})`, asChalkColor((asChalkColor(('yellow' as ChalkColor)))), asChalkColor('bold')));
+  console.log(colorize(`\n┌─ Similar Tasks Found (${filteredTasks.length})`, asChalkColor((asChalkColor((asChalkColor('yellow'))))), asChalkColor('bold')));
   
   filteredTasks.forEach((task, idx) => {
     const score = task.metadata?.similarityScore || 0;
     const percentage = Math.round(score * 100);
     
     // Determine color based on similarity
-    let simColor: ChalkColor = (asChalkColor((asChalkColor(('green' as ChalkColor)))));
-    if (percentage >= 90) simColor = (asChalkColor((asChalkColor(('red' as ChalkColor)))));
-    else if (percentage >= 80) simColor = (asChalkColor((asChalkColor(('red' as ChalkColor)))));
-    else if (percentage >= 70) simColor = (asChalkColor((asChalkColor(('magenta' as ChalkColor)))));
-    else if (percentage >= 60) simColor = (asChalkColor((asChalkColor(('yellow' as ChalkColor)))));
+    let simColor: ChalkColor = (asChalkColor((asChalkColor((asChalkColor('green'))))));
+    if (percentage >= 90) simColor = (asChalkColor((asChalkColor((asChalkColor('red'))))));
+    else if (percentage >= 80) simColor = (asChalkColor((asChalkColor((asChalkColor('red'))))));
+    else if (percentage >= 70) simColor = (asChalkColor((asChalkColor((asChalkColor('magenta'))))));
+    else if (percentage >= 60) simColor = (asChalkColor((asChalkColor((asChalkColor('yellow'))))));
     
     // Generate a similarity bar
     const barLength = Math.round(percentage / 5); // 20 chars = 100%
     const bar = '█'.repeat(barLength) + '░'.repeat(20 - barLength);
     
-    console.log(colorize(`├─ [${idx + 1}] `, asChalkColor((asChalkColor(('yellow' as ChalkColor))))) + 
-                colorize((task.id || '') + ': ', asChalkColor((asChalkColor(('yellow' as ChalkColor))))) + 
+    console.log(colorize(`├─ [${idx + 1}] `, asChalkColor((asChalkColor((asChalkColor('yellow')))))) + 
+                colorize((task.id || '') + ': ', asChalkColor((asChalkColor((asChalkColor('yellow')))))) + 
                 task.title);
     
-    console.log(colorize('│  ', asChalkColor((asChalkColor(('yellow' as ChalkColor))))) + 
+    console.log(colorize('│  ', asChalkColor((asChalkColor((asChalkColor('yellow')))))) + 
                 colorize(`Similarity: ${percentage}%  `, simColor) + 
                 colorize(bar, simColor));
     
     // Status and tags
-    console.log(colorize('│  ', asChalkColor((asChalkColor(('yellow' as ChalkColor))))) + 
+    console.log(colorize('│  ', asChalkColor((asChalkColor((asChalkColor('yellow')))))) + 
                 `Status: ${colorizeStatus(task.status as string, colorize)}, ` + 
                 `Tags: ${task.tags && task.tags.length > 0 ? 
-                        task.tags.map((tag) => colorize(tag, asChalkColor((asChalkColor(('cyan' as ChalkColor)))))).join(', ') : 
-                        colorize('none', asChalkColor((asChalkColor(('gray' as ChalkColor)))))}`);
+                        task.tags.map((tag) => colorize(tag, asChalkColor((asChalkColor((asChalkColor('cyan'))))))).join(', ') : 
+                        colorize('none', asChalkColor((asChalkColor((asChalkColor('gray'))))))}`);
   });
   
   // Footer
-  console.log(colorize('└' + '─'.repeat(60), asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
+  console.log(colorize('└' + '─'.repeat(60), asChalkColor((asChalkColor((asChalkColor('yellow')))))));
 }

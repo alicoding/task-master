@@ -27,11 +27,11 @@ export async function runInteractiveMode(
   // Main interaction loop
   while (running) {
     // Show prompt with context
-    let prompt = colorize('\nEnter command', asChalkColor((asChalkColor(('cyan' as ChalkColor)))));
+    let prompt = colorize('\nEnter command', asChalkColor((asChalkColor((asChalkColor('cyan'))))));
     if (currentGroup !== null) {
-      prompt += colorize(` (current group: ${currentGroup + 1})`, asChalkColor((asChalkColor(('blue' as ChalkColor)))));
+      prompt += colorize(` (current group: ${currentGroup + 1})`, asChalkColor((asChalkColor((asChalkColor('blue'))))));
     }
-    prompt += colorize(': ', asChalkColor((asChalkColor(('cyan' as ChalkColor)))));
+    prompt += colorize(': ', asChalkColor((asChalkColor((asChalkColor('cyan'))))));
     
     // Create readline interface
     const rl = readline.createInterface({
@@ -50,7 +50,7 @@ export async function runInteractiveMode(
     const command = answer.trim().toLowerCase();
     
     if (command === 'q') {
-      console.log(colorize('Exiting deduplication tool.', asChalkColor((asChalkColor(('blue' as ChalkColor))))));
+      console.log(colorize('Exiting deduplication tool.', asChalkColor((asChalkColor((asChalkColor('blue')))))));
       running = false;
       continue;
     }
@@ -61,8 +61,8 @@ export async function runInteractiveMode(
     }
     
     if (command === 'r') {
-      console.log(colorize('Refreshing duplicate list...', asChalkColor((asChalkColor(('blue' as ChalkColor))))));
-      console.log(colorize('(Note: This would reload tasks and recalculate duplicates in a real implementation)', asChalkColor((asChalkColor(('gray' as ChalkColor))))));
+      console.log(colorize('Refreshing duplicate list...', asChalkColor((asChalkColor((asChalkColor('blue')))))));
+      console.log(colorize('(Note: This would reload tasks and recalculate duplicates in a real implementation)', asChalkColor((asChalkColor((asChalkColor('gray')))))));
       continue;
     }
     
@@ -71,7 +71,7 @@ export async function runInteractiveMode(
       const groupNum = parseInt(command.substring(2));
       
       if (isNaN(groupNum) || groupNum < 1 || groupNum > limitedGroups.length) {
-        console.log(colorize(`Invalid group number. Must be between 1 and ${limitedGroups.length}.`, asChalkColor((asChalkColor(('red' as ChalkColor))))));
+        console.log(colorize(`Invalid group number. Must be between 1 and ${limitedGroups.length}.`, asChalkColor((asChalkColor((asChalkColor('red')))))));
         continue;
       }
       
@@ -85,7 +85,7 @@ export async function runInteractiveMode(
       const groupNum = parseInt(command.substring(2));
       
       if (isNaN(groupNum) || groupNum < 1 || groupNum > limitedGroups.length) {
-        console.log(colorize(`Invalid group number. Must be between 1 and ${limitedGroups.length}.`, asChalkColor((asChalkColor(('red' as ChalkColor))))));
+        console.log(colorize(`Invalid group number. Must be between 1 and ${limitedGroups.length}.`, asChalkColor((asChalkColor((asChalkColor('red')))))));
         continue;
       }
       
@@ -103,7 +103,7 @@ export async function runInteractiveMode(
       
       // If current group is not set, require a group first
       if (currentGroup === null) {
-        console.log(colorize('Please select a group first using "v <group>" command.', asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
+        console.log(colorize('Please select a group first using "v <group>" command.', asChalkColor((asChalkColor((asChalkColor('yellow')))))));
         continue;
       }
       
@@ -116,13 +116,13 @@ export async function runInteractiveMode(
             task1 < 0 || task1 >= limitedGroups[currentGroup].tasks.length ||
             task2 < 0 || task2 >= limitedGroups[currentGroup].tasks.length ||
             task1 === task2) {
-          console.log(colorize(`Invalid task numbers. Must be different and between 1 and ${limitedGroups[currentGroup].tasks.length}.`, asChalkColor((asChalkColor(('red' as ChalkColor))))));
+          console.log(colorize(`Invalid task numbers. Must be different and between 1 and ${limitedGroups[currentGroup].tasks.length}.`, asChalkColor((asChalkColor((asChalkColor('red')))))));
           continue;
         }
         
         displayTaskComparison(task1, task2, limitedGroups[currentGroup], colorize);
       } else {
-        console.log(colorize('Invalid compare command. Use "c <task1> <task2>" format.', asChalkColor((asChalkColor(('red' as ChalkColor))))));
+        console.log(colorize('Invalid compare command. Use "c <task1> <task2>" format.', asChalkColor((asChalkColor((asChalkColor('red')))))));
       }
       
       continue;
@@ -134,12 +134,12 @@ export async function runInteractiveMode(
       
       // If current group is not set, require a group first
       if (currentGroup === null) {
-        console.log(colorize('Please select a group first using "v <group>" command.', asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
+        console.log(colorize('Please select a group first using "v <group>" command.', asChalkColor((asChalkColor((asChalkColor('yellow')))))));
         continue;
       }
       
       if (isNaN(taskNum) || taskNum < 1 || taskNum > limitedGroups[currentGroup].tasks.length) {
-        console.log(colorize(`Invalid task number. Must be between 1 and ${limitedGroups[currentGroup].tasks.length}.`, asChalkColor((asChalkColor(('red' as ChalkColor))))));
+        console.log(colorize(`Invalid task number. Must be between 1 and ${limitedGroups[currentGroup].tasks.length}.`, asChalkColor((asChalkColor((asChalkColor('red')))))));
         continue;
       }
       
@@ -148,7 +148,7 @@ export async function runInteractiveMode(
     }
     
     // Handle invalid commands
-    console.log(colorize(`Unknown command: "${command}". Type "h" for help.`, asChalkColor((asChalkColor(('red' as ChalkColor))))));
+    console.log(colorize(`Unknown command: "${command}". Type "h" for help.`, asChalkColor((asChalkColor((asChalkColor('red')))))));
   }
 }
 
@@ -163,12 +163,12 @@ export async function runAutoMergeSuggestions(
   // Import merger function
   const { suggestMerge } = await import('./merger-enhanced');
   
-  console.log(colorize(`\n🔍 Auto-merge suggestions for ${highSimilarityGroups.length} groups`, asChalkColor((asChalkColor(('blue' as ChalkColor)))), asChalkColor('bold')));
-  console.log(colorize(`   Processing groups with 80%+ similarity...`, asChalkColor((asChalkColor(('gray' as ChalkColor))))));
+  console.log(colorize(`\n🔍 Auto-merge suggestions for ${highSimilarityGroups.length} groups`, asChalkColor((asChalkColor((asChalkColor('blue'))))), asChalkColor('bold')));
+  console.log(colorize(`   Processing groups with 80%+ similarity...`, asChalkColor((asChalkColor((asChalkColor('gray')))))));
   
-  console.log(colorize(`\n┌${'─'.repeat(78)}┐`, asChalkColor((asChalkColor(('green' as ChalkColor))))));
-  console.log(colorize(`│ AUTO-MERGE WIZARD ${' '.repeat(61)}│`, asChalkColor((asChalkColor(('green' as ChalkColor)))), asChalkColor('bold')));
-  console.log(colorize(`└${'─'.repeat(78)}┘`, asChalkColor((asChalkColor(('green' as ChalkColor))))));
+  console.log(colorize(`\n┌${'─'.repeat(78)}┐`, asChalkColor((asChalkColor((asChalkColor('green')))))));
+  console.log(colorize(`│ AUTO-MERGE WIZARD ${' '.repeat(61)}│`, asChalkColor((asChalkColor((asChalkColor('green'))))), asChalkColor('bold')));
+  console.log(colorize(`└${'─'.repeat(78)}┘`, asChalkColor((asChalkColor((asChalkColor('green')))))));
   
   // Create a statistics object to track results
   const stats = {
@@ -197,25 +197,25 @@ export async function runAutoMergeSuggestions(
     
     // Add separator between groups
     if (i < highSimilarityGroups.length - 1) {
-      console.log(colorize(`\n${'─'.repeat(78)}`, asChalkColor((asChalkColor(('gray' as ChalkColor))))));
+      console.log(colorize(`\n${'─'.repeat(78)}`, asChalkColor((asChalkColor((asChalkColor('gray')))))));
     }
   }
   
   // Display summary
-  console.log(colorize(`\n┌${'─'.repeat(78)}┐`, asChalkColor((asChalkColor(('green' as ChalkColor))))));
-  console.log(colorize(`│ AUTO-MERGE SUMMARY ${' '.repeat(60)}│`, asChalkColor((asChalkColor(('green' as ChalkColor)))), asChalkColor('bold')));
-  console.log(colorize(`└${'─'.repeat(78)}┘`, asChalkColor((asChalkColor(('green' as ChalkColor))))));
+  console.log(colorize(`\n┌${'─'.repeat(78)}┐`, asChalkColor((asChalkColor((asChalkColor('green')))))));
+  console.log(colorize(`│ AUTO-MERGE SUMMARY ${' '.repeat(60)}│`, asChalkColor((asChalkColor((asChalkColor('green'))))), asChalkColor('bold')));
+  console.log(colorize(`└${'─'.repeat(78)}┘`, asChalkColor((asChalkColor((asChalkColor('green')))))));
   
-  console.log(colorize(`\n● RESULTS OVERVIEW`, asChalkColor((asChalkColor(('blue' as ChalkColor)))), asChalkColor('bold')));
+  console.log(colorize(`\n● RESULTS OVERVIEW`, asChalkColor((asChalkColor((asChalkColor('blue'))))), asChalkColor('bold')));
   console.log(`  Total groups processed: ${stats.processed}`);
-  console.log(`  Groups merged: ${colorize(stats.merged.toString(), asChalkColor((asChalkColor(('green' as ChalkColor)))))}`);
-  console.log(`  Groups skipped: ${colorize(stats.skipped.toString(), asChalkColor((asChalkColor(('yellow' as ChalkColor)))))}`);
+  console.log(`  Groups merged: ${colorize(stats.merged.toString(), asChalkColor((asChalkColor((asChalkColor('green'))))))}`);
+  console.log(`  Groups skipped: ${colorize(stats.skipped.toString(), asChalkColor((asChalkColor((asChalkColor('yellow'))))))}`);
   
   if (stats.merged > 0) {
-    console.log(colorize(`\n● MERGE ACTIONS`, asChalkColor((asChalkColor(('blue' as ChalkColor)))), asChalkColor('bold')));
-    console.log(`  Tasks deleted: ${colorize(stats.tasksDeleted.toString(), asChalkColor((asChalkColor(('red' as ChalkColor)))))}`);
-    console.log(`  Tasks marked as duplicates: ${colorize(stats.tasksMarkedAsDuplicate.toString(), asChalkColor((asChalkColor(('yellow' as ChalkColor)))))}`);
+    console.log(colorize(`\n● MERGE ACTIONS`, asChalkColor((asChalkColor((asChalkColor('blue'))))), asChalkColor('bold')));
+    console.log(`  Tasks deleted: ${colorize(stats.tasksDeleted.toString(), asChalkColor((asChalkColor((asChalkColor('red'))))))}`);
+    console.log(`  Tasks marked as duplicates: ${colorize(stats.tasksMarkedAsDuplicate.toString(), asChalkColor((asChalkColor((asChalkColor('yellow'))))))}`);
   }
   
-  console.log(colorize(`\n✅ Auto-merge process completed`, asChalkColor((asChalkColor(('green' as ChalkColor)))), asChalkColor('bold')));
+  console.log(colorize(`\n✅ Auto-merge process completed`, asChalkColor((asChalkColor((asChalkColor('green'))))), asChalkColor('bold')));
 }

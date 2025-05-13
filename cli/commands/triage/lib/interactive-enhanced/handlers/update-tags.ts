@@ -24,7 +24,7 @@ export async function handleUpdateTagsAction(
   const { dryRun, colorize } = options;
   
   if (dryRun) {
-    console.log(colorize('Would update tags (dry run).', asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
+    console.log(colorize('Would update tags (dry run).', asChalkColor((asChalkColor((asChalkColor('yellow')))))));
     results?.updated.push({
       id: task.id,
       title: task.title,
@@ -34,25 +34,25 @@ export async function handleUpdateTagsAction(
   }
   
   // Current tags
-  console.log(colorize('\n┌─ Update Task Tags', asChalkColor((asChalkColor(('cyan' as ChalkColor)))), asChalkColor('bold')));
-  console.log(colorize('│', asChalkColor((asChalkColor(('cyan' as ChalkColor))))));
-  console.log(colorize('├─ Current Tags: ', asChalkColor((asChalkColor(('cyan' as ChalkColor))))) + 
+  console.log(colorize('\n┌─ Update Task Tags', asChalkColor((asChalkColor((asChalkColor('cyan'))))), asChalkColor('bold')));
+  console.log(colorize('│', asChalkColor((asChalkColor((asChalkColor('cyan')))))));
+  console.log(colorize('├─ Current Tags: ', asChalkColor((asChalkColor((asChalkColor('cyan')))))) + 
               (task.tags && task.tags.length > 0 ? 
-               task.tags.map((tag) => colorize(tag, asChalkColor((asChalkColor(('cyan' as ChalkColor)))))).join(', ') : 
-               colorize('none', asChalkColor((asChalkColor(('gray' as ChalkColor)))))));
+               task.tags.map((tag) => colorize(tag, asChalkColor((asChalkColor((asChalkColor('cyan'))))))).join(', ') : 
+               colorize('none', asChalkColor((asChalkColor((asChalkColor('gray'))))))));
   
   const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
   });
   
-  console.log(colorize('│', asChalkColor((asChalkColor(('cyan' as ChalkColor))))));
-  console.log(colorize('├─ Enter new tags (comma-separated) or:', asChalkColor((asChalkColor(('cyan' as ChalkColor))))));
-  console.log(colorize('│  ', asChalkColor((asChalkColor(('cyan' as ChalkColor))))) + colorize('- Enter "clear" to remove all tags', asChalkColor((asChalkColor(('white' as ChalkColor))))));
-  console.log(colorize('│  ', asChalkColor((asChalkColor(('cyan' as ChalkColor))))) + colorize('- Leave empty to keep current tags', asChalkColor((asChalkColor(('white' as ChalkColor))))));
+  console.log(colorize('│', asChalkColor((asChalkColor((asChalkColor('cyan')))))));
+  console.log(colorize('├─ Enter new tags (comma-separated) or:', asChalkColor((asChalkColor((asChalkColor('cyan')))))));
+  console.log(colorize('│  ', asChalkColor((asChalkColor((asChalkColor('cyan')))))) + colorize('- Enter "clear" to remove all tags', asChalkColor((asChalkColor((asChalkColor('white')))))));
+  console.log(colorize('│  ', asChalkColor((asChalkColor((asChalkColor('cyan')))))) + colorize('- Leave empty to keep current tags', asChalkColor((asChalkColor((asChalkColor('white')))))));
   
   const tagsInput = await new Promise<string>(resolve => {
-    rl.question(colorize('├─ Tags: ', asChalkColor((asChalkColor(('cyan' as ChalkColor))))), resolve);
+    rl.question(colorize('├─ Tags: ', asChalkColor((asChalkColor((asChalkColor('cyan')))))), resolve);
   });
   
   rl.close();
@@ -62,15 +62,15 @@ export async function handleUpdateTagsAction(
   
   if (tagsInput.trim().toLowerCase() === 'clear') {
     newTags = [];
-    console.log(colorize('│  Clearing all tags', asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
+    console.log(colorize('│  Clearing all tags', asChalkColor((asChalkColor((asChalkColor('yellow')))))));
   } else if (tagsInput.trim()) {
     newTags = tagsInput.split(',')
       .map(t => t.trim())
       .filter(t => t.length > 0);
-    console.log(colorize('│  Setting new tags: ', asChalkColor((asChalkColor(('green' as ChalkColor))))) + 
-                newTags.map(tag => colorize(tag, asChalkColor((asChalkColor(('cyan' as ChalkColor)))))).join(', '));
+    console.log(colorize('│  Setting new tags: ', asChalkColor((asChalkColor((asChalkColor('green')))))) + 
+                newTags.map(tag => colorize(tag, asChalkColor((asChalkColor((asChalkColor('cyan'))))))).join(', '));
   } else {
-    console.log(colorize('│  Keeping current tags', asChalkColor((asChalkColor(('gray' as ChalkColor))))));
+    console.log(colorize('│  Keeping current tags', asChalkColor((asChalkColor((asChalkColor('gray')))))));
   }
   
   // Update if tags changed
@@ -81,8 +81,8 @@ export async function handleUpdateTagsAction(
     });
     
     results?.updated.push(updatedTask);
-    console.log(colorize('└─ ✓ Tags updated successfully', asChalkColor((asChalkColor(('green' as ChalkColor)))), asChalkColor('bold')));
+    console.log(colorize('└─ ✓ Tags updated successfully', asChalkColor((asChalkColor((asChalkColor('green'))))), asChalkColor('bold')));
   } else {
-    console.log(colorize('└─ No changes made', asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
+    console.log(colorize('└─ No changes made', asChalkColor((asChalkColor((asChalkColor('yellow')))))));
   }
 }

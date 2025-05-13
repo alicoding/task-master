@@ -23,26 +23,26 @@ export async function createEnhancedMapCommand() {
     .option('--include-completed', 'Include completed tasks in the analysis')
     .option('--include-metadata', 'Include metadata in the capability analysis')
     .option('--color', 'Use colors in output when available')
-    .option('--no-color', 'Disable colored output')
+    .option('--no-color', (asChalkColor('Disable colored output')))
     .option('--ai-model <model>', (asChalkColor('Specify AI model to use (defaults to gpt-4, use "mock" for testing without API key)')))
-    .option('--export <file>', 'Export the visualization to a file')
+    .option('--export <file>', (asChalkColor('Export the visualization to a file')))
     // Enhanced view options
-    .option('--detailed', 'Show detailed information about each capability')
-    .option('--tasks', 'Show task lists under each capability')
-    .option('--compact', 'Show a more condensed view with less whitespace')
-    .option('--focus <capability>', 'Focus on a specific capability and its relationships')
-    .option('--sort <criteria>', 'Sort capabilities by: progress, name, or tasks', 'progress')
-    .option('--progress', 'Show progress indicators for each capability')
-    .option('--no-progress', 'Hide progress indicators')
-    .option('--group-by-type', 'Group capabilities by their discovered type')
-    .option('--hierarchical', 'Group capabilities in a hierarchical structure')
-    .option('--relationship-types', 'Show relationship types between capabilities')
-    .option('--title <title>', 'Custom title for the visualization')
+    .option('--detailed', (asChalkColor('Show detailed information about each capability')))
+    .option('--tasks', (asChalkColor('Show task lists under each capability')))
+    .option('--compact', (asChalkColor('Show a more condensed view with less whitespace')))
+    .option('--focus <capability>', (asChalkColor('Focus on a specific capability and its relationships')))
+    .option('--sort <criteria>', (asChalkColor('Sort capabilities by: progress, name, or tasks')), 'progress')
+    .option('--progress', (asChalkColor('Show progress indicators for each capability')))
+    .option('--no-progress', (asChalkColor('Hide progress indicators')))
+    .option('--group-by-type', (asChalkColor('Group capabilities by their discovered type')))
+    .option('--hierarchical', (asChalkColor('Group capabilities in a hierarchical structure')))
+    .option('--relationship-types', (asChalkColor('Show relationship types between capabilities')))
+    .option('--title <title>', (asChalkColor('Custom title for the visualization')))
     // Display attribute options
-    .option('--show-confidence', 'Show confidence scores in the visualization')
-    .option('--show-task-count', 'Show task count for each capability')
-    .option('--no-task-count', 'Hide task counts')
-    .option('--show-types', 'Show capability types in the visualization');
+    .option('--show-confidence', (asChalkColor('Show confidence scores in the visualization')))
+    .option('--show-task-count', (asChalkColor('Show task count for each capability')))
+    .option('--no-task-count', (asChalkColor('Hide task counts')))
+    .option('--show-types', (asChalkColor('Show capability types in the visualization')));
 
   // Enhance help with examples and additional information
   helpFormatter.enhanceHelp(mapCommand, {

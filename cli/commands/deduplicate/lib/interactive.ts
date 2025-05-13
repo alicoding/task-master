@@ -22,7 +22,7 @@ export async function runInteractiveMode(
   });
   
   const answer = await new Promise<string>(resolve => {
-    rl.question(colorize('\nEnter command: ', asChalkColor((asChalkColor(('cyan' as ChalkColor))))), resolve);
+    rl.question(colorize('\nEnter command: ', asChalkColor((asChalkColor((asChalkColor('cyan')))))), resolve);
   });
   
   rl.close();
@@ -30,7 +30,7 @@ export async function runInteractiveMode(
   const command = answer.trim().toLowerCase();
   
   if (command === 'q') {
-    console.log(colorize('Exiting deduplication tool.', asChalkColor((asChalkColor(('blue' as ChalkColor))))));
+    console.log(colorize('Exiting deduplication tool.', asChalkColor((asChalkColor((asChalkColor('blue')))))));
     return;
   }
   
@@ -39,7 +39,7 @@ export async function runInteractiveMode(
     const groupNum = parseInt(command.substring(2));
     
     if (isNaN(groupNum) || groupNum < 1 || groupNum > limitedGroups.length) {
-      console.log(colorize(`Invalid group number. Must be between 1 and ${limitedGroups.length}.`, asChalkColor((asChalkColor(('red' as ChalkColor))))));
+      console.log(colorize(`Invalid group number. Must be between 1 and ${limitedGroups.length}.`, asChalkColor((asChalkColor((asChalkColor('red')))))));
       return;
     }
     
@@ -52,7 +52,7 @@ export async function runInteractiveMode(
     const groupNum = parseInt(command.substring(2));
     
     if (isNaN(groupNum) || groupNum < 1 || groupNum > limitedGroups.length) {
-      console.log(colorize(`Invalid group number. Must be between 1 and ${limitedGroups.length}.`, asChalkColor((asChalkColor(('red' as ChalkColor))))));
+      console.log(colorize(`Invalid group number. Must be between 1 and ${limitedGroups.length}.`, asChalkColor((asChalkColor((asChalkColor('red')))))));
       return;
     }
     

@@ -46,14 +46,14 @@ export class TaskCreationRepository extends BaseTaskRepository {
         // Query the database to count how many existing child tasks there are
         // Fix for SQLite query - use single quotes for literal '.' character
         const result = this.sqlite.prepare(
-          "SELECT MAX(CAST(SUBSTR(id, INSTR(id, '.') + 1) AS INTEGER)) as max_child_num FROM tasks WHERE parentId = ? OR id LIKE ?"
+          "SELECT MAX(CAST(SUBSTR(id, INSTR(id, '.') + 1) AS INTEGER)) as max_child_num FROM tasks WHERE parent_id = ? OR id LIKE ?"
         ).get(options.childOf, `${options.childOf}.%`);
 
         console.log('Child task query result:', JSON.stringify(result));
 
         // Additional direct query to see all child tasks
         const allChildTasks = this.sqlite.prepare(
-          'SELECT id, title, parentId FROM tasks WHERE parentId = ? OR id LIKE ?'
+          'SELECT id, title, parent_id FROM tasks WHERE parent_id = ? OR id LIKE ?'
         ).all(options.childOf, `${options.childOf}.%`);
 
         console.log('All child tasks:', JSON.stringify(allChildTasks));
@@ -111,7 +111,7 @@ export class TaskCreationRepository extends BaseTaskRepository {
 
       // If it's a new root task - use a direct SQL statement with sqlite
       const rootTasks = this.sqlite.prepare(
-        'SELECT id FROM tasks WHERE parentId IS NULL'
+        'SELECT id FROM tasks WHERE parent_id IS NULL'
       ).all();
 
       return {

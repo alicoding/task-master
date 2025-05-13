@@ -25,14 +25,14 @@ export async function createMapCommand() {
     .option('--include-completed', 'Include completed tasks in the analysis')
     .option('--include-metadata', 'Include metadata in the capability analysis')
     .option('--color', 'Use colors in output when available')
-    .option('--no-color', 'Disable colored output')
-    .option('--show-confidence', 'Show confidence scores in the visualization')
-    .option('--show-task-count', 'Show task count for each capability')
-    .option('--show-types', 'Show capability types in the visualization')
-    .option('--title <title>', 'Custom title for the visualization')
+    .option('--no-color', (asChalkColor('Disable colored output')))
+    .option('--show-confidence', (asChalkColor('Show confidence scores in the visualization')))
+    .option('--show-task-count', (asChalkColor('Show task count for each capability')))
+    .option('--show-types', (asChalkColor('Show capability types in the visualization')))
+    .option('--title <title>', (asChalkColor('Custom title for the visualization')))
     .option('--ai-model <model>', (asChalkColor('Specify AI model to use (defaults to gpt-4, use "mock" for testing without API key)')))
-    .option('--export <file>', 'Export the visualization to a file')
-    .option('--progressive', 'Enable progressive refinement of the map');
+    .option('--export <file>', (asChalkColor('Export the visualization to a file')))
+    .option('--progressive', (asChalkColor('Enable progressive refinement of the map')));
 
   // Enhance help with examples and additional information
   helpFormatter.enhanceHelp(mapCommand, {

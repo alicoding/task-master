@@ -28,7 +28,7 @@ export async function handleTaskUpdate(
     results?.errors?.push(errorMsg);
     
     if (!jsonOutput) {
-      console.log(colorize(`│    ✘ ERROR: ${errorMsg}`, asChalkColor((asChalkColor(('red' as ChalkColor))))));
+      console.log(colorize(`│    ✘ ERROR: ${errorMsg}`, asChalkColor((asChalkColor((asChalkColor('red')))))));
     }
     return;
   }
@@ -40,7 +40,7 @@ export async function handleTaskUpdate(
     results?.errors?.push(errorMsg);
     
     if (!jsonOutput) {
-      console.log(colorize(`│    ✘ ERROR: ${errorMsg}`, asChalkColor((asChalkColor(('red' as ChalkColor))))));
+      console.log(colorize(`│    ✘ ERROR: ${errorMsg}`, asChalkColor((asChalkColor((asChalkColor('red')))))));
     }
     return;
   }
@@ -66,10 +66,10 @@ export async function handleTaskUpdate(
       if (taskData.readiness && taskData.readiness !== existingTask.readiness) changes.push(`readiness: ${taskData.readiness}`);
       if (taskData.tags) changes.push(`tags: [${taskData.tags.join(', ')}]`);
       
-      console.log(colorize(`│    ✓ Updated task ${updatedTask.id}`, asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
+      console.log(colorize(`│    ✓ Updated task ${updatedTask.id}`, asChalkColor((asChalkColor((asChalkColor('yellow')))))));
       
       if (changes.length > 0) {
-        console.log(colorize(`│      Changed: ${changes.join(', ')}`, asChalkColor((asChalkColor(('gray' as ChalkColor))))));
+        console.log(colorize(`│      Changed: ${changes.join(', ')}`, asChalkColor((asChalkColor((asChalkColor('gray')))))));
       }
     }
   } else {
@@ -85,7 +85,7 @@ export async function handleTaskUpdate(
     results?.updated.push(simTask);
 
     if (!jsonOutput) {
-      console.log(colorize(`│    ✓ Would update task ${simTask.id}`, asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
+      console.log(colorize(`│    ✓ Would update task ${simTask.id}`, asChalkColor((asChalkColor((asChalkColor('yellow')))))));
     }
   }
 }

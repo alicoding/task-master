@@ -29,7 +29,7 @@ class SimilarTasksUI {
    * Display a list of similar tasks
    */
   displaySimilarTasks(similarTasks: any[]): void {
-    console.log(this.colorize(`\nPotential duplicates found:`, asChalkColor((asChalkColor(('yellow' as ChalkColor)))), asChalkColor('bold')));
+    console.log(this.colorize(`\nPotential duplicates found:`, asChalkColor((asChalkColor((asChalkColor('yellow'))))), asChalkColor('bold')));
     
     similarTasks.forEach((task, index) => {
       // Get similarity details
@@ -41,36 +41,36 @@ class SimilarTasksUI {
       const bar = '█'.repeat(barLength);
       
       // Determine color based on similarity
-      let displayColor = (asChalkColor((asChalkColor(('yellow' as ChalkColor)))));
+      let displayColor = (asChalkColor((asChalkColor((asChalkColor('yellow'))))));
       let similarityText = 'Somewhat similar';
       
       if (score > 0.8) {
-        displayColor = (asChalkColor((asChalkColor(('red' as ChalkColor)))));
+        displayColor = (asChalkColor((asChalkColor((asChalkColor('red'))))));
         similarityText = 'HIGHLY SIMILAR';
       } else if (score > 0.6) {
-        displayColor = (asChalkColor((asChalkColor(('yellow' as ChalkColor)))));
+        displayColor = (asChalkColor((asChalkColor((asChalkColor('yellow'))))));
         similarityText = 'Very similar';
       } else if (score > 0.4) {
-        displayColor = (asChalkColor((asChalkColor(('green' as ChalkColor)))));
+        displayColor = (asChalkColor((asChalkColor((asChalkColor('green'))))));
         similarityText = 'Similar';
       }
       
       // Display with numbering for selection
       const selectionNumber = index + 1;
       
-      console.log(this.colorize(`[${selectionNumber}] ${task.id}: `, asChalkColor((asChalkColor(('blue' as ChalkColor)))), asChalkColor('bold')) + task.title);
+      console.log(this.colorize(`[${selectionNumber}] ${task.id}: `, asChalkColor((asChalkColor((asChalkColor('blue'))))), asChalkColor('bold')) + task.title);
       console.log(`   ${this.colorize('Similarity:', displayColor)} ${this.colorize(`${percentage}%`, displayColor)} ${this.colorize(bar, displayColor)} ${this.colorize(`(${similarityText})`, displayColor)}`);
       console.log(`   Status: ${task.status}, Readiness: ${task.readiness}, Tags: ${task.tags?.join(', ') || 'none'}`);
       console.log(`   Created: ${new Date(task.createdAt).toLocaleString()}`);
       
       // Show additional notes based on similarity
       if (score > 0.8) {
-        console.log(this.colorize('   Note: This task appears to be a duplicate', asChalkColor((asChalkColor(('red' as ChalkColor))))));
+        console.log(this.colorize('   Note: This task appears to be a duplicate', asChalkColor((asChalkColor((asChalkColor('red')))))));
       }
       
       // Add separator between tasks
       if (index < similarTasks.length - 1) {
-        console.log(this.colorize('   ----------------------------------------', asChalkColor((asChalkColor(('gray' as ChalkColor))))));
+        console.log(this.colorize('   ----------------------------------------', asChalkColor((asChalkColor((asChalkColor('gray')))))));
       }
     });
   }
@@ -80,11 +80,11 @@ class SimilarTasksUI {
    */
   async promptForAction(): Promise<string> {
     // Show options for what to do
-    console.log(this.colorize('\nWhat would you like to do?', asChalkColor((asChalkColor(('blue' as ChalkColor)))), asChalkColor('bold')));
-    console.log(this.colorize('  a', asChalkColor((asChalkColor(('green' as ChalkColor))))) + ') ' + this.colorize('Add anyway', asChalkColor((asChalkColor(('white' as ChalkColor))))) + ' - Create a new task');
-    console.log(this.colorize('  c', asChalkColor((asChalkColor(('red' as ChalkColor))))) + ') ' + this.colorize('Cancel', asChalkColor((asChalkColor(('white' as ChalkColor))))) + ' - Don\'t create a task');
-    console.log(this.colorize('  u', asChalkColor((asChalkColor(('yellow' as ChalkColor))))) + ') ' + this.colorize('Update', asChalkColor((asChalkColor(('white' as ChalkColor))))) + ' - Modify an existing task instead');
-    console.log(this.colorize('  m', asChalkColor((asChalkColor(('magenta' as ChalkColor))))) + ') ' + this.colorize('Merge', asChalkColor((asChalkColor(('white' as ChalkColor))))) + ' - Combine with an existing task');
+    console.log(this.colorize('\nWhat would you like to do?', asChalkColor((asChalkColor((asChalkColor('blue'))))), asChalkColor('bold')));
+    console.log(this.colorize('  a', asChalkColor((asChalkColor((asChalkColor('green')))))) + ') ' + this.colorize('Add anyway', asChalkColor((asChalkColor((asChalkColor('white')))))) + ' - Create a new task');
+    console.log(this.colorize('  c', asChalkColor((asChalkColor((asChalkColor('red')))))) + ') ' + this.colorize('Cancel', asChalkColor((asChalkColor((asChalkColor('white')))))) + ' - Don\'t create a task');
+    console.log(this.colorize('  u', asChalkColor((asChalkColor((asChalkColor('yellow')))))) + ') ' + this.colorize('Update', asChalkColor((asChalkColor((asChalkColor('white')))))) + ' - Modify an existing task instead');
+    console.log(this.colorize('  m', asChalkColor((asChalkColor((asChalkColor('magenta')))))) + ') ' + this.colorize('Merge', asChalkColor((asChalkColor((asChalkColor('white')))))) + ' - Combine with an existing task');
     
     const rl = readline.createInterface({
       input: process.stdin,
@@ -92,7 +92,7 @@ class SimilarTasksUI {
     });
     
     const answer = await new Promise<string>(resolve => {
-      rl.question(this.colorize('\nChoose an option [a/c/u/m]: ', asChalkColor((asChalkColor(('cyan' as ChalkColor))))), resolve);
+      rl.question(this.colorize('\nChoose an option [a/c/u/m]: ', asChalkColor((asChalkColor((asChalkColor('cyan')))))), resolve);
     });
     
     rl.close();
@@ -110,7 +110,7 @@ class SimilarTasksUI {
     
     const taskIdOrNumber = await new Promise<string>(resolve => {
       rl.question(
-        this.colorize(`\nEnter task number [1-${taskCount}] or ID to ${operation}: `, asChalkColor((asChalkColor(('cyan' as ChalkColor))))), 
+        this.colorize(`\nEnter task number [1-${taskCount}] or ID to ${operation}: `, asChalkColor((asChalkColor((asChalkColor('cyan')))))), 
         resolve
       );
     });
@@ -123,13 +123,13 @@ class SimilarTasksUI {
    * Display a merge preview
    */
   displayMergePreview(task: any, newOptions: any, combinedTags: string[]): void {
-    console.log(this.colorize('\nMerge preview:', asChalkColor((asChalkColor(('blue' as ChalkColor)))), asChalkColor('bold')));
-    console.log(this.colorize('Title: ', asChalkColor((asChalkColor(('green' as ChalkColor))))) + task.title + ' (unchanged)');
-    console.log(this.colorize('Tags: ', asChalkColor((asChalkColor(('green' as ChalkColor))))) + combinedTags.join(', '));
-    console.log(this.colorize('Status: ', asChalkColor((asChalkColor(('green' as ChalkColor))))) + (newOptions.status || task.status) + 
-                (newOptions.status ? this.colorize(' (updated)', asChalkColor((asChalkColor(('yellow' as ChalkColor))))) : ' (unchanged)'));
-    console.log(this.colorize('Readiness: ', asChalkColor((asChalkColor(('green' as ChalkColor))))) + (newOptions.readiness || task.readiness) + 
-                (newOptions.readiness ? this.colorize(' (updated)', asChalkColor((asChalkColor(('yellow' as ChalkColor))))) : ' (unchanged)'));
+    console.log(this.colorize('\nMerge preview:', asChalkColor((asChalkColor((asChalkColor('blue'))))), asChalkColor('bold')));
+    console.log(this.colorize('Title: ', asChalkColor((asChalkColor((asChalkColor('green')))))) + task.title + ' (unchanged)');
+    console.log(this.colorize('Tags: ', asChalkColor((asChalkColor((asChalkColor('green')))))) + combinedTags.join(', '));
+    console.log(this.colorize('Status: ', asChalkColor((asChalkColor((asChalkColor('green')))))) + (newOptions.status || task.status) + 
+                (newOptions.status ? this.colorize(' (updated)', asChalkColor((asChalkColor((asChalkColor('yellow')))))) : ' (unchanged)'));
+    console.log(this.colorize('Readiness: ', asChalkColor((asChalkColor((asChalkColor('green')))))) + (newOptions.readiness || task.readiness) + 
+                (newOptions.readiness ? this.colorize(' (updated)', asChalkColor((asChalkColor((asChalkColor('yellow')))))) : ' (unchanged)'));
   }
   
   /**
@@ -142,7 +142,7 @@ class SimilarTasksUI {
     });
     
     const mergeConfirm = await new Promise<string>(resolve => {
-      rl.question(this.colorize('\nProceed with merge? [y/n]: ', asChalkColor((asChalkColor(('cyan' as ChalkColor))))), resolve);
+      rl.question(this.colorize('\nProceed with merge? [y/n]: ', asChalkColor((asChalkColor((asChalkColor('cyan')))))), resolve);
     });
     
     rl.close();
@@ -154,33 +154,33 @@ class SimilarTasksUI {
    * Display task creation result
    */
   displayTaskResult(task: any, operation: string = 'created'): void {
-    console.log(this.colorize(`\n✅ Task ${task.id} ${operation} successfully!`, asChalkColor((asChalkColor(('green' as ChalkColor)))), asChalkColor('bold')));
-    console.log(this.colorize(`${task.title}`, asChalkColor((asChalkColor(('white' as ChalkColor)))), asChalkColor('bold')));
+    console.log(this.colorize(`\n✅ Task ${task.id} ${operation} successfully!`, asChalkColor((asChalkColor((asChalkColor('green'))))), asChalkColor('bold')));
+    console.log(this.colorize(`${task.title}`, asChalkColor((asChalkColor((asChalkColor('white'))))), asChalkColor('bold')));
 
     if (task.description !== undefined && task.description !== null) {
-      console.log(`\n${this.colorize('Description:', asChalkColor((asChalkColor(('blue' as ChalkColor)))))} ${task.description}`);
+      console.log(`\n${this.colorize('Description:', asChalkColor((asChalkColor((asChalkColor('blue'))))))} ${task.description}`);
     }
 
     if (task.body !== undefined && task.body !== null) {
-      console.log(`\n${this.colorize('Details:', asChalkColor((asChalkColor(('blue' as ChalkColor)))))}\n${task.body}`);
+      console.log(`\n${this.colorize('Details:', asChalkColor((asChalkColor((asChalkColor('blue'))))))}\n${task.body}`);
     }
 
-    console.log(`\n${this.colorize('Status:', asChalkColor((asChalkColor(('yellow' as ChalkColor)))))} ${task.status}`);
-    console.log(`${this.colorize('Readiness:', asChalkColor((asChalkColor(('yellow' as ChalkColor)))))} ${task.readiness}`);
+    console.log(`\n${this.colorize('Status:', asChalkColor((asChalkColor((asChalkColor('yellow'))))))} ${task.status}`);
+    console.log(`${this.colorize('Readiness:', asChalkColor((asChalkColor((asChalkColor('yellow'))))))} ${task.readiness}`);
 
     if (task.tags && task.tags.length > 0) {
-      console.log(`${this.colorize('Tags:', asChalkColor((asChalkColor(('yellow' as ChalkColor)))))} ${task.tags.map((tag: string) => this.colorize(`#${tag}`, asChalkColor((asChalkColor(('green' as ChalkColor)))))).join(' ')}`);
+      console.log(`${this.colorize('Tags:', asChalkColor((asChalkColor((asChalkColor('yellow'))))))} ${task.tags.map((tag: string) => this.colorize(`#${tag}`, asChalkColor((asChalkColor((asChalkColor('green'))))))).join(' ')}`);
     }
 
     if (task.parentId) {
-      console.log(`${this.colorize('Parent:', asChalkColor((asChalkColor(('yellow' as ChalkColor)))))} ${task.parentId}`);
+      console.log(`${this.colorize('Parent:', asChalkColor((asChalkColor((asChalkColor('yellow'))))))} ${task.parentId}`);
     }
 
-    console.log(`\n${this.colorize('Created:', asChalkColor((asChalkColor(('gray' as ChalkColor)))))} ${new Date(task.createdAt).toLocaleString()}`);
-    console.log(`${this.colorize('Updated:', asChalkColor((asChalkColor(('gray' as ChalkColor)))))} ${new Date(task.updatedAt).toLocaleString()}`);
+    console.log(`\n${this.colorize('Created:', asChalkColor((asChalkColor((asChalkColor('gray'))))))} ${new Date(task.createdAt).toLocaleString()}`);
+    console.log(`${this.colorize('Updated:', asChalkColor((asChalkColor((asChalkColor('gray'))))))} ${new Date(task.updatedAt).toLocaleString()}`);
 
     if (task.metadata && Object.keys(task.metadata).length > 0) {
-      console.log(`\n${this.colorize('Metadata:', asChalkColor((asChalkColor(('gray' as ChalkColor)))))}\n${JSON.stringify(task.metadata, null, 2)}`);
+      console.log(`\n${this.colorize('Metadata:', asChalkColor((asChalkColor((asChalkColor('gray'))))))}\n${JSON.stringify(task.metadata, null, 2)}`);
     }
   }
   
@@ -188,11 +188,11 @@ class SimilarTasksUI {
    * Display dry run result
    */
   displayDryRunResult(title: string, noSimilarTasks: boolean = false): void {
-    console.log(this.colorize('\n✅ Dry run complete - would create new task with title:', asChalkColor((asChalkColor(('green' as ChalkColor))))));
+    console.log(this.colorize('\n✅ Dry run complete - would create new task with title:', asChalkColor((asChalkColor((asChalkColor('green')))))));
     console.log(`"${title}"`);
     
     if (noSimilarTasks) {
-      console.log(this.colorize('No similar tasks found above threshold.', asChalkColor((asChalkColor(('green' as ChalkColor))))));
+      console.log(this.colorize('No similar tasks found above threshold.', asChalkColor((asChalkColor((asChalkColor('green')))))));
     }
   }
 }
@@ -283,7 +283,7 @@ export class AddCommandHandler {
           const response = await this.ui.promptForAction();
           
           if (response === 'c') {
-            console.log(this.ui.colorize('Task creation cancelled', asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
+            console.log(this.ui.colorize('Task creation cancelled', asChalkColor((asChalkColor((asChalkColor('yellow')))))));
             return null;
           } else if (response === 'u' || response === 'm') {
             const isMerge = response === 'm';
@@ -312,7 +312,7 @@ export class AddCommandHandler {
             
             if (isMerge) {
               // Merge operation - combine tags, keep latest status, update description
-              console.log(this.ui.colorize(`\nMerging with task ${taskToUpdate.id}...`, asChalkColor((asChalkColor(('magenta' as ChalkColor))))));
+              console.log(this.ui.colorize(`\nMerging with task ${taskToUpdate.id}...`, asChalkColor((asChalkColor((asChalkColor('magenta')))))));
               
               // Combine tags (unique)
               const combinedTags = [...new Set([
@@ -335,7 +335,7 @@ export class AddCommandHandler {
               const shouldProceed = await this.ui.confirmMerge();
               
               if (!shouldProceed) {
-                console.log(this.ui.colorize('Merge cancelled', asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
+                console.log(this.ui.colorize('Merge cancelled', asChalkColor((asChalkColor((asChalkColor('yellow')))))));
                 return null;
               }
               
@@ -357,7 +357,7 @@ export class AddCommandHandler {
               return updateResult?.data;
             } else {
               // Update operation - just update the existing task
-              console.log(this.ui.colorize(`\nUpdating task ${taskToUpdate.id}...`, asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
+              console.log(this.ui.colorize(`\nUpdating task ${taskToUpdate.id}...`, asChalkColor((asChalkColor((asChalkColor('yellow')))))));
               
               // Update the existing task
               const updateResult = await this.repo.updateTask({

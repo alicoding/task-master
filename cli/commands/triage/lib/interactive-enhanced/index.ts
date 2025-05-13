@@ -65,7 +65,7 @@ export async function runInteractiveMode(
     if (jsonOutput) {
       console.log(JSON.stringify({ message: 'No pending tasks to triage' }));
     } else {
-      console.log(colorize('No pending tasks to triage.', asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
+      console.log(colorize('No pending tasks to triage.', asChalkColor((asChalkColor((asChalkColor('yellow')))))));
     }
     return;
   }
@@ -133,7 +133,7 @@ export async function runInteractiveMode(
       // Process the action
       switch (action) {
         case 'q': // Quit
-          console.log(colorize('Exiting triage mode.', asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
+          console.log(colorize('Exiting triage mode.', asChalkColor((asChalkColor((asChalkColor('yellow')))))));
           running = false;
           break;
           
@@ -146,7 +146,7 @@ export async function runInteractiveMode(
           break;
           
         case 's': // Skip
-          console.log(colorize('Skipping this task.', asChalkColor((asChalkColor(('gray' as ChalkColor))))));
+          console.log(colorize('Skipping this task.', asChalkColor((asChalkColor((asChalkColor('gray')))))));
           results?.skipped.push({
             id: task.id,
             title: task.title,
@@ -174,7 +174,7 @@ export async function runInteractiveMode(
           if (filteredTasks.length > 0) {
             await handleMergeTaskAction(task, filteredTasks, repo, results, options);
           } else {
-            console.log(colorize('No similar tasks available for merging.', asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
+            console.log(colorize('No similar tasks available for merging.', asChalkColor((asChalkColor((asChalkColor('yellow')))))));
           }
           taskIndex++;
           break;
@@ -194,13 +194,13 @@ export async function runInteractiveMode(
           break;
           
         default:
-          console.log(colorize('Invalid option. Press h for help.', asChalkColor((asChalkColor(('red' as ChalkColor))))));
+          console.log(colorize('Invalid option. Press h for help.', asChalkColor((asChalkColor((asChalkColor('red')))))));
           break;
       }
     }
   }
   
   if (!jsonOutput && running) {
-    console.log(colorize('\n✅ All pending tasks have been triaged!', asChalkColor((asChalkColor(('green' as ChalkColor)))), asChalkColor('bold')));
+    console.log(colorize('\n✅ All pending tasks have been triaged!', asChalkColor((asChalkColor((asChalkColor('green'))))), asChalkColor('bold')));
   }
 }

@@ -467,10 +467,10 @@ export function createAddCommand() {
     .option('--force', 'Skip similarity check and confirmation')
     .option('--dry-run', 'Check for similarities without creating the task')
     .option('--no-color', 'Disable colored output')
-    .option('--interactive', 'Use interactive mode for task creation')
-    .option('--similarity-threshold <number>', 'Similarity threshold (0-100)', '30')
-    .option('--dod <items...>', 'Definition of Done items to add to the task')
-    .option('--no-dod', 'Disable Definition of Done for this task');
+    .option('--interactive', (asChalkColor('Use interactive mode for task creation')))
+    .option('--similarity-threshold <number>', (asChalkColor('Similarity threshold (0-100)')), '30')
+    .option('--dod <items...>', (asChalkColor('Definition of Done items to add to the task')))
+    .option('--no-dod', (asChalkColor('Disable Definition of Done for this task')));
 
   // Enhance help with examples and additional information
   helpFormatter.enhanceHelp(addCommand, {

@@ -141,7 +141,7 @@ export class TaskHierarchyRepository extends TaskCreationRepository {
       // Get all siblings with the same parent
       const siblings = await this.db.select()
         .from(tasks)
-        .where(eq(tasks.parentId, parentId));
+        .where(eq(tasks.parentId as any, parentId));
 
       // Extract the last part of the deleted ID
       const deletedParts = deletedTaskId.split('.');

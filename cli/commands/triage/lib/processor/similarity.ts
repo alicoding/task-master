@@ -38,7 +38,7 @@ export async function handleNewTask(
 
   if (filteredTasks.length > 0) {
     if (!jsonOutput) {
-      console.log(colorize(`│    ⚠ Found ${filteredTasks.length} similar tasks`, asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
+      console.log(colorize(`│    ⚠ Found ${filteredTasks.length} similar tasks`, asChalkColor((asChalkColor((asChalkColor('yellow')))))));
       
       // Show top matches
       const topTasks = filteredTasks.slice(0, 3); // Show max 3
@@ -46,15 +46,15 @@ export async function handleNewTask(
         const score = t.metadata?.similarityScore || 0;
         const percentage = Math.round(score * 100);
         
-        let scoreColor: ChalkColor = (asChalkColor((asChalkColor(('green' as ChalkColor)))));
-        if (percentage >= 80) scoreColor = (asChalkColor((asChalkColor(('red' as ChalkColor)))));
-        else if (percentage >= 60) scoreColor = (asChalkColor((asChalkColor(('yellow' as ChalkColor)))));
+        let scoreColor: ChalkColor = (asChalkColor((asChalkColor((asChalkColor('green'))))));
+        if (percentage >= 80) scoreColor = (asChalkColor((asChalkColor((asChalkColor('red'))))));
+        else if (percentage >= 60) scoreColor = (asChalkColor((asChalkColor((asChalkColor('yellow'))))));
         
         console.log(colorize(`│      ${i + 1}. ${t.id}: "${t.title}" (${percentage}% similar)`, scoreColor));
       });
       
       if (filteredTasks.length > 3) {
-        console.log(colorize(`│      + ${filteredTasks.length - 3} more similar tasks...`, asChalkColor((asChalkColor(('gray' as ChalkColor))))));
+        console.log(colorize(`│      + ${filteredTasks.length - 3} more similar tasks...`, asChalkColor((asChalkColor((asChalkColor('gray')))))));
       }
     }
 
@@ -77,11 +77,11 @@ export async function handleNewTask(
       });
 
       if (!jsonOutput) {
-        console.log(colorize(`│    ⚠ Skipped due to similar existing tasks - use force: true to override`, asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
+        console.log(colorize(`│    ⚠ Skipped due to similar existing tasks - use force: true to override`, asChalkColor((asChalkColor((asChalkColor('yellow')))))));
       }
       return;
     } else if (!jsonOutput) {
-      console.log(colorize(`│    ⚠ Force flag enabled - creating despite similar tasks`, asChalkColor((asChalkColor(('yellow' as ChalkColor))))));
+      console.log(colorize(`│    ⚠ Force flag enabled - creating despite similar tasks`, asChalkColor((asChalkColor((asChalkColor('yellow')))))));
     }
   }
 

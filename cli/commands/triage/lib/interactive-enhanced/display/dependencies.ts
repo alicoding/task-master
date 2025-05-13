@@ -22,32 +22,32 @@ export function displayDependencies(
   }[],
   colorize: (text: string, color?: ChalkColor, style?: ChalkStyle) => string
 ): void {
-  console.log(colorize(`\n┌─ Task Dependencies (${dependencies.length})`, asChalkColor((asChalkColor(('cyan' as ChalkColor)))), asChalkColor('bold')));
+  console.log(colorize(`\n┌─ Task Dependencies (${dependencies.length})`, asChalkColor((asChalkColor((asChalkColor('cyan'))))), asChalkColor('bold')));
 
   // Process and categorize dependencies
   const blocked = dependencies.filter(d => d.direction === 'blocked');
   const blocking = dependencies.filter(d => d.direction === 'blocking');
 
   if (blocked.length > 0) {
-    console.log(colorize('├─ Blocked by:', asChalkColor((asChalkColor(('cyan' as ChalkColor))))));
+    console.log(colorize('├─ Blocked by:', asChalkColor((asChalkColor((asChalkColor('cyan')))))));
     blocked.forEach((dep, idx) => {
-      console.log(colorize('│  ', asChalkColor((asChalkColor(('cyan' as ChalkColor))))) +
-                  colorize(`${dep.task.id}: `, asChalkColor((asChalkColor(('red' as ChalkColor))))) +
+      console.log(colorize('│  ', asChalkColor((asChalkColor((asChalkColor('cyan')))))) +
+                  colorize(`${dep.task.id}: `, asChalkColor((asChalkColor((asChalkColor('red')))))) +
                   dep.task.title + ' ' +
                   colorize(`(${dep.task.status})`, getStatusColor(dep.task.status)));
     });
   }
 
   if (blocking.length > 0) {
-    console.log(colorize('├─ Blocking:', asChalkColor((asChalkColor(('cyan' as ChalkColor))))));
+    console.log(colorize('├─ Blocking:', asChalkColor((asChalkColor((asChalkColor('cyan')))))));
     blocking.forEach((dep, idx) => {
-      console.log(colorize('│  ', asChalkColor((asChalkColor(('cyan' as ChalkColor))))) +
-                  colorize(`${dep.task.id}: `, asChalkColor((asChalkColor(('yellow' as ChalkColor))))) +
+      console.log(colorize('│  ', asChalkColor((asChalkColor((asChalkColor('cyan')))))) +
+                  colorize(`${dep.task.id}: `, asChalkColor((asChalkColor((asChalkColor('yellow')))))) +
                   dep.task.title + ' ' +
                   colorize(`(${dep.task.status})`, getStatusColor(dep.task.status)));
     });
   }
 
   // Footer
-  console.log(colorize('└' + '─'.repeat(60), asChalkColor((asChalkColor(('cyan' as ChalkColor))))));
+  console.log(colorize('└' + '─'.repeat(60), asChalkColor((asChalkColor((asChalkColor('cyan')))))));
 }
